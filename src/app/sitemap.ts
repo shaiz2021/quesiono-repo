@@ -3,7 +3,7 @@ import { services, getServicesByGroup } from '@/data/services';
 import { projects } from '@/data/projects';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://quesiono.com';
+  const baseUrl = 'https://quesiono.vercel.app';
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 1 },

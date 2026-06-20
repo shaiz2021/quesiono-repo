@@ -14,7 +14,7 @@ const libre = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3001"),
+  metadataBase: new URL("https://quesiono.vercel.app"),
   title: {
     default: "Quesiono - Web Design & Digital Agency",
     template: "%s | Quesiono",
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
   description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
   openGraph: {
     type: "website",
-    url: "http://localhost:3001",
+    url: "https://quesiono.vercel.app",
     siteName: "Quesiono",
     title: "Quesiono - Web Design & Digital Agency",
     description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
     images: [
       {
-        url: "http://localhost:3001/api/og",
+        url: "https://quesiono.vercel.app/api/og",
         width: 1200,
         height: 630,
       },
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Quesiono — Web Design & Digital Agency",
     description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
-    images: ["http://localhost:3001/api/og"],
+    images: ["https://quesiono.vercel.app/api/og"],
   },
 };
 
@@ -71,8 +71,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               "name": "Quesiono",
-              "url": "http://localhost:3001",
-              "logo": "http://localhost:3001/images/quesiono-logo.png",
+              "url": "https://quesiono.vercel.app",
+              "logo": "https://quesiono.vercel.app/images/quesiono-logo.png",
               "description": "Quesiono is a full-service digital agency offering web development, SEO, branding, automation, and content writing for businesses worldwide.",
               "address": {
                 "@type": "PostalAddress",

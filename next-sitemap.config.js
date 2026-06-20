@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://quesiono.com",
+  siteUrl: "https://quesiono.vercel.app",
   generateRobotsTxt: true,
   exclude: ["/api/*"],
   transform: async (config, path) => {
@@ -33,6 +33,6 @@ module.exports = {
         disallow: "/api/",
       },
     ],
-    additionalSitemaps: ["https://quesiono.com/sitemap.xml"],
+    additionalSitemaps: ["https://quesiono.vercel.app/sitemap.xml"],
   },
 };

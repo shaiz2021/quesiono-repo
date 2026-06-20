@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://quesiono.com/sitemap.xml',
+    sitemap: 'https://quesiono.vercel.app/sitemap.xml',
   };
 }
