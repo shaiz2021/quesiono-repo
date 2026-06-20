@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" fill="none">
+  <!-- Circular Q icon mark -->
+  <circle cx="36" cy="36" r="32" stroke="#212842" stroke-width="2"/>
+  <circle cx="36" cy="36" r="24" stroke="#212842" stroke-width="0.75" stroke-opacity="0.3"/>
+  <text x="36" y="50" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-style="italic" font-weight="700" fill="#212842" text-anchor="middle">Q</text>
+
+  <!-- Wordmark -->
+  <text x="84" y="42" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-style="italic" font-weight="700" fill="#212842" letter-spacing="0.5">Quesiono</text>
+
+  <!-- Divider line -->
+  <line x1="84" y1="50" x2="314" y2="50" stroke="#212842" stroke-width="0.75" stroke-opacity="0.2"/>
+
+  <!-- Tagline -->
+  <text x="84" y="63" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="600" fill="#212842" fill-opacity="0.45" letter-spacing="4">DIGITAL AGENCY</text>
+</svg>

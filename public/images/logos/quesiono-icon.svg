@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
+  <!-- Dark background fill -->
+  <circle cx="36" cy="36" r="36" fill="#212842"/>
+  <!-- Outer ring -->
+  <circle cx="36" cy="36" r="30" stroke="#F0E7D5" stroke-width="1.5"/>
+  <!-- Inner subtle ring -->
+  <circle cx="36" cy="36" r="22" stroke="#F0E7D5" stroke-width="0.75" stroke-opacity="0.3"/>
+  <!-- Q letter -->
+  <text x="36" y="51" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-style="italic" font-weight="700" fill="#F0E7D5" text-anchor="middle">Q</text>
+</svg>
