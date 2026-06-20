@@ -3,7 +3,7 @@ import { Inter, Libre_Baskerville } from "next/font/google";
 import "@/styles/globals.css";
 import { NavBar } from "@/components/layout/NavBar";
 import { Footer } from "@/components/layout/Footer";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const libre = Libre_Baskerville({
