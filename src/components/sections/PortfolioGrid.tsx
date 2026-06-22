@@ -16,17 +16,17 @@ export function PortfolioGrid() {
       : projects.filter((p) => p.category === filter);
 
   return (
-    <section className="py-20 md:py-32 bg-cream">
+    <section className="py-24 md:py-32 bg-cream">
       <div className="container mx-auto px-6">
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-6 py-2 rounded font-semibold transition-colors ${
+              className={`px-8 py-3 rounded-full font-semibold transition-all duration-300 ${
                 filter === category
-                  ? "bg-midnight text-vanilla"
-                  : "bg-white text-text-dark"
+                  ? "bg-midnight text-vanilla shadow-lg"
+                  : "bg-white text-text-dark border border-sand hover:border-midnight hover:shadow-md"
               }`}
             >
               {category}
@@ -34,7 +34,7 @@ export function PortfolioGrid() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {filteredProjects.map((project) => (
             <PortfolioCard
               key={project.slug}

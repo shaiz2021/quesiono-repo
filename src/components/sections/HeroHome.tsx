@@ -7,6 +7,11 @@ import { MarqueeStrip } from "@/components/ui/MarqueeStrip";
 export function HeroHome() {
   const headline = "We Build Digital Brands That Get Found.";
   const words = headline.split(" ");
+  const stats = [
+    { number: "20+", label: "Projects Completed" },
+    { number: "100%", label: "On-Time Delivery" },
+    { number: "5+", label: "Years of Experience" },
+  ];
 
   return (
     <>
@@ -20,8 +25,8 @@ export function HeroHome() {
                 transition={{ duration: 0.6 }}
                 className="flex items-center gap-2 mb-6"
               >
-                <span className="px-3 py-1 bg-indigo text-vanilla/80 text-xs font-semibold uppercase tracking-wider rounded border border-vanilla/20">
-                  DIGITAL AGENCY
+                <span className="px-4 py-1.5 bg-indigo text-vanilla text-xs font-semibold uppercase tracking-widest rounded border border-vanilla/20">
+                  QUESIONO — DIGITAL AGENCY
                 </span>
               </motion.div>
 
@@ -43,16 +48,16 @@ export function HeroHome() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="text-vanilla/70 text-lg md:text-xl mb-8 max-w-2xl"
+                className="text-vanilla/70 text-lg md:text-xl mb-10 max-w-2xl"
               >
-                Web development, SEO, automation, and branding for businesses that want to grow online. No templates. No guesswork.
+                Web development, SEO, automation, and content for businesses worldwide. Strategy-driven design, built to perform.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-4 mb-12"
               >
                 <Button href="/contact" size="lg">
                   Start a Project
@@ -65,35 +70,31 @@ export function HeroHome() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                className="flex items-center gap-4"
+                transition={{ duration: 0.8, delay: 1 }}
+                className="grid grid-cols-3 gap-6 max-w-lg"
               >
-                <div className="flex -space-x-3">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="w-10 h-10 rounded-full bg-indigo border-2 border-midnight flex items-center justify-center text-vanilla text-sm"
-                    >
-                      {String.fromCharCode(64 + i)}
+                {stats.map((stat, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-4xl font-libre italic text-vanilla mb-1">
+                      {stat.number}
                     </div>
-                  ))}
-                </div>
-                <div className="h-6 w-px bg-vanilla/20" />
-                <p className="text-vanilla/60">Trusted by 20+ businesses</p>
+                    <p className="text-vanilla/60 text-sm">{stat.label}</p>
+                  </div>
+                ))}
               </motion.div>
             </div>
 
             <div className="hidden lg:block">
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="w-72 h-72 mx-auto relative"
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="w-80 h-80 mx-auto relative"
               >
-                <div className="absolute inset-0 rounded-full border-2 border-vanilla/10" />
-                <div className="absolute inset-4 rounded-full border-2 border-vanilla/10" />
-                <div className="absolute inset-8 rounded-full border-2 border-vanilla/10" />
-                <div className="absolute inset-12 rounded-full border-2 border-vanilla/20 flex items-center justify-center">
-                  <span className="text-vanilla font-libre italic text-6xl font-bold">Q</span>
+                <div className="absolute inset-0 rounded-full border border-vanilla/10" />
+                <div className="absolute inset-6 rounded-full border border-vanilla/10" />
+                <div className="absolute inset-12 rounded-full border border-vanilla/15" />
+                <div className="absolute inset-20 rounded-full border border-vanilla/20 flex items-center justify-center bg-midnight">
+                  <span className="text-vanilla font-libre italic text-7xl font-bold">Q</span>
                 </div>
               </motion.div>
             </div>

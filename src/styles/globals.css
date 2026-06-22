@@ -23,3 +23,36 @@
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+@layer components {
+  .prose {
+    @apply text-text-dark;
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    @apply font-libre italic text-text-dark mb-4 mt-8;
+  }
+  .prose h2 {
+    @apply text-2xl md:text-3xl;
+  }
+  .prose h3 {
+    @apply text-xl md:text-2xl;
+  }
+  .prose p {
+    @apply text-text-muted mb-6 text-lg leading-relaxed;
+  }
+  .prose ul, .prose ol {
+    @apply mb-6 pl-6;
+  }
+  .prose li {
+    @apply text-text-muted mb-2 text-lg;
+  }
+  .prose a {
+    @apply text-indigo hover:text-midnight font-semibold transition-colors;
+  }
+  .prose strong {
+    @apply text-text-dark;
+  }
+  .prose blockquote {
+    @apply border-l-4 border-indigo pl-6 italic text-text-dark;
+  }
+}

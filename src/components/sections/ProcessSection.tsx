@@ -12,7 +12,7 @@ export function ProcessSection() {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-indigo">
+    <section className="py-24 md:py-36 bg-indigo">
       <div className="container mx-auto px-6">
         <SectionHeading
           eyebrow="HOW WE WORK"
@@ -21,22 +21,21 @@ export function ProcessSection() {
           dark={true}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-16">
           {steps.map((step, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              transition={{ duration: 0.7, delay: i * 0.2 }}
               className="relative"
             >
-              <div className="text-6xl font-libre italic text-vanilla/20 mb-4">{step.number}</div>
-              <h3 className="text-xl font-bold text-vanilla mb-3">{step.title}</h3>
-              <p className="text-vanilla/70">{step.description}</p>
-              {i < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 right-0 w-full h-px bg-vanilla/30 -z-10" />
-              )}
+              <div className="text-7xl md:text-8xl font-libre italic text-vanilla/10 mb-6">{step.number}</div>
+              <div className="p-8 bg-midnight rounded-xl border border-vanilla/10">
+                <h3 className="text-2xl font-bold text-vanilla mb-4">{step.title}</h3>
+                <p className="text-vanilla/70 text-lg">{step.description}</p>
+              </div>
             </motion.div>
           ))}
         </div>
