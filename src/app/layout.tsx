@@ -14,7 +14,7 @@ const libre = Libre_Baskerville({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://quesiono.vercel.app"),
+  metadataBase: new URL("https://quesiono.com"),
   title: {
     default: "Quesiono - Web Design & Digital Agency",
     template: "%s | Quesiono",
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
   description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
   openGraph: {
     type: "website",
-    url: "https://quesiono.vercel.app",
+    url: "https://quesiono.com",
     siteName: "Quesiono",
     title: "Quesiono - Web Design & Digital Agency",
     description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
     images: [
       {
-        url: "https://quesiono.vercel.app/api/og",
+        url: "https://quesiono.com/api/og",
         width: 1200,
         height: 630,
       },
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Quesiono — Web Design & Digital Agency",
     description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
-    images: ["https://quesiono.vercel.app/api/og"],
+    images: ["https://quesiono.com/api/og"],
   },
 };
 
@@ -71,8 +71,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               "name": "Quesiono",
-              "url": "https://quesiono.vercel.app",
-              "logo": "https://quesiono.vercel.app/images/quesiono-logo.png",
+              "url": "https://quesiono.com",
+              "logo": "https://quesiono.com/images/quesiono-logo.png",
               "description": "Quesiono is a full-service digital agency offering web development, SEO, branding, automation, and content writing for businesses worldwide.",
               "address": {
                 "@type": "PostalAddress",
@@ -84,8 +84,8 @@ export default function RootLayout({
               },
               "sameAs": [
                 "https://www.linkedin.com/company/quesiono",
-                "https://www.instagram.com/quesiono",
-                "https://twitter.com/quesiono",
+                "https://www.instagram.com/quesiono_com",
+                "https://x.com/Quesiono_com",
               ],
             }),
           }}

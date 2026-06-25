@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
-import { services, getServicesByGroup } from '@/data/services';
+import { services } from '@/data/services';
 import { projects } from '@/data/projects';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://quesiono.vercel.app';
+  const baseUrl = 'https://quesiono.com';
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 1 },

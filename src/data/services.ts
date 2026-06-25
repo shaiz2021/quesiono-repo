@@ -20,7 +20,7 @@ export const services: Service[] = [
   {
     slug: "cms-development",
     name: "CMS Development",
-    shortDescription: "Manage your content without touching code on WordPress, Webflow, or Shopify.",
+    shortDescription: "Manage your content without touching code on WordPress, Shopify, or Shopify.",
     icon: "layout-dashboard",
     href: "/services/cms-development",
     group: "web",

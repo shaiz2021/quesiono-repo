@@ -41,7 +41,7 @@ export function WhyQuesiono() {
               Why Choose Quesiono?
             </h2>
             <p className="text-text-muted text-lg mb-8 max-w-lg">
-              We're not just another agency. We build strategic partnerships with our clients, focusing on long-term growth and real results.
+              We’re not just another agency. We build strategic partnerships with our clients, focusing on long-term growth and real results.
             </p>
           </motion.div>
 

@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Badge } from "@/components/ui/Badge";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { Metadata } from "next";
+import { Code2, Search, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Quesiono — The Digital Agency Behind the Brand",
@@ -54,6 +53,9 @@ export default function AboutPage() {
               <p className="text-text-muted text-lg mb-6">
                 Quesiono was founded with a simple mission: to build a digital agency that actually delivers on its promises. We believe that great work comes from a direct relationship with our clients, no layers of account managers, no hidden fees, just honest, high-quality work.
               </p>
+              <p className="text-text-muted text-lg">
+                Today, our work blends premium design, modern development, and search-first thinking. The goal is always the same: create a digital presence that looks great, loads fast, and helps your business grow.
+              </p>
             </div>
           </div>
         </div>
@@ -72,6 +74,50 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="py-20 md:py-32 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            <SectionHeading
+              eyebrow="HOW WE BUILD"
+              title="Strategy, then craft."
+              subtitle="A premium site is more than visuals. It’s positioning, performance, and structure working together."
+              align="center"
+              dark={false}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+              {[
+                {
+                  icon: Sparkles,
+                  title: "Editorial design",
+                  description: "Typography, spacing, and interaction details that feel intentional and premium.",
+                },
+                {
+                  icon: Code2,
+                  title: "Modern development",
+                  description: "Clean, maintainable builds focused on speed, accessibility, and responsiveness.",
+                },
+                {
+                  icon: Search,
+                  title: "Search-first structure",
+                  description: "Information architecture and on-page patterns that make ranking easier.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="group bg-cream p-8 rounded-2xl shadow-sm border border-sand/20 hover:shadow-xl transition-all hover:-translate-y-1"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-white border border-sand/30 flex items-center justify-center mb-5">
+                    <item.icon className="w-6 h-6 text-midnight" />
+                  </div>
+                  <h3 className="text-xl font-bold text-text-dark mb-3">{item.title}</h3>
+                  <p className="text-text-muted leading-relaxed">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 md:py-32 bg-cream">
         <div className="container mx-auto px-6">
           <SectionHeading
@@ -82,7 +128,7 @@ export default function AboutPage() {
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             {values.map((value, i) => (
-              <div key={i} className="bg-white p-8 rounded shadow-sm border border-sand/20">
+              <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-sand/20 hover:shadow-xl transition-all hover:-translate-y-1">
                 <h3 className="text-2xl font-bold text-text-dark mb-4">{value.title}</h3>
                 <p className="text-text-muted">{value.description}</p>
               </div>

@@ -1,8 +1,7 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Button } from "@/components/ui/Button";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { ServiceCard } from "@/components/ui/ServiceCard";
-import { getServiceBySlug, services } from "@/data/services";
+import { services } from "@/data/services";
 import { Metadata } from "next";
 import { Search, TrendingUp, Link2, Layers } from "lucide-react";
 
@@ -15,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function SEOPage() {
-  const service = getServiceBySlug("seo");
   const relatedServices = services.filter(
     (s) => s.group === "seo" && s.slug !== "seo" && !s.parentService
   );
@@ -155,12 +153,20 @@ export default function SEOPage() {
           <h2 className="text-4xl font-libre italic text-text-dark mb-12 text-center">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-8">
-            {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-sand pb-8 last:border-0">
-                <h3 className="text-2xl font-bold text-text-dark mb-4">{faq.question}</h3>
-                <p className="text-text-muted text-lg leading-relaxed">{faq.answer}</p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className="group rounded-2xl border border-sand/40 bg-cream p-6 hover:shadow-lg transition-all"
+              >
+                <summary className="cursor-pointer list-none select-none flex items-center justify-between gap-6">
+                  <span className="text-text-dark font-semibold text-lg">{faq.question}</span>
+                  <span className="w-9 h-9 rounded-full bg-white border border-sand/30 flex items-center justify-center text-midnight transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <div className="text-text-muted mt-4 leading-relaxed">{faq.answer}</div>
+              </details>
             ))}
           </div>
         </div>

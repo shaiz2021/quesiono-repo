@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { products } from "@/data/products";
 import { FileText } from "lucide-react";
 
-const productIconMap: Record<string, React.ComponentType<any>> = {
+const productIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   "file-text": FileText,
 };
 
@@ -32,7 +32,8 @@ export function ProductsStrip() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="bg-midnight border border-vanilla/10 rounded p-8"
+                whileHover={{ y: -6 }}
+                className="bg-midnight border border-vanilla/10 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow"
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="w-12 h-12 rounded bg-indigo flex items-center justify-center">

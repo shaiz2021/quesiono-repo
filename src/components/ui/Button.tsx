@@ -14,11 +14,15 @@ export function Button({
   href,
   ...props
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center font-semibold transition-colors rounded";
+  const baseStyles =
+    "inline-flex items-center justify-center font-semibold rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-midnight/30 focus-visible:ring-offset-2 focus-visible:ring-offset-cream transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0";
   const variants = {
-    primary: "bg-vanilla text-midnight hover:bg-vanilla/90",
-    secondary: "bg-midnight text-vanilla hover:bg-midnight/90",
-    ghost: "border border-vanilla text-vanilla hover:bg-vanilla/10",
+    primary:
+      "bg-vanilla text-midnight hover:bg-vanilla/95 shadow-sm hover:shadow-md",
+    secondary:
+      "bg-midnight text-vanilla hover:bg-midnight/95 shadow-sm hover:shadow-md",
+    ghost:
+      "border border-vanilla/60 text-vanilla hover:bg-vanilla/10 hover:border-vanilla",
   };
   const sizes = {
     sm: "px-3 py-1.5 text-sm",

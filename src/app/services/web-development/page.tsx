@@ -1,9 +1,9 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Button } from "@/components/ui/Button";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { ServiceCard } from "@/components/ui/ServiceCard";
-import { getServiceBySlug, services } from "@/data/services";
+import { services } from "@/data/services";
 import { Metadata } from "next";
+import { Gauge, Layers, ShieldCheck, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Web Development Services | Quesiono",
@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function WebDevPage() {
-  const service = getServiceBySlug("web-development");
   const relatedServices = services.filter(
     (s) => s.group === "web" && s.slug !== "web-development" && !s.parentService
   );
@@ -38,7 +37,7 @@ export default function WebDevPage() {
     },
   ];
 
-  const tech = ["Next.js", "React", "WordPress", "Webflow", "Node.js", "Tailwind CSS"];
+  const tech = ["Next.js", "React", "WordPress", "Shopify", "Node.js", "eCommerce", "Wix"];
 
   return (
     <>
@@ -71,6 +70,51 @@ export default function WebDevPage() {
         </div>
       </section>
 
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl font-libre italic text-text-dark mb-10 text-center">
+              Built for performance and trust.
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  icon: Gauge,
+                  title: "Fast load times",
+                  description: "Speed-first implementation that feels premium on every device.",
+                },
+                {
+                  icon: Layers,
+                  title: "Scalable structure",
+                  description: "Clean layouts and reusable sections that are easy to evolve.",
+                },
+                {
+                  icon: ShieldCheck,
+                  title: "Accessible by default",
+                  description: "Solid UX fundamentals so more people can use your site comfortably.",
+                },
+                {
+                  icon: Sparkles,
+                  title: "Light interactions",
+                  description: "Hover states and subtle motion that elevate the experience.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="group rounded-2xl bg-cream border border-sand/30 p-8 hover:shadow-xl transition-all hover:-translate-y-1"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-white border border-sand/30 flex items-center justify-center mb-5">
+                    <item.icon className="w-6 h-6 text-midnight" />
+                  </div>
+                  <div className="text-text-dark font-bold text-xl">{item.title}</div>
+                  <div className="text-text-muted mt-3 leading-relaxed">{item.description}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 bg-indigo">
         <div className="container mx-auto px-6">
           <h2 className="text-2xl font-bold text-vanilla text-center mb-12">
@@ -80,7 +124,7 @@ export default function WebDevPage() {
             {tech.map((t, i) => (
               <div
                 key={i}
-                className="px-6 py-3 bg-midnight text-vanilla rounded border border-vanilla/10 font-semibold"
+                className="px-6 py-3 bg-midnight text-vanilla rounded-full border border-vanilla/10 font-semibold hover:border-vanilla/30 hover:bg-midnight/90 transition-all hover:-translate-y-0.5"
               >
                 {t}
               </div>
@@ -138,14 +182,22 @@ export default function WebDevPage() {
           <h2 className="text-3xl font-libre italic text-text-dark mb-8">
             Frequently Asked Questions.
           </h2>
-          <div className="space-y-6">
-            {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-sand pb-6 last:border-0">
-                <h3 className="text-xl font-bold text-text-dark mb-3">
-                  {faq.question}
-                </h3>
-                <p className="text-text-muted">{faq.answer}</p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className="group rounded-2xl border border-sand/40 bg-cream p-6 hover:shadow-lg transition-all"
+              >
+                <summary className="cursor-pointer list-none select-none flex items-center justify-between gap-6">
+                  <span className="text-text-dark font-semibold text-lg">
+                    {faq.question}
+                  </span>
+                  <span className="w-9 h-9 rounded-full bg-white border border-sand/30 flex items-center justify-center text-midnight transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <div className="text-text-muted mt-4 leading-relaxed">{faq.answer}</div>
+              </details>
             ))}
           </div>
         </div>

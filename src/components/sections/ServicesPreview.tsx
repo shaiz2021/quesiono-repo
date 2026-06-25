@@ -1,7 +1,7 @@
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServiceCard } from "@/components/ui/ServiceCard";
 import { Button } from "@/components/ui/Button";
-import { services, getServicesByGroup } from "@/data/services";
+import { services } from "@/data/services";
 
 export function ServicesPreview() {
   const allServices = services.filter((s) => !s.parentService);

@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ArrowLeft, ArrowRight, Gauge, Sparkles, Target } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { PortfolioCard } from "@/components/ui/PortfolioCard";
@@ -75,6 +74,37 @@ export default function ProjectDetailPage({ params }: ProjectPageProps) {
                 <p className="text-text-muted text-xl leading-relaxed">{project.summary}</p>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  {
+                    icon: Target,
+                    title: "Clear objective",
+                    description: "A focused build aligned with business goals and customer intent.",
+                  },
+                  {
+                    icon: Sparkles,
+                    title: "Premium experience",
+                    description: "Editorial design details with light interactions and smooth flow.",
+                  },
+                  {
+                    icon: Gauge,
+                    title: "Performance mindset",
+                    description: "Structure and polish aimed at speed, clarity, and usability across devices.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className="group rounded-2xl bg-cream border border-sand/30 p-8 hover:shadow-xl transition-all hover:-translate-y-1"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white border border-sand/30 flex items-center justify-center mb-5">
+                      <item.icon className="w-6 h-6 text-midnight" />
+                    </div>
+                    <div className="text-text-dark font-bold text-xl">{item.title}</div>
+                    <div className="text-text-muted mt-3 leading-relaxed">{item.description}</div>
+                  </div>
+                ))}
+              </div>
+
               <div className="p-10 bg-cream rounded-2xl border border-sand/20">
                 <h2 className="text-3xl font-libre italic text-text-dark mb-6">
                   The Challenge
@@ -104,6 +134,14 @@ export default function ProjectDetailPage({ params }: ProjectPageProps) {
                   {project.services.map((service, i) => (
                     <Badge key={i} label={service} variant="light" />
                   ))}
+                </div>
+                <div className="mt-8">
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center gap-2 text-midnight font-semibold hover:text-indigo transition-colors"
+                  >
+                    Explore services behind this project <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
             </div>

@@ -13,7 +13,7 @@ interface ServiceCardProps {
   dark?: boolean;
 }
 
-const iconMap: Record<string, React.ComponentType<any>> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   "code2": Code2,
   "layout-dashboard": LayoutDashboard,
   "terminal": Terminal,
@@ -33,13 +33,13 @@ export function ServiceCard({ icon: iconName, title, description, href, dark = t
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -6 }}
       className="h-full"
     >
       <Link
         href={href}
         className={cn(
-          "block p-8 rounded-lg border-2 transition-all duration-300 h-full flex flex-col",
+          "block p-8 rounded-2xl border-2 transition-all duration-300 h-full flex flex-col hover:shadow-xl",
           dark
             ? "bg-indigo border-vanilla/10 hover:border-vanilla/40"
             : "bg-white border-sand/30 hover:border-midnight/20 hover:shadow-lg"
