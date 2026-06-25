@@ -37,7 +37,7 @@ export default function WebDevPage() {
     },
   ];
 
-  const tech = ["Next.js", "React", "WordPress", "Shopify", "Node.js", "eCommerce", "Wix"];
+  const tech = ["Next.js", "React", "WordPress", "Shopify", "Node.js", "eCommerce", "Wix", "Python"];
 
   return (
     <>
@@ -124,7 +124,7 @@ export default function WebDevPage() {
             {tech.map((t, i) => (
               <div
                 key={i}
-                className="px-6 py-3 bg-midnight text-vanilla rounded-full border border-vanilla/10 font-semibold hover:border-vanilla/30 hover:bg-midnight/90 transition-all hover:-translate-y-0.5"
+                className="px-3 md:px-6 py-3 bg-midnight text-vanilla rounded-full border border-vanilla/10 font-semibold hover:border-vanilla/30 hover:bg-midnight/90 transition-all hover:-translate-y-0.5"
               >
                 {t}
               </div>

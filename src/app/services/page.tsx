@@ -36,7 +36,7 @@ export default function ServicesPage() {
             dark={true}
             align="center"
           />
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="mt-10 flex flex-wrap justify-center gap-3 md:gap-4">
             <Link
               href="#web-services"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-vanilla text-midnight font-semibold hover:bg-vanilla/95 transition-all hover:-translate-y-0.5"
@@ -62,8 +62,8 @@ export default function ServicesPage() {
       <section className="py-20 md:py-32 bg-cream">
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <div>
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
+              <div className="text-center">
                 <h2 className="text-3xl md:text-4xl font-libre italic text-text-dark mb-6">
                   Choose a service based on the outcome you want.
                 </h2>

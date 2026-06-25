@@ -79,7 +79,7 @@ export default function CustomDevPage() {
             <h2 className="text-3xl font-libre italic text-text-dark mb-10 text-center">
               Why build custom instead of forcing a template.
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               {[
                 {
                   icon: Blocks,

@@ -9,10 +9,10 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    name: "ResumeFlow AI",
+    name: "Resumeflow Ai",
     tagline: "Build a job-ready resume in minutes.",
     description: "An AI-powered resume builder that helps job seekers create clean, ATS-optimized resumes fast.",
-    url: "https://resumeflowai.quesiono.com",
+    url: "https://resumeflowai.xyz",
     status: "Live",
     icon: "file-text",
   },

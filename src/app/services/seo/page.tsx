@@ -89,11 +89,11 @@ export default function SEOPage() {
 
       <section className="py-24 md:py-32 bg-cream">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="mx-auto">
             <h2 className="text-4xl font-libre italic text-text-dark mb-12 text-center">
               What You Get
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {seoFeatures.map((feature, i) => (
                 <div key={i} className="p-10 bg-white rounded-2xl border border-sand/20 hover:shadow-xl transition-all duration-300">
                   <div className="w-16 h-16 rounded-xl bg-midnight flex items-center justify-center mb-6">
