@@ -29,7 +29,7 @@ export default function Home() {
       <section className="py-20 md:py-32 bg-cream">
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-9 mb-12">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-7 mb-12">
               <div>
                 <div className="text-text-muted text-xs font-semibold tracking-widest uppercase">
                   Industries
