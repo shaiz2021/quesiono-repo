@@ -1,20 +1,30 @@
 import { cn } from "@/lib/utils";
 
-interface BadgeProps {
+/** Small pill label. Used for categories, statuses, and tags. */
+export function Badge({
+  label,
+  variant = "light",
+  className,
+}: {
   label: string;
-  variant?: "default" | "light" | "transparent";
-}
+  variant?: "light" | "dark" | "accent" | "outline" | "transparent";
+  className?: string;
+}) {
+  const variants = {
+    light: "bg-sand/50 text-text-dark border-sand",
+    dark: "bg-vanilla/10 text-vanilla border-vanilla/20",
+    accent: "bg-champagne/20 text-champagne border-champagne/40",
+    outline: "bg-transparent text-text-muted border-sand",
+    // For badges sitting on imagery — frosted so it stays legible on any frame.
+    transparent: "bg-ink/40 text-vanilla border-vanilla/25 backdrop-blur-sm",
+  };
 
-export function Badge({ label, variant = "default" }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-block px-1 py-1 text-xs font-semibold tracking-wider uppercase rounded-full",
-        variant === "default"
-          ? "bg-midnight text-vanilla border border-vanilla/20"
-          : variant === "light"
-          ? "bg-cream text-midnight border border-sand"
-          : "bg-transparent text-vanilla"
+        "inline-flex items-center rounded-full border px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em]",
+        variants[variant],
+        className
       )}
     >
       {label}

@@ -4,8 +4,80 @@
 
 @layer base {
   :root {
-    --background: #FAF7F2;
-    --foreground: #1A1E35;
+    --background: #fbf8f3;
+    --foreground: #14182b;
+
+    /* Fluid type scale. Interpolates 375px -> 1440px, then locks. */
+    --step--1: clamp(0.875rem, 0.853rem + 0.094vw, 0.9375rem);
+    --step-0: clamp(1rem, 0.956rem + 0.188vw, 1.125rem);
+    --step-1: clamp(1.125rem, 1.059rem + 0.282vw, 1.3125rem);
+    --step-2: clamp(1.3125rem, 1.202rem + 0.47vw, 1.625rem);
+    --step-3: clamp(1.5625rem, 1.386rem + 0.751vw, 2.0625rem);
+    --step-4: clamp(1.875rem, 1.633rem + 1.033vw, 2.5625rem);
+    --step-5: clamp(2.125rem, 1.729rem + 1.69vw, 3.25rem);
+    --step-6: clamp(2.5rem, 1.95rem + 2.347vw, 4.0625rem);
+    --step-7: clamp(2.875rem, 2.083rem + 3.38vw, 5.125rem);
+
+    /* Fixed header height, used for scroll-margin and hero padding. */
+    --nav-h: 5rem;
+  }
+
+  * {
+    @apply border-sand/40;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Bricolage is wide and heavy. Tighten it up at display sizes. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  /* Anchors land below the fixed nav instead of behind it. */
+  [id] {
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+  }
+
+  ::selection {
+    background-color: #c9a961;
+    color: #0b0f1c;
+  }
+
+  :focus-visible {
+    outline: 2px solid #c9a961;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Honour the OS setting. Motion stops, it does not merely speed up. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -13,46 +85,133 @@
   .text-balance {
     text-wrap: balance;
   }
-}
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+  .text-pretty {
+    text-wrap: pretty;
+  }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+  /* Film grain. Sits over gradients so they read as printed, not digital. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.055;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Hairline rule that fades out. Used under eyebrows and section headers. */
+  .hairline {
+    background-image: linear-gradient(
+      to right,
+      currentColor,
+      currentColor 2rem,
+      transparent
+    );
+  }
+
+  .mask-fade-r {
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+
+  /* Pauses a marquee track on hover. Paired with .animate-marquee-*. */
+  .marquee-pause:hover [class*="animate-marquee"] {
+    animation-play-state: paused;
+  }
 }
 
 @layer components {
+  /* Long-form article body. Font-agnostic: the blog HTML carries no classes,
+     everything is styled from here. */
   .prose {
-    @apply text-text-dark;
+    @apply text-text-muted;
+    font-size: var(--step-1);
+    line-height: 1.75;
   }
-  .prose h1, .prose h2, .prose h3, .prose h4 {
-    @apply font-libre italic text-text-dark mb-4 mt-8;
+
+  .prose > * + * {
+    @apply mt-6;
   }
+
   .prose h2 {
-    @apply text-2xl md:text-3xl;
+    @apply font-display font-extrabold text-text-dark mt-14 mb-5;
+    font-size: var(--step-4);
   }
+
   .prose h3 {
-    @apply text-xl md:text-2xl;
+    @apply font-display font-bold text-text-dark mt-10 mb-4;
+    font-size: var(--step-2);
   }
+
+  .prose h4 {
+    @apply font-display font-bold text-text-dark mt-8 mb-3;
+    font-size: var(--step-1);
+  }
+
   .prose p {
-    @apply text-text-muted mb-6 text-lg leading-relaxed;
+    @apply text-text-muted;
   }
-  .prose ul, .prose ol {
-    @apply mb-6 pl-6;
+
+  .prose ul {
+    @apply list-disc pl-6 space-y-2;
   }
+
+  .prose ol {
+    @apply list-decimal pl-6 space-y-2;
+  }
+
   .prose li {
-    @apply text-text-muted mb-2 text-lg;
+    @apply text-text-muted;
   }
+
+  .prose li::marker {
+    @apply text-champagne;
+  }
+
   .prose a {
-    @apply text-indigo hover:text-midnight font-semibold transition-colors;
+    @apply text-indigo font-semibold underline decoration-champagne decoration-2 underline-offset-4;
+    @apply hover:text-midnight hover:decoration-indigo transition-colors;
   }
+
   .prose strong {
-    @apply text-text-dark;
+    @apply text-text-dark font-bold;
   }
+
   .prose blockquote {
-    @apply border-l-4 border-indigo pl-6 italic text-text-dark;
+    @apply border-l-2 border-champagne pl-6 py-1 text-text-dark not-italic;
+    font-size: var(--step-2);
+    line-height: 1.5;
+  }
+
+  .prose code {
+    @apply bg-midnight/[0.06] text-text-dark px-1.5 py-0.5 rounded text-[0.9em] font-mono;
+  }
+
+  .prose pre {
+    @apply bg-ink text-vanilla p-6 rounded-2xl overflow-x-auto text-[0.9rem] leading-relaxed;
+  }
+
+  .prose pre code {
+    @apply bg-transparent text-vanilla p-0;
+  }
+
+  .prose img {
+    @apply rounded-2xl w-full;
+  }
+
+  .prose hr {
+    @apply my-12 border-t border-sand;
+  }
+
+  .prose table {
+    @apply w-full text-left border-collapse text-[0.95em];
+  }
+
+  .prose th {
+    @apply font-display font-bold text-text-dark border-b-2 border-sand py-3 pr-4;
+  }
+
+  .prose td {
+    @apply border-b border-sand/60 py-3 pr-4 align-top;
   }
 }

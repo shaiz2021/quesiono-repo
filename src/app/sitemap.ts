@@ -1,41 +1,21 @@
-import { MetadataRoute } from 'next';
-import { services } from '@/data/services';
-import { projects } from '@/data/projects';
-import { blogPosts } from '@/data/blog';
+import type { MetadataRoute } from "next";
 
+import { allRoutes } from "@/lib/routes";
+import { absoluteUrl } from "@/lib/site";
+
+/**
+ * XML sitemap, generated from the shared route registry in src/lib/routes.ts.
+ *
+ * Nothing is listed by hand here. Add a service, an article or a role and it
+ * appears in this file and on the HTML sitemap at /sitemap at the same time.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://quesiono.com';
+  const now = new Date();
 
-  const staticPages = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 1 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/portfolio`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${baseUrl}/products`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'daily' as const, priority: 0.8 },
-  ];
-
-  const servicePages = services.map((service) => ({
-    url: `${baseUrl}${service.href}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.9,
+  return allRoutes().map((route) => ({
+    url: absoluteUrl(route.href),
+    lastModified: route.updated ? new Date(route.updated) : now,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
   }));
-
-  const projectPages = projects.map((project) => ({
-    url: `${baseUrl}/portfolio/${project.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
-  const blogPages = blogPosts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  return [...staticPages, ...servicePages, ...projectPages, ...blogPages];
 }

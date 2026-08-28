@@ -1,184 +1,413 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+
+import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Button } from "@/components/ui/Button";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { FaqAccordion } from "@/components/ui/FaqAccordion";
+import { FeatureGrid } from "@/components/ui/FeatureGrid";
 import { CTABanner } from "@/components/ui/CTABanner";
+
+import { GradientMesh } from "@/components/motion/GradientMesh";
+import { Reveal } from "@/components/motion/Reveal";
+import { RevealText } from "@/components/motion/RevealText";
+import { ShowreelCanvas } from "@/components/motion/ShowreelCanvas";
+import { MagneticButton } from "@/components/motion/MagneticButton";
+
+import { JsonLd } from "@/components/seo/JsonLd";
+import { buildMetadata } from "@/lib/metadata";
+import { breadcrumbSchema, faqSchema, graph, itemListSchema, webPageSchema } from "@/lib/schema";
+import { getIcon } from "@/lib/icons";
 import { products } from "@/data/products";
-import { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, FileText, Lock, Sparkles, Wand2 } from "lucide-react";
 
-const productIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  "file-text": FileText,
-};
+export const metadata: Metadata = buildMetadata({
+  title: "Our Products — AI Tools Built and Run by Quesiono",
+  description:
+    "Software we build and run ourselves, not just for clients. Resumeflow Ai is live, free to try, and built on the same stack we use for client work.",
+  path: "/products",
+  eyebrow: "Products",
+  keywords: [
+    "AI tools",
+    "AI resume builder",
+    "SaaS products",
+    "AI product development agency",
+    "build an AI SaaS",
+    "custom web application development",
+  ],
+});
 
-export const metadata: Metadata = {
-  title: "AI-Powered Products by Quesiono",
-  description: "Explore the AI tools and SaaS products built by Quesiono, each live on its own subdomain.",
-  alternates: {
-    canonical: "/products",
+/* Why we ship our own software, framed as what it means for a client rather
+   than as a list of studio virtues. */
+const whyItMatters = [
+  {
+    icon: "gauge",
+    title: "We run what we build",
+    description:
+      "Uptime, support tickets, a Stripe webhook failing at 2am. Knowing what maintenance actually costs changes how we architect your project.",
   },
-};
+  {
+    icon: "code2",
+    title: "The stack is the same",
+    description:
+      "Next.js, TypeScript, Postgres, and the Anthropic API. Nothing here is a stack we'd hand you and then not use ourselves.",
+  },
+  {
+    icon: "users",
+    title: "Real usage data",
+    description:
+      "Thousands of people have hit these onboarding flows. We know which step loses them, and we bring that to your funnel.",
+  },
+  {
+    icon: "shield",
+    title: "Product thinking, not just pages",
+    description:
+      "Auth, billing, rate limits, error states. If your project needs an app rather than a brochure, we've shipped that before.",
+  },
+];
 
 export default function ProductsPage() {
+  const trail = [{ name: "Products", href: "/products" }];
+  const productFaqs = products.flatMap((product) => product.faqs ?? []);
+
+  /* One product today, so the lead gets a full feature layout. The grid below
+     only renders once there's a second, rather than showing a lonely card in a
+     three-column row. */
+  const [lead, ...rest] = products;
+  if (!lead) return null;
+
+  const LeadIcon = getIcon(lead.icon);
+
   return (
     <>
-      <section className="bg-midnight min-h-[60vh] flex items-center pt-20">
-        <div className="container mx-auto px-6">
-          <SectionHeading
-            eyebrow="PRODUCTS"
-            title="Tools Built In-House, Available to Everyone"
-            subtitle="We build tools to solve our own problems, then make them available to you too."
-            dark={true}
-            align="center"
+      <JsonLd
+        data={graph(
+          webPageSchema({
+            path: "/products",
+            name: "Our Products — AI Tools Built and Run by Quesiono",
+            description:
+              "Software Quesiono builds and operates, including the Resumeflow Ai resume builder.",
+          }),
+          itemListSchema({
+            name: "Quesiono products",
+            items: products.map((product) => ({
+              name: product.name,
+              href: product.url,
+              description: product.tagline,
+            })),
+          }),
+          breadcrumbSchema([{ name: "Home", href: "/" }, ...trail]),
+          ...(productFaqs.length ? [faqSchema(productFaqs)] : [])
+        )}
+      />
+
+      <header className="grain relative overflow-hidden bg-ink">
+        <GradientMesh variant="ink" drift />
+        <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-[calc(var(--nav-h)+4rem)] sm:px-8 lg:px-12 lg:pb-28">
+          <Breadcrumbs trail={trail} tone="dark" emitSchema={false} />
+          <div className="mt-8">
+            <Eyebrow tone="dark">
+              Our own software · {products.length} {products.length === 1 ? "product" : "products"}
+            </Eyebrow>
+          </div>
+
+          <RevealText
+            text="We build software, not just websites for people who do"
+            as="h1"
+            accent={["not", "just", "websites"]}
+            className="mt-6 max-w-4xl text-step-6 font-extrabold leading-[0.96] text-vanilla"
           />
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link
-              href="#product-list"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-vanilla text-midnight font-semibold hover:bg-vanilla/95 transition-all hover:-translate-y-0.5"
-            >
-              Explore Products <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-vanilla/30 text-vanilla font-semibold hover:bg-vanilla/10 transition-all hover:-translate-y-0.5"
-            >
-              Build One With Us <ArrowRight className="w-4 h-4" />
-            </Link>
+
+          <p className="mt-7 max-w-2xl text-step-1 leading-relaxed text-vanilla/65">
+            Client work pays the bills. These are the things we made because we wanted them to
+            exist. They&apos;re live, they have paying users, and they run on the same stack we&apos;d
+            put your project on.
+          </p>
+
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <MagneticButton href={lead.url} variant="accent" size="lg">
+              Try {lead.name}
+              <ArrowUpRight className="h-5 w-5" aria-hidden />
+            </MagneticButton>
+            <Button href="/contact" variant="ghost" size="lg">
+              Build one with us
+            </Button>
           </div>
         </div>
-      </section>
+      </header>
 
-      <section className="py-20 md:py-32 bg-cream">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-libre italic text-text-dark mb-6">
-                Practical AI, designed for real workflows.
-              </h2>
-              <p className="text-text-muted text-lg leading-relaxed mb-6">
-                Our products are built from the same principles we use for client work: speed, clarity, and outcomes.
-                Each tool is lightweight, easy to use, and focused on solving one problem really well.
-              </p>
-              <p className="text-text-muted text-lg leading-relaxed">
-                If you want an AI-powered product for your business, we can design the experience, build the system, and ship it fast.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: Wand2,
-                  title: "Focused features",
-                  description: "Tools that stay simple, fast, and effective.",
-                },
-                {
-                  icon: Lock,
-                  title: "Privacy-aware",
-                  description: "Built with sensible data handling and minimal collection.",
-                },
-                {
-                  icon: Sparkles,
-                  title: "Premium UX",
-                  description: "Clean design, smooth interactions, and responsive layouts.",
-                },
-                {
-                  icon: ArrowRight,
-                  title: "Built to ship",
-                  description: "We prioritize what matters so you can launch faster.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="group rounded-2xl bg-white border border-sand/30 p-6 hover:shadow-xl transition-all hover:-translate-y-1"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-cream border border-sand/30 flex items-center justify-center mb-4">
-                    <item.icon className="w-6 h-6 text-midnight" />
-                  </div>
-                  <div className="text-text-dark font-bold text-lg">{item.title}</div>
-                  <div className="text-text-muted mt-2 leading-relaxed">{item.description}</div>
+      {/* ------------------------------------------------------------- lead -- */}
+
+      <Section tone="cream" spacing="xl" width="wide" id="product-list">
+        <Reveal>
+          <div className="overflow-hidden rounded-3xl border border-sand bg-white">
+            <div className="grid lg:grid-cols-[1.05fr_0.95fr]">
+              <div className="p-8 sm:p-12 lg:p-14">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-midnight text-vanilla">
+                    <LeadIcon className="h-6 w-6" aria-hidden />
+                  </span>
+                  <Badge label={lead.status} variant="accent" />
+                  {lead.category ? <Badge label={lead.category} variant="outline" /> : null}
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="py-20 md:py-32 bg-cream">
-        <div id="product-list" className="container mx-auto px-6 scroll-mt-28">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {products.map((product, i) => {
-              const Icon = productIconMap[product.icon] || FileText;
-              return (
-                <div
-                  key={i}
-                  className="group bg-white p-8 rounded-2xl shadow-sm border border-sand/20 hover:shadow-xl transition-all hover:-translate-y-1"
-                >
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="w-14 h-14 rounded bg-midnight flex items-center justify-center">
-                      <Icon className="w-7 h-7 text-vanilla" />
-                    </div>
-                    <Badge label={product.status} variant="light" />
+                <h2 className="mt-8 font-display text-step-4 font-extrabold leading-[1.02] tracking-tight text-text-dark">
+                  {lead.name}
+                </h2>
+                <p className="mt-3 text-step-1 font-semibold text-indigo">{lead.tagline}</p>
+
+                <p className="mt-7 text-step-0 leading-relaxed text-text-muted">
+                  {lead.summary ?? lead.description}
+                </p>
+
+                {lead.audience ? (
+                  <p className="mt-6 border-l-2 border-champagne pl-5 text-[0.95rem] leading-relaxed text-text-muted">
+                    <span className="font-semibold text-text-dark">Who it&apos;s for: </span>
+                    {lead.audience}
+                  </p>
+                ) : null}
+
+                <dl className="mt-10 grid gap-x-8 gap-y-6 border-t border-sand pt-8 sm:grid-cols-3">
+                  <div>
+                    <dt className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+                      Live since
+                    </dt>
+                    <dd className="mt-2 font-display font-bold text-text-dark">
+                      {lead.launched ?? "—"}
+                    </dd>
                   </div>
-                  <h3 className="text-2xl font-bold text-text-dark mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-text-muted mb-2">{product.tagline}</p>
-                  <p className="text-text-muted mb-6">{product.description}</p>
-                  <Button href={product.url} variant="secondary">
-                    Try It Free
+                  <div>
+                    <dt className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+                      Free tier
+                    </dt>
+                    <dd className="mt-2 font-display font-bold text-text-dark">
+                      {lead.freeTier ?? "—"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+                      Built by
+                    </dt>
+                    <dd className="mt-2 font-display font-bold text-text-dark">Us, in-house</dd>
+                  </div>
+                </dl>
+
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                  <Button href={lead.url} variant="primary" size="md">
+                    Open {lead.name}
+                    <ArrowUpRight className="h-4 w-4" aria-hidden />
+                  </Button>
+                  <Button href="/services/custom-development" variant="outline" size="md">
+                    Want one like this?
                   </Button>
                 </div>
+              </div>
+
+              <div className="relative bg-ink p-8 lg:p-12">
+                {lead.videoSrc ? (
+                  <video
+                    className="h-full w-full rounded-2xl object-cover"
+                    src={lead.videoSrc}
+                    poster={lead.posterSrc}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : lead.image ? (
+                  <div className="relative h-full min-h-[320px] overflow-hidden rounded-2xl">
+                    <Image
+                      src={lead.image}
+                      alt={lead.imageAlt ?? `${lead.name} interface`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      priority
+                    />
+                  </div>
+                ) : (
+                  <ShowreelCanvas label={lead.name} caption={lead.tagline} />
+                )}
+              </div>
+            </div>
+
+            {lead.features?.length ? (
+              <div className="grid gap-px border-t border-sand bg-sand sm:grid-cols-2">
+                {lead.features.map((feature) => (
+                  <div key={feature.title} className="bg-white p-8 sm:p-10">
+                    <h3 className="flex items-start gap-3 font-display text-step-0 font-bold text-text-dark">
+                      <Check className="mt-1 h-4 w-4 shrink-0 text-indigo" aria-hidden />
+                      {feature.title}
+                    </h3>
+                    <p className="mt-3 pl-7 leading-relaxed text-text-muted">
+                      {feature.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </Reveal>
+
+        {lead.stack?.length ? (
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <span className="text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+              Built with
+            </span>
+            {lead.stack.map((item) => (
+              <span key={item} className="font-display font-bold text-text-dark">
+                {item}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </Section>
+
+      {/* ------------------------------------------------------- other tools -- */}
+
+      {rest.length ? (
+        <Section tone="white" spacing="xl" width="wide">
+          <SectionHeading
+            eyebrow="Also ours"
+            title="The rest of the shelf"
+            size="xl"
+            className="max-w-2xl"
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {rest.map((product, index) => {
+              const Icon = getIcon(product.icon);
+
+              return (
+                <Reveal key={product.name} delay={index * 0.06}>
+                  <div className="flex h-full flex-col rounded-3xl border border-sand bg-cream p-8 transition-all duration-400 ease-smooth hover:-translate-y-1 hover:border-midnight/25 hover:shadow-xl">
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-midnight text-vanilla">
+                        <Icon className="h-6 w-6" aria-hidden />
+                      </span>
+                      <Badge label={product.status} variant="outline" />
+                    </div>
+                    <h3 className="mt-7 font-display text-step-2 font-extrabold text-text-dark">
+                      {product.name}
+                    </h3>
+                    <p className="mt-2 font-semibold text-indigo">{product.tagline}</p>
+                    <p className="mt-4 flex-1 leading-relaxed text-text-muted">
+                      {product.description}
+                    </p>
+                    <div className="mt-8">
+                      <Button href={product.url} variant="outline" size="sm">
+                        Open it
+                        <ArrowUpRight className="h-4 w-4" aria-hidden />
+                      </Button>
+                    </div>
+                  </div>
+                </Reveal>
               );
             })}
           </div>
-        </div>
-      </section>
+        </Section>
+      ) : null}
 
-      <section className="py-20 md:py-32 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-libre italic text-text-dark mb-10 text-center">
-              Product FAQs.
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  q: "Are these products free to use?",
-                  a: "Some tools may be free while others may have tiers. Each product page explains the current pricing and access model.",
-                },
-                {
-                  q: "Can you customize a product for my business?",
-                  a: "Yes. If you like the idea but need a version tailored to your workflow, we can build a custom solution.",
-                },
-                {
-                  q: "Do you build AI-powered SaaS products for clients?",
-                  a: "Yes. We can design the product UX, build the web app, and implement the AI workflow with a scalable architecture.",
-                },
-                {
-                  q: "Can you help with branding and launch?",
-                  a: "Absolutely. We can support positioning, landing pages, SEO foundations, and the marketing site experience.",
-                },
-              ].map((item) => (
-                <details
-                  key={item.q}
-                  className="group rounded-2xl border border-sand/40 bg-cream p-6 hover:shadow-lg transition-all"
-                >
-                  <summary className="cursor-pointer list-none select-none flex items-center justify-between gap-6">
-                    <span className="text-text-dark font-semibold text-lg">{item.q}</span>
-                    <span className="w-9 h-9 rounded-full bg-white border border-sand/30 flex items-center justify-center text-midnight transition-transform group-open:rotate-45">
-                      +
-                    </span>
-                  </summary>
-                  <div className="text-text-muted mt-4 leading-relaxed">{item.a}</div>
-                </details>
-              ))}
+      {/* -------------------------------------------------------------- why -- */}
+
+      <Section tone="ink" spacing="xl" width="wide" mesh>
+        <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+          <SectionHeading
+            eyebrow="Why this is on our site"
+            title="Running software teaches things client work doesn't"
+            subtitle="Anyone can build a launch. Keeping something up for two years with real users on it is a different job, and it's the one that shapes how we build for you."
+            tone="dark"
+            size="xl"
+            className="lg:sticky lg:top-[calc(var(--nav-h)+3rem)] lg:self-start"
+          />
+          <FeatureGrid features={whyItMatters} tone="dark" columns={2} />
+        </div>
+      </Section>
+
+      {/* ------------------------------------------------------------- build -- */}
+
+      <Section tone="cream" spacing="xl" width="wide">
+        <div className="grid gap-14 lg:grid-cols-[1fr_0.9fr] lg:gap-20">
+          <div>
+            <SectionHeading
+              eyebrow="Want your own"
+              title="We build products for other people too"
+              size="xl"
+            />
+            <div className="prose mt-8">
+              <p>
+                About a third of our work is application rather than website — internal tools,
+                client portals, booking systems, one marketplace. It&apos;s a different engagement
+                from a marketing site: longer, phased, and it starts with a two-week discovery
+                rather than a scope document.
+              </p>
+              <p>
+                A realistic first version of something like Resumeflow runs eight to fourteen weeks
+                and starts around $3,500. If a number that size is a surprise, say so early and
+                we&apos;ll talk about what a smaller first slice looks like — usually one workflow,
+                done properly, instead of five done thinly.
+              </p>
+            </div>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Button href="/contact" variant="primary" size="md">
+                Talk about a build
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Button>
+              <Button href="/services/custom-development" variant="outline" size="md">
+                Custom development
+              </Button>
             </div>
           </div>
+
+          <Reveal direction="up" delay={0.1}>
+            <div className="rounded-3xl border border-sand bg-white p-8 sm:p-10">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+                What an app project includes
+              </p>
+              <ul className="mt-7 space-y-5">
+                {[
+                  "Two weeks of discovery: user flows, data model, and the parts we say no to",
+                  "Design system and prototype before any production code",
+                  "Auth, billing, and permissions built in rather than bolted on later",
+                  "Staging environment you can click through weekly",
+                  "Handover with the repository, every credential, and a written runbook",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 leading-relaxed text-text-muted">
+                    <Check className="mt-1 h-4 w-4 shrink-0 text-indigo" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
         </div>
-      </section>
+      </Section>
+
+      {/* -------------------------------------------------------------- faq -- */}
+
+      {productFaqs.length ? (
+        <Section tone="white" spacing="xl" width="default">
+          <SectionHeading
+            eyebrow="Product questions"
+            title="What people ask about our tools"
+            size="xl"
+            className="max-w-2xl"
+          />
+          <div className="mt-14">
+            <FaqAccordion faqs={productFaqs} />
+          </div>
+        </Section>
+      ) : null}
 
       <CTABanner
-        title="Have an Idea for a Product?"
-        subtitle="Let's build it together."
+        eyebrow="Got an idea"
+        title="Have something you wish existed?"
+        subtitle="Describe it in a paragraph. We'll tell you whether it's a six-week build or a two-year one, and which parts you could ship first."
+        primaryAction={{ label: "Start a conversation", href: "/contact" }}
+        secondaryAction={{ label: "See how we work", href: "/process" }}
+        showEmail
       />
     </>
   );

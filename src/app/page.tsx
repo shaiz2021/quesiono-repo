@@ -1,144 +1,108 @@
+import type { Metadata } from "next";
+
 import { HeroHome } from "@/components/sections/HeroHome";
 import { ServicesPreview } from "@/components/sections/ServicesPreview";
 import { FeaturedWork } from "@/components/sections/FeaturedWork";
-import { WhyQuesiono } from "@/components/sections/WhyQuesiono";
+import { PrinciplesSection } from "@/components/sections/PrinciplesSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
+import { IndustriesBand } from "@/components/sections/IndustriesBand";
 import { ProductsStrip } from "@/components/sections/ProductsStrip";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { JournalRail } from "@/components/sections/JournalRail";
+
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { StatBlock } from "@/components/ui/StatBlock";
+import { FaqAccordion } from "@/components/ui/FaqAccordion";
+import { CapabilityStrip } from "@/components/ui/CapabilityStrip";
 import { CTABanner } from "@/components/ui/CTABanner";
-import { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Briefcase, Building2, ShoppingBag, Sparkles } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Quesiono - Web Design & Digital Agency",
-  description: "Quesiono is a full-service digital agency offering web development, SEO, branding, automation, and content writing for growing businesses worldwide.",
-  alternates: {
-    canonical: "/",
-  },
-};
+import { JsonLd } from "@/components/seo/JsonLd";
+import { buildMetadata } from "@/lib/metadata";
+import { faqSchema, graph, itemListSchema, webPageSchema } from "@/lib/schema";
+import { homeFaqs, studioStats } from "@/data/studio";
+import { services } from "@/data/services";
 
-export default function Home() {
+export const metadata: Metadata = buildMetadata({
+  title: "Web Design & Digital Agency in Houston | Quesiono",
+  description:
+    "Quesiono is a Houston web design and digital agency. We design and build fast, search-ready websites, then write the content and run the SEO that gets them found.",
+  path: "/",
+  eyebrow: "Web design & digital agency",
+  keywords: [
+    "web design agency",
+    "digital agency Houston",
+    "web design and development company",
+    "custom website design",
+    "Next.js development agency",
+    "SEO services",
+    "ecommerce web design",
+    "conversion focused web design",
+    "content writing services",
+    "website redesign agency",
+  ],
+});
+
+export default function HomePage() {
   return (
     <>
+      <JsonLd
+        data={graph(
+          webPageSchema({
+            path: "/",
+            name: "Web Design & Digital Agency in Houston | Quesiono",
+            description:
+              "Houston web design and digital agency. Fast, search-ready websites, written content, and SEO that brings in work.",
+          }),
+          itemListSchema({
+            name: "Services at Quesiono",
+            items: services
+              .filter((service) => !service.parentService)
+              .map((service) => ({
+                name: service.name,
+                href: service.href,
+                description: service.shortDescription,
+              })),
+          }),
+          faqSchema(homeFaqs)
+        )}
+      />
+
       <HeroHome />
+
+      <CapabilityStrip tone="midnight" />
+
+      <Section tone="cream" spacing="lg" width="wide">
+        <StatBlock stats={studioStats} columns={4} />
+      </Section>
+
       <ServicesPreview />
       <FeaturedWork />
-      <WhyQuesiono />
+      <PrinciplesSection />
       <ProcessSection />
-      <section className="py-20 md:py-32 bg-cream">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-12">
-              <div>
-                <div className="text-text-muted text-xs font-semibold tracking-widest uppercase">
-                  Industries
-                </div>
-                <h2 className="text-4xl md:text-5xl font-libre italic text-text-dark mt-3">
-                  Built for businesses that need results.
-                </h2>
-                <p className="text-text-muted text-lg leading-relaxed mt-5 max-w-2xl">
-                  We help teams launch premium websites, improve search visibility, and publish content that converts. The common thread is clarity, performance, and measurable outcomes.
-                </p>
-              </div>
-              <Link
-                href="/services"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-midnight text-vanilla font-semibold hover:bg-indigo transition-colors w-fit"
-              >
-                Explore Services <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Briefcase,
-                  title: "Service businesses",
-                  description: "Pages designed to capture leads and explain value fast.",
-                },
-                {
-                  icon: ShoppingBag,
-                  title: "E-commerce brands",
-                  description: "Performance-first builds that support SEO and conversion.",
-                },
-                {
-                  icon: Building2,
-                  title: "B2B teams",
-                  description: "Positioning, authority content, and polished brand presence.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="group rounded-2xl bg-white border border-sand/30 p-8 hover:shadow-xl transition-all hover:-translate-y-1"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-cream border border-sand/30 flex items-center justify-center mb-5">
-                    <item.icon className="w-6 h-6 text-midnight" />
-                  </div>
-                  <div className="text-text-dark font-bold text-xl">{item.title}</div>
-                  <div className="text-text-muted mt-3 leading-relaxed">{item.description}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <IndustriesBand />
       <ProductsStrip />
       <TestimonialsSection />
-      <section className="py-20 md:py-32 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cream border border-sand/30 text-text-dark font-semibold">
-                <Sparkles className="w-4 h-4" />
-                Quick FAQs
-              </div>
-              <h2 className="text-4xl md:text-5xl font-libre italic text-text-dark mt-6">
-                Clear answers, no fluff.
-              </h2>
-              <p className="text-text-muted text-lg leading-relaxed mt-5 max-w-2xl mx-auto">
-                Get a sense of how Quesiono works, what you get, and how we approach performance, SEO, and design.
-              </p>
-            </div>
+      <JournalRail />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  q: "Do you handle both design and development?",
-                  a: "Yes. We design the experience, build the site, and ship it with performance and SEO foundations baked in.",
-                },
-                {
-                  q: "Can you work with existing brand guidelines?",
-                  a: "Absolutely. We can match your current brand system and elevate the UI with subtle motion and premium details.",
-                },
-                {
-                  q: "Do you offer SEO alongside a website build?",
-                  a: "Yes. We can include technical SEO, on-page structure, and a content plan so the site launches ready to rank.",
-                },
-                {
-                  q: "What makes the experience feel premium?",
-                  a: "Typography, spacing, interaction details, and a clean hierarchy. Small touches add up without feeling heavy.",
-                },
-              ].map((item) => (
-                <details
-                  key={item.q}
-                  className="group rounded-2xl border border-sand/40 bg-cream p-6 hover:shadow-lg transition-all"
-                >
-                  <summary className="cursor-pointer list-none select-none flex items-center justify-between gap-6">
-                    <span className="text-text-dark font-semibold text-lg">{item.q}</span>
-                    <span className="w-9 h-9 rounded-full bg-white border border-sand/30 flex items-center justify-center text-midnight transition-transform group-open:rotate-45">
-                      +
-                    </span>
-                  </summary>
-                  <div className="text-text-muted mt-4 leading-relaxed">{item.a}</div>
-                </details>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <Section tone="cream" spacing="xl" width="prose" id="faq">
+        <SectionHeading
+          eyebrow="Before you ask"
+          title="The six questions we get every week"
+          subtitle="Longer answers, plus another ten, live on the FAQ page."
+          align="center"
+          size="xl"
+        />
+        <FaqAccordion faqs={homeFaqs} className="mt-14" />
+      </Section>
+
       <CTABanner
-        title="Ready to Build Something That Works?"
-        subtitle="Let's discuss your project and see how we can help you grow online."
+        eyebrow="Let's start"
+        title="Tell us what the site needs to do"
+        subtitle="Not a brief, not a spec — just the goal and the constraint. You'll get a straight answer on scope, timeline and cost, usually inside one working day."
+        primaryAction={{ label: "Start a project", href: "/contact" }}
+        secondaryAction={{ label: "See pricing", href: "/pricing" }}
+        showEmail
       />
     </>
   );

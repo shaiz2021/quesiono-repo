@@ -1,202 +1,320 @@
-import { notFound } from "next/navigation";
-import { getBlogPostBySlug } from "@/data/blog";
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Calendar, Clock, Linkedin, Link2, Share2, Twitter } from "lucide-react";
+import { notFound } from "next/navigation";
+import { ArrowRight, ArrowUpRight, CalendarDays, Clock } from "lucide-react";
+
+import {
+  blogParams,
+  formatPostDate,
+  getBlogPostBySlug,
+  getRelatedPosts,
+  postHeadings,
+  postWordCount,
+} from "@/data/blog";
+import { getServiceBySlug } from "@/data/services";
+import { getProjectBySlug } from "@/data/projects";
+
+import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { CTABanner } from "@/components/ui/CTABanner";
-import { Metadata } from "next";
-import { blogPosts } from "@/data/blog";
 import { Badge } from "@/components/ui/Badge";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PortfolioCard } from "@/components/ui/PortfolioCard";
+import { CTABanner } from "@/components/ui/CTABanner";
 
-interface BlogPostPageProps {
-  params: { slug: string };
+import { GradientMesh } from "@/components/motion/GradientMesh";
+import { Reveal } from "@/components/motion/Reveal";
+
+import { JsonLd } from "@/components/seo/JsonLd";
+import { buildMetadata } from "@/lib/metadata";
+import { articleSchema, breadcrumbSchema, graph, webPageSchema } from "@/lib/schema";
+import { site } from "@/lib/site";
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return blogParams();
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getBlogPostBySlug(params.slug);
-  if (!post) return { title: "Blog Post Not Found" };
+  if (!post) return {};
 
-  return {
-    title: `${post.title} | Quesiono Blog`,
-    description: post.excerpt,
-    alternates: { canonical: `/blog/${post.slug}` },
-  };
+  return buildMetadata({
+    title: post.meta.title,
+    description: post.meta.description,
+    path: `/blog/${post.slug}`,
+    eyebrow: post.category,
+    cardType: "article",
+    ogType: "article",
+    publishedTime: post.date,
+    modifiedTime: post.updated,
+    keywords: [post.keywords.primary, ...post.keywords.secondary, ...post.tags],
+  });
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
+  if (!post) notFound();
 
-  if (!post) {
-    notFound();
-  }
+  const path = `/blog/${post.slug}`;
+  const trail = [
+    { name: "Journal", href: "/blog" },
+    { name: post.title, href: path },
+  ];
 
-  const canonicalUrl = `https://quesiono.com/blog/${post.slug}`;
-  const shareText = `${post.title} — Quesiono`;
-  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(canonicalUrl)}`;
-  const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
+  const headings = postHeadings(post);
+  const related = getRelatedPosts(post.slug, 3);
+  const services = (post.relatedServiceSlugs ?? [])
+    .map(getServiceBySlug)
+    .filter((service): service is NonNullable<typeof service> => Boolean(service));
+  const work = (post.relatedProjectSlugs ?? [])
+    .map(getProjectBySlug)
+    .filter((project): project is NonNullable<typeof project> => Boolean(project));
 
-  const relatedPosts = blogPosts
-    .filter((p) => p.slug !== post.slug && p.category === post.category)
-    .slice(0, 3);
+  const initials = post.author
+    .split(" ")
+    .map((part) => part[0])
+    .join("");
 
   return (
     <>
-      <section className="bg-midnight min-h-[60vh] flex items-center pt-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-vanilla/70 hover:text-vanilla transition-colors mb-8">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Blog
-            </Link>
-            <SectionHeading
-              eyebrow={post.category}
-              title={post.title}
-              subtitle={`By ${post.author} • ${post.readTime}`}
-              dark={true}
-            />
-            <div className="flex items-center gap-6 mt-8 text-vanilla/70">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span>{post.date}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5" />
-                <span>{post.readTime}</span>
-              </div>
-              <div className="hidden md:flex items-center gap-3 ml-auto">
-                <a
-                  href={twitterShareUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-vanilla/20 hover:border-vanilla/40 hover:bg-vanilla/10 transition-all"
-                  aria-label="Share on X"
-                >
-                  <Twitter className="w-4 h-4" />
-                  Share
-                </a>
-                <a
-                  href={linkedinShareUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-vanilla/20 hover:border-vanilla/40 hover:bg-vanilla/10 transition-all"
-                  aria-label="Share on LinkedIn"
-                >
-                  <Linkedin className="w-4 h-4" />
-                  Share
-                </a>
-              </div>
+      <JsonLd
+        data={graph(
+          webPageSchema({ path, name: post.meta.title, description: post.meta.description }),
+          articleSchema({
+            title: post.title,
+            description: post.excerpt,
+            path,
+            datePublished: post.date,
+            dateModified: post.updated,
+            author: post.author,
+            image: post.image,
+            wordCount: postWordCount(post),
+            section: post.category,
+            keywords: [post.keywords.primary, ...post.keywords.secondary],
+          }),
+          breadcrumbSchema([{ name: "Home", href: "/" }, ...trail])
+        )}
+      />
+
+      <header className="grain relative overflow-hidden bg-ink">
+        <GradientMesh variant="ink" />
+        <div className="relative mx-auto w-full max-w-4xl px-5 pb-16 pt-[calc(var(--nav-h)+4rem)] sm:px-8">
+          <Breadcrumbs
+            trail={[{ name: "Journal", href: "/blog" }]}
+            tone="dark"
+            emitSchema={false}
+          />
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Badge label={post.category} variant="accent" />
+            <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/50">
+              <CalendarDays className="h-3.5 w-3.5" aria-hidden />
+              <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/50">
+              <Clock className="h-3.5 w-3.5" aria-hidden />
+              {post.readTime}
+            </span>
+          </div>
+
+          <h1 className="mt-7 text-step-5 font-extrabold leading-[1.02] text-vanilla">
+            {post.title}
+          </h1>
+          <p className="mt-6 text-step-1 leading-relaxed text-vanilla/65">{post.excerpt}</p>
+
+          <div className="mt-10 flex items-center gap-4 border-t border-vanilla/10 pt-8">
+            <span
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-champagne/20 font-display font-bold text-champagne"
+              aria-hidden
+            >
+              {initials}
+            </span>
+            <div>
+              <p className="font-display font-bold text-vanilla">{post.author}</p>
+              <p className="text-[0.85rem] text-vanilla/50">
+                {post.authorRole}, {site.name}
+              </p>
             </div>
           </div>
         </div>
-      </section>
-      
-      <section className="py-20 md:py-32 bg-cream">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <article className="bg-white p-10 md:p-16 rounded-2xl shadow-lg border border-sand/20">
-              <div 
-                className="prose prose-lg md:prose-xl max-w-none"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
-              
-              <div className="mt-16 pt-10 border-t border-sand">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                  <div className="rounded-2xl bg-cream border border-sand/30 p-6">
-                    <p className="text-text-muted text-xs uppercase tracking-widest mb-2">Share this article</p>
-                    <div className="flex flex-wrap gap-3">
-                      <a
-                        href={twitterShareUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-midnight text-vanilla font-semibold hover:bg-indigo transition-colors"
-                      >
-                        <Twitter className="w-5 h-5" />
-                        Share on X
-                      </a>
-                      <a
-                        href={linkedinShareUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-sand bg-white text-midnight font-semibold hover:border-midnight/30 hover:shadow-md transition-all"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                        Share on LinkedIn
-                      </a>
-                      <a
-                        href={canonicalUrl}
-                        className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-sand bg-white text-midnight font-semibold hover:border-midnight/30 hover:shadow-md transition-all"
-                      >
-                        <Link2 className="w-5 h-5" />
-                        Open link
-                      </a>
-                    </div>
-                    <div className="text-text-muted text-sm mt-4 leading-relaxed">
-                      Sharing helps more founders and teams discover practical strategies for web development and SEO.
-                    </div>
-                  </div>
+      </header>
 
-                  <div className="rounded-2xl bg-midnight border border-vanilla/10 p-6">
-                    <div className="flex items-center justify-between gap-6">
-                      <div>
-                        <div className="text-vanilla/60 text-xs uppercase tracking-widest">Written by</div>
-                        <div className="text-vanilla font-semibold mt-2">{post.author}</div>
-                        <div className="text-vanilla/70 mt-2">
-                          Practical insights from the team building premium websites, SEO systems, and content engines.
-                        </div>
-                      </div>
-                      <div className="w-12 h-12 rounded-2xl bg-indigo/40 border border-vanilla/10 flex items-center justify-center text-vanilla font-libre italic text-2xl">
-                        Q
-                      </div>
-                    </div>
-                    <div className="mt-6">
-                      <Link
-                        href="/contact"
-                        className="inline-flex items-center gap-2 text-vanilla font-semibold hover:text-vanilla/80 transition-colors"
+      {post.image ? (
+        <div className="bg-ink">
+          <div className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
+            <Reveal direction="up">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-vanilla/10">
+                <Image
+                  src={post.image}
+                  alt={post.imageAlt ?? post.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 960px"
+                  priority
+                />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      ) : null}
+
+      <Section tone="white" spacing="lg" width="wide">
+        <div className="grid gap-12 lg:grid-cols-[0.28fr_0.72fr] lg:gap-16">
+          {/* Sticky contents. Every h2 in the record carries an id, so this is
+              generated rather than hand-maintained. */}
+          {headings.length ? (
+            <aside className="lg:sticky lg:top-[calc(var(--nav-h)+2rem)] lg:self-start">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+                On this page
+              </p>
+              <nav aria-label="Table of contents" className="mt-5">
+                <ol className="space-y-3 border-l border-sand pl-4">
+                  {headings.map((heading) => (
+                    <li key={heading.id}>
+                      <a
+                        href={`#${heading.id}`}
+                        className="text-[0.9rem] leading-snug text-text-muted transition-colors hover:text-text-dark"
                       >
-                        Work with Quesiono <Share2 className="w-4 h-4" />
-                      </Link>
-                    </div>
+                        {heading.label}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+
+              {post.tags.length ? (
+                <div className="mt-10">
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
+                    Filed under
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <Badge key={tag} label={tag} variant="outline" />
+                    ))}
                   </div>
                 </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
+              ) : null}
+            </aside>
+          ) : (
+            <div aria-hidden />
+          )}
 
-      {relatedPosts.length > 0 && (
-        <section className="py-20 md:py-32 bg-white">
-          <div className="container mx-auto px-6">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-libre italic text-text-dark mb-10 text-center">
-                Related Articles.
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {relatedPosts.map((p) => (
-                  <Link
-                    key={p.slug}
-                    href={`/blog/${p.slug}`}
-                    className="group rounded-2xl bg-cream border border-sand/30 p-8 hover:shadow-xl transition-all hover:-translate-y-1"
-                  >
-                    <Badge label={p.category} variant="light" />
-                    <h3 className="text-xl font-bold text-text-dark mt-5 leading-snug group-hover:text-indigo transition-colors">
-                      {p.title}
-                    </h3>
-                    <p className="text-text-muted mt-3 leading-relaxed">{p.excerpt}</p>
-                    <div className="mt-6 inline-flex items-center gap-2 text-midnight font-semibold group-hover:text-indigo transition-colors">
-                      Read <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+          <div
+            className="prose"
+            /* Content is authored in this repo, not user-submitted. */
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </div>
+      </Section>
+
+      {services.length ? (
+        <Section tone="cream" spacing="md" width="wide">
+          <SectionHeading
+            eyebrow="Want us to do it"
+            title="The services behind this article"
+            subtitle="If you'd rather not run this yourself, these are the pages that cover it."
+            size="md"
+          />
+          <div className="mt-10 flex flex-wrap gap-3">
+            {services.map((service) => (
+              <Link
+                key={service.slug}
+                href={service.href}
+                className="group inline-flex items-center gap-3 rounded-full border border-sand bg-white px-5 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-midnight/30"
+              >
+                <span className="font-semibold text-text-dark">
+                  {service.navLabel ?? service.name}
+                </span>
+                <ArrowUpRight
+                  className="h-4 w-4 text-text-muted transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </Link>
+            ))}
           </div>
-        </section>
-      )}
+        </Section>
+      ) : null}
+
+      {work.length ? (
+        <Section tone="white" spacing="lg" width="wide">
+          <SectionHeading
+            eyebrow="Seen in the wild"
+            title="Where we did this on a real project"
+            size="lg"
+          />
+          <div className="mt-14 grid gap-8 md:grid-cols-2">
+            {work.slice(0, 2).map((project) => (
+              <PortfolioCard
+                key={project.slug}
+                title={project.name}
+                category={project.category}
+                slug={project.slug}
+                image={project.image}
+                imageAlt={project.imageAlt}
+                metric={project.metric}
+                metricLabel={project.metricLabel}
+                summary={project.summary}
+                tags={project.tags}
+              />
+            ))}
+          </div>
+        </Section>
+      ) : null}
+
+      {related.length ? (
+        <Section tone="cream" spacing="lg" width="wide">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading eyebrow="Keep reading" title="More from the journal" size="lg" />
+            <Link
+              href="/blog"
+              className="group inline-flex items-center gap-2 font-semibold text-indigo transition-colors hover:text-midnight"
+            >
+              Every article
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                aria-hidden
+              />
+            </Link>
+          </div>
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            {related.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/blog/${item.slug}`}
+                className="group flex flex-col rounded-2xl border border-sand bg-white p-7 transition-all duration-400 ease-smooth hover:-translate-y-1 hover:border-midnight/25 hover:shadow-xl"
+              >
+                <div className="flex items-center gap-3">
+                  <Badge label={item.category} variant="outline" />
+                  <span className="text-[0.8rem] text-text-muted">{item.readTime}</span>
+                </div>
+                <h3 className="mt-5 font-display text-step-1 font-bold text-text-dark">
+                  {item.title}
+                </h3>
+                <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-text-muted">
+                  {item.excerpt}
+                </p>
+                <span className="mt-6 inline-flex items-center gap-2 text-[0.9rem] font-semibold text-indigo">
+                  Read it
+                  <ArrowRight
+                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                    aria-hidden
+                  />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
       <CTABanner
-        title="Liked this article?"
-        subtitle="Get in touch and let's discuss how we can help you grow online."
+        eyebrow="Got a project"
+        title="Prefer to hand this to someone else?"
+        subtitle="Tell us what the site needs to do. You'll get a straight answer on scope, timeline and cost — usually inside one working day."
+        primaryAction={{ label: "Start a project", href: "/contact" }}
+        secondaryAction={{ label: "See our work", href: "/portfolio" }}
+        showEmail
       />
     </>
   );

@@ -1,70 +1,102 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { ArrowRight, Home, Mail, Search, Sparkles } from "lucide-react";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+import { getIcon } from "@/lib/icons";
+
+const destinations = [
+  {
+    href: "/services",
+    icon: "layers",
+    title: "Services",
+    description: "Design, build, search, and words. Twenty-two pages of specifics.",
+  },
+  {
+    href: "/portfolio",
+    icon: "target",
+    title: "Case studies",
+    description: "Eight projects with the numbers, including what went sideways.",
+  },
+  {
+    href: "/pricing",
+    icon: "credit-card",
+    title: "Pricing",
+    description: "Real ranges for real briefs, and what pushes them up.",
+  },
+  {
+    href: "/blog",
+    icon: "book-open",
+    title: "Journal",
+    description: "Long-form notes on building, ranking, and what we got wrong.",
+  },
+];
 
 export default function NotFound() {
   return (
-    <div className="bg-midnight min-h-screen pt-20">
-      <div className="container mx-auto px-6 py-20 md:py-28">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-7xl md:text-9xl font-libre italic text-vanilla mb-6">404</h1>
-          <h2 className="text-2xl md:text-4xl font-inter font-bold text-vanilla mb-5">
-            Page Not Found
-          </h2>
-          <p className="text-vanilla/70 text-lg md:text-xl mb-10 leading-relaxed">
-            The page you’re looking for doesn’t exist or has moved. Use the links below to get back on track.
+    <div className="grain relative overflow-hidden bg-ink">
+      <div
+        className="pointer-events-none absolute left-1/2 top-0 h-[40rem] w-[70rem] -translate-x-1/2 rounded-full bg-indigo/25 blur-3xl"
+        aria-hidden
+      />
+
+      <div className="container relative mx-auto px-6 pb-24 pt-[calc(var(--nav-h)+4rem)]">
+        <div className="mx-auto max-w-2xl">
+          <Eyebrow tone="dark">Error 404</Eyebrow>
+          <p
+            className="mt-6 font-display text-[clamp(5rem,18vw,11rem)] font-extrabold leading-[0.85] tracking-tighter text-vanilla/[0.08]"
+            aria-hidden
+          >
+            404
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
-            <Button href="/">Back to Home</Button>
-            <Button href="/contact" variant="ghost">Contact Us</Button>
+          <h1 className="-mt-6 text-step-6 font-extrabold text-vanilla md:-mt-10">
+            This page isn&apos;t here
+          </h1>
+          <p className="mt-6 text-step-1 text-vanilla/60">
+            Either it moved, or the link that sent you here was wrong. Both happen. If you followed a
+            link from our own site, we&apos;d genuinely like to know — that&apos;s a bug on our side.
+          </p>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <Button href="/" variant="accent" size="lg">
+              Back to the homepage
+            </Button>
+            <Button href="/contact" variant="ghost" size="lg">
+              Tell us what broke
+            </Button>
           </div>
         </div>
 
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                href: "/",
-                icon: Home,
-                title: "Home",
-                description: "Start from the top and explore Quesiono.",
-              },
-              {
-                href: "/services",
-                icon: Sparkles,
-                title: "Services",
-                description: "Web development, SEO, and content writing.",
-              },
-              {
-                href: "/portfolio",
-                icon: Search,
-                title: "Portfolio",
-                description: "See real projects and outcomes we’ve delivered.",
-              },
-              {
-                href: "/contact",
-                icon: Mail,
-                title: "Contact",
-                description: "Tell us what you’re building and get next steps.",
-              },
-            ].map((item) => (
+        <div className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {destinations.map((item) => {
+            const Icon = getIcon(item.icon);
+            return (
               <Link
-                key={item.title}
+                key={item.href}
                 href={item.href}
-                className="group rounded-2xl bg-indigo/30 border border-vanilla/10 p-7 hover:bg-indigo/40 hover:border-vanilla/20 transition-all hover:-translate-y-1 hover:shadow-xl"
+                className="group rounded-2xl border border-vanilla/10 bg-vanilla/[0.03] p-6 transition-all duration-400 ease-smooth hover:-translate-y-1 hover:border-champagne/40 hover:bg-vanilla/[0.06]"
               >
-                <div className="w-12 h-12 rounded-xl bg-midnight border border-vanilla/10 flex items-center justify-center mb-5">
-                  <item.icon className="w-6 h-6 text-vanilla" />
+                <Icon className="h-6 w-6 text-champagne" aria-hidden />
+                <div className="mt-5 flex items-center gap-2 font-display text-step-1 font-bold text-vanilla">
+                  {item.title}
+                  <ArrowUpRight
+                    className="h-4 w-4 text-vanilla/40 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    aria-hidden
+                  />
                 </div>
-                <div className="text-vanilla font-bold text-xl">{item.title}</div>
-                <div className="text-vanilla/70 mt-3 leading-relaxed">{item.description}</div>
-                <div className="mt-6 inline-flex items-center gap-2 text-vanilla font-semibold">
-                  Open <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </div>
+                <p className="mt-2 text-[0.9rem] leading-relaxed text-vanilla/55">
+                  {item.description}
+                </p>
               </Link>
-            ))}
-          </div>
+            );
+          })}
         </div>
+
+        <p className="mt-12 text-[0.9rem] text-vanilla/40">
+          Looking for something specific? The{" "}
+          <Link href="/sitemap" className="text-vanilla/70 underline decoration-champagne decoration-2 underline-offset-4 hover:text-vanilla">
+            full sitemap
+          </Link>{" "}
+          lists every page on this site.
+        </p>
       </div>
     </div>
   );

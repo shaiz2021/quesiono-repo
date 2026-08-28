@@ -1,39 +1,79 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Eyebrow } from "./Eyebrow";
+import { RevealText } from "@/components/motion/RevealText";
+import { Reveal } from "@/components/motion/Reveal";
 
-interface SectionHeadingProps {
-  eyebrow: string;
+/**
+ * Section header: eyebrow, animated heading, optional lead paragraph.
+ *
+ * `accent` tints matching words in champagne so a single phrase can carry
+ * emphasis without a second type style.
+ */
+export function SectionHeading({
+  eyebrow,
+  title,
+  subtitle,
+  align = "left",
+  tone = "light",
+  as = "h2",
+  size = "lg",
+  accent = [],
+  className,
+}: {
+  eyebrow?: string;
   title: string;
   subtitle?: string;
   align?: "left" | "center";
-  dark?: boolean;
-}
+  tone?: "light" | "dark";
+  as?: "h1" | "h2" | "h3";
+  size?: "md" | "lg" | "xl";
+  accent?: string[];
+  className?: string;
+}) {
+  const dark = tone === "dark";
+  const sizes = {
+    md: "text-step-4",
+    lg: "text-step-5",
+    xl: "text-step-6",
+  };
 
-export function SectionHeading({ eyebrow, title, subtitle, align = "left", dark = false }: SectionHeadingProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className={cn("mb-12", align === "center" && "text-center")}
-    >
-      <div className={cn("flex items-center gap-4 mb-3", align === "center" && "justify-center")}>
-        <div className={cn("h-px w-6", dark ? "bg-vanilla/30" : "bg-sand")} />
-        <span className={cn("text-xs font-semibold tracking-widest uppercase", dark ? "text-vanilla/60" : "text-text-muted")}>
-          {eyebrow}
-        </span>
-      </div>
-      <h2 className={cn("text-4xl md:text-5xl font-libre italic mb-4", dark ? "text-vanilla" : "text-text-dark")}>
-        {title}
-      </h2>
-      {subtitle && (
-        <p className={cn("max-w-2xl", dark ? "text-vanilla/70" : "text-text-muted", align === "center" && "mx-auto")}>
-          {subtitle}
-        </p>
+    <div className={cn(align === "center" && "text-center", className)}>
+      {eyebrow && (
+        <Reveal>
+          <Eyebrow tone={tone} centered={align === "center"}>
+            {eyebrow}
+          </Eyebrow>
+        </Reveal>
       )}
-    </motion.div>
+
+      <RevealText
+        as={as}
+        text={title}
+        accent={accent}
+        delay={eyebrow ? 0.08 : 0}
+        className={cn(
+          "mt-5 font-display font-extrabold",
+          sizes[size],
+          dark ? "text-vanilla" : "text-text-dark"
+        )}
+      />
+
+      {subtitle && (
+        <Reveal delay={0.18}>
+          <p
+            className={cn(
+              "mt-6 max-w-2xl text-step-1 leading-relaxed text-pretty",
+              dark ? "text-vanilla/65" : "text-text-muted",
+              align === "center" && "mx-auto"
+            )}
+          >
+            {subtitle}
+          </p>
+        </Reveal>
+      )}
+    </div>
   );
 }

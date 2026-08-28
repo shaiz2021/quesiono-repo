@@ -1,12 +1,16 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
+
+import { absoluteUrl } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: '/api/',
+      userAgent: "*",
+      allow: "/",
+      /* The contact endpoint and the OG image generator have nothing to index. */
+      disallow: ["/api/"],
     },
-    sitemap: 'https://quesiono.com/sitemap.xml',
+    sitemap: absoluteUrl("/sitemap.xml"),
+    host: absoluteUrl("/"),
   };
 }

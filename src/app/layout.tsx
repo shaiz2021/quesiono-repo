@@ -1,104 +1,137 @@
-import type { Metadata } from "next";
-import { Inter, Libre_Baskerville } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { NavBar } from "@/components/layout/NavBar";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Analytics } from "@vercel/analytics/react";
+import { site } from "@/lib/site";
+import { buildNavTree } from "@/lib/nav";
+import {
+  graph,
+  organizationSchema,
+  localBusinessSchema,
+  webSiteSchema,
+} from "@/lib/schema";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const libre = Libre_Baskerville({
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
+/* Bricolage Grotesque has no italic — it carries weight and width instead.
+   Variable across 200–800, so no weight array is needed. */
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-libre",
+  variable: "--font-display",
+  display: "swap",
+});
+
+const body = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://quesiono.com"),
+  metadataBase: new URL(site.url),
   title: {
-    default: "Quesiono - Web Design & Digital Agency",
-    template: "%s | Quesiono",
+    default: `${site.name} — ${site.tagline}`,
+    template: `%s | ${site.name}`,
   },
-  description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
+  description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  formatDetection: { email: false, address: false, telephone: false },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: "https://quesiono.com",
-    siteName: "Quesiono",
-    title: "Quesiono - Web Design & Digital Agency",
-    description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
-    images: [
-      {
-        url: "https://quesiono.com/api/og",
-        width: 1200,
-        height: 630,
-      },
-    ],
+    url: site.url,
+    siteName: site.name,
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    locale: "en_US",
+    images: [{ url: `${site.url}/api/og`, width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Quesiono — Web Design & Digital Agency",
-    description: "Quesiono is a digital agency building bold websites, SEO strategies, automation systems, and brand identities for growing businesses worldwide.",
-    images: ["https://quesiono.com/api/og"],
+    title: `${site.name} — ${site.tagline}`,
+    description: site.description,
+    images: [`${site.url}/api/og`],
+  },
+  icons: {
+    icon: [
+      { url: "/images/logos/quesiono-icon.svg", type: "image/svg+xml" },
+      { url: "/images/logos/quesiono-favicon.png", type: "image/png" },
+    ],
+    apple: "/images/logos/quesiono-favicon.png",
   },
 };
 
-const GTM_ID = process.env.GTM_ID || "GTM-XXXXXX";
+export const viewport: Viewport = {
+  themeColor: "#0B0F1C",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
+};
+
+/* Only inject GTM when a real container ID is configured. The previous
+   fallback loaded "GTM-XXXXXX", which is a wasted request against a
+   container that cannot exist. */
+const GTM_ID = process.env.GTM_ID;
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  /* Built here rather than inside NavBar: the nav is a client component, and
+     importing the service data there would ship every service page's body copy
+     to the browser. */
+  const navTree = buildNavTree();
+
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <head>
-        <link rel="icon" type="image/png" href="/images/logos/quesiono-favicon.png" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','${GTM_ID}');
-            `,
-          }}
+        <JsonLd
+          data={graph(
+            organizationSchema(),
+            localBusinessSchema(),
+            webSiteSchema()
+          )}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ProfessionalService",
-              "name": "Quesiono",
-              "url": "https://quesiono.com",
-              "logo": "https://quesiono.com/images/quesiono-logo.png",
-              "description": "Quesiono is a full-service digital agency offering web development, SEO, branding, automation, and content writing for businesses worldwide.",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "4201 Main St, Ste 200",
-                "addressLocality": "Houston",
-                "addressRegion": "TX",
-                "postalCode": "77002",
-                "addressCountry": "US",
-              },
-              "sameAs": [
-                "https://www.linkedin.com/company/quesiono",
-                "https://www.instagram.com/quesiono_com",
-                "https://x.com/Quesiono_com",
-              ],
-            }),
-          }}
-        />
+        {GTM_ID && (
+          <script
+            dangerouslySetInnerHTML={{
+              /* Gated on Do Not Track and Global Privacy Control. GTM is the only
+                 thing on the site that can set a cookie, so honouring the signal
+                 here is what makes the cookie policy's claim true. */
+              __html: `(function(w,d,s,l,i){
+if(w.doNotTrack==='1'||navigator.doNotTrack==='1'||navigator.msDoNotTrack==='1'||navigator.globalPrivacyControl===true){return;}
+w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`,
+            }}
+          />
+        )}
       </head>
-      <body className={`${inter.variable} ${libre.variable} font-inter bg-cream text-text-dark`}>
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-          }}
-        />
-        <NavBar />
-        <main>{children}</main>
+      <body className="font-body bg-cream text-text-dark antialiased">
+        {GTM_ID && (
+          <noscript
+            dangerouslySetInnerHTML={{
+              __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+            }}
+          />
+        )}
+
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-champagne focus:px-5 focus:py-3 focus:font-semibold focus:text-ink"
+        >
+          Skip to content
+        </a>
+
+        <ScrollProgress />
+        <NavBar tree={navTree} />
+        <main id="main">{children}</main>
         <Footer />
         <Analytics />
       </body>
