@@ -508,8 +508,8 @@ export interface PricingBand {
 export const pricingBands: PricingBand[] = [
   {
     label: "Single landing page",
-    range: "$117 – $287",
-    timeline: "2–3 weeks",
+    range: "$249",
+    timeline: "2–3 days",
     summary:
       "One page built to convert a specific campaign. Copy, design, build, and conversion tracking.",
     includes: [
@@ -522,8 +522,8 @@ export const pricingBands: PricingBand[] = [
   },
   {
     label: "Marketing site",
-    range: "$118 – $437",
-    timeline: "6–10 weeks",
+    range: "$399",
+    timeline: "1 week",
     summary:
       "Five to twelve pages with a CMS your team can run. The most common project we take.",
     includes: [
@@ -536,8 +536,8 @@ export const pricingBands: PricingBand[] = [
   },
   {
     label: "Ecommerce",
-    range: "$306 – $750",
-    timeline: "10–16 weeks",
+    range: "$999",
+    timeline: "2 weeks",
     summary:
       "Shopify or headless, built around your catalogue size and how people actually search it.",
     includes: [
@@ -550,8 +550,8 @@ export const pricingBands: PricingBand[] = [
   },
   {
     label: "Custom application",
-    range: "From $875",
-    timeline: "12+ weeks",
+    range: "From $1999",
+    timeline: "3 weeks",
     summary:
       "Portals, dashboards, and tools where the interesting part is the logic rather than the pages.",
     includes: [
