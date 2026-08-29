@@ -265,13 +265,15 @@ export function ServicePageTemplate({ service }: { service: Service }) {
 
     process: service.process.length ? (
       variant === "stacked" || variant === "showcase" ? (
-        <StickyProcess
-          key="process"
-          steps={service.process}
-          eyebrow="How it runs"
-          title={service.processHeading ?? "The process, stage by stage"}
-          intro="No stage starts before the last one is signed off. You always know what's next and what we need from you."
-        />
+        <Section key="process" tone="ink" spacing="xl" width="wide" mesh>
+          <StickyProcess
+            key="process"
+            steps={service.process}
+            eyebrow="How it runs"
+            title={service.processHeading ?? "The process, stage by stage"}
+            intro="No stage starts before the last one is signed off. You always know what's next and what we need from you."
+          />
+        </Section>
       ) : (
         <Section key="process" tone="midnight" spacing="lg" width="wide" mesh id="process">
           <SectionHeading
