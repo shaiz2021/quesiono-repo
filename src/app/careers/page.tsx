@@ -189,7 +189,7 @@ export default function CareersPage() {
 
       {/* ------------------------------------------------------------- roles -- */}
 
-      <Section tone="cream" spacing="xl" width="wide" id="roles">
+      {/* <Section tone="cream" spacing="xl" width="wide" id="roles">
         <SectionHeading
           eyebrow="Currently closed"
           title="No Roles Open Currently"
@@ -281,7 +281,7 @@ export default function CareersPage() {
             </div>
           </div>
         )}
-      </Section>
+      </Section> */}
 
       {/* ------------------------------------------------------------ reality -- */}
 
