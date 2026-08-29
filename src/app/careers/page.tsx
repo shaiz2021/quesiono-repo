@@ -153,10 +153,7 @@ export default function CareersPage() {
           <Breadcrumbs trail={trail} tone="dark" emitSchema={false} />
           <div className="mt-8">
             <Eyebrow tone="dark">
-              Careers ·{" "}
-              {openRoles.length
-                ? `${openRoles.length} open ${openRoles.length === 1 ? "role" : "roles"}`
-                : "No open roles"}
+              Careers · No Open Roles
             </Eyebrow>
           </div>
 
@@ -175,7 +172,7 @@ export default function CareersPage() {
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Button href="#roles" variant="accent" size="lg">
-              {openRoles.length ? "See the roles" : "Send a speculative note"}
+              See what we're about
               <ArrowRight className="h-5 w-5" aria-hidden />
             </Button>
             <Button href="/about" variant="ghost" size="lg">
@@ -194,13 +191,9 @@ export default function CareersPage() {
 
       <Section tone="cream" spacing="xl" width="wide" id="roles">
         <SectionHeading
-          eyebrow={openRoles.length ? "Open now" : "Nothing open"}
-          title={openRoles.length ? "Roles we're actively hiring for" : "No roles open right now"}
-          subtitle={
-            openRoles.length
-              ? "Each posting says what the job is, what we need, and what we don't. Salary ranges are in the individual pages."
-              : "Send a note anyway. We keep good emails and come back to them — two of the five people here got hired that way."
-          }
+          eyebrow="Currently closed"
+          title="No Roles Open Currently"
+          subtitle="We're not actively hiring, but we're always open to hearing from talented people. Check back later or reach out to introduce yourself."
           size="xl"
           className="max-w-2xl"
         />
@@ -253,16 +246,37 @@ export default function CareersPage() {
             ))}
           </div>
         ) : (
-          <div className="mt-16 rounded-3xl border border-dashed border-sand bg-white p-10 text-center">
-            <p className="font-display text-step-2 font-extrabold text-text-dark">
-              Nothing open today
-            </p>
-            <p className="mx-auto mt-4 max-w-lg leading-relaxed text-text-muted">
-              Email {site.email} with what you do and something you made. We read all of it.
+          <div className="mt-16 flex flex-col items-center rounded-3xl border border-sand bg-white/50 p-12 text-center sm:p-16">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-sand">
+              <svg
+                className="h-8 w-8 text-text-muted"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="mt-6 font-display text-step-3 font-extrabold tracking-tight text-text-dark">
+              No Roles Open Currently
+            </h3>
+            <p className="mt-4 max-w-sm text-[0.95rem] leading-relaxed text-text-muted">
+              We're not actively hiring right now, but we're always open to hearing from talented people.
+              Check back later or reach out to introduce yourself.
             </p>
             <div className="mt-8">
-              <Button href={`mailto:${site.email}?subject=Speculative%20application`} variant="primary" size="md">
-                Send a note
+              <Button
+                href={`mailto:${site.email}?subject=Speculative%20application`}
+                variant="primary"
+                size="md"
+              >
+                Get in touch
+                <ArrowRight className="h-4 w-4" aria-hidden />
               </Button>
             </div>
           </div>
