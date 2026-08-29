@@ -275,7 +275,7 @@ export function ServicePageTemplate({ service }: { service: Service }) {
           />
         </Section>
       ) : (
-        <Section key="process" tone="midnight" spacing="lg" width="wide" mesh id="process">
+        <Section key="process" tone="ink" spacing="lg" width="wide" mesh id="process">
           <SectionHeading
             eyebrow="How it runs"
             title={service.processHeading ?? "The process, stage by stage"}

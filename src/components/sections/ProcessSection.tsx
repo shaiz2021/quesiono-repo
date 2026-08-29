@@ -9,7 +9,7 @@ import { studioProcess } from "@/data/studio";
  */
 export function ProcessSection() {
   return (
-    <Section tone="midnight" spacing="xl" width="wide" mesh id="process">
+    <Section tone="ink" spacing="xl" width="wide" mesh id="process">
       <StickyProcess
         steps={studioProcess}
         eyebrow="How a build runs"
