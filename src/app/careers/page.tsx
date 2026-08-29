@@ -172,7 +172,7 @@ export default function CareersPage() {
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Button href="#roles" variant="accent" size="lg">
-              See what we're about
+              See what we&apos;re about
               <ArrowRight className="h-5 w-5" aria-hidden />
             </Button>
             <Button href="/about" variant="ghost" size="lg">
@@ -266,7 +266,7 @@ export default function CareersPage() {
               No Roles Open Currently
             </h3>
             <p className="mt-4 max-w-sm text-[0.95rem] leading-relaxed text-text-muted">
-              We're not actively hiring right now, but we're always open to hearing from talented people.
+              We&apos;re not actively hiring right now, but we&apos;re always open to hearing from talented people.
               Check back later or reach out to introduce yourself.
             </p>
             <div className="mt-8">
