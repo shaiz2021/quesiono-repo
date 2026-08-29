@@ -307,7 +307,7 @@ export const platformServices: Service[] = [
     pricingTiers: [
       {
         name: "Rescue",
-        price: "$150",
+        price: "$199",
         summary: "Keep your current design, fix what's broken underneath.",
         features: [
           "Plugin audit and cleanup",
@@ -316,12 +316,12 @@ export const platformServices: Service[] = [
           "Before/after performance report",
         ],
         excludes: ["New design", "Custom theme"],
-        timeline: "2 weeks",
+        timeline: "4 days",
         bestFor: "Slow, plugin-heavy sites",
       },
       {
         name: "Custom theme",
-        price: "From $225",
+        price: "From $599",
         summary: "New design, custom theme, content migrated.",
         features: [
           "Custom block-editor theme",
@@ -331,13 +331,13 @@ export const platformServices: Service[] = [
           "Performance and security setup",
           "Editor training",
         ],
-        timeline: "5 weeks",
+        timeline: "1 week",
         bestFor: "Most WordPress rebuilds",
         highlight: true,
       },
       {
         name: "WooCommerce",
-        price: "From $781",
+        price: "From $999",
         summary: "Store build on top of a custom theme.",
         features: [
           "Everything in Custom theme",
@@ -347,7 +347,7 @@ export const platformServices: Service[] = [
           "Product import",
           "Order and inventory integrations",
         ],
-        timeline: "8 weeks",
+        timeline: "2 weeks",
         bestFor: "Retailers staying on WordPress",
       },
     ],
@@ -536,7 +536,7 @@ export const platformServices: Service[] = [
     pricingTiers: [
       {
         name: "Theme tune-up",
-        price: "$200",
+        price: "$199",
         summary: "Keep the theme, fix speed and conversion leaks.",
         features: [
           "App audit and cleanup",
@@ -545,12 +545,12 @@ export const platformServices: Service[] = [
           "Conversion report with a ranked fix list",
         ],
         excludes: ["Custom theme", "New design"],
-        timeline: "2–3 weeks",
+        timeline: "3 dayss",
         bestFor: "Stores on a stock theme",
       },
       {
         name: "Custom theme",
-        price: "From $306",
+        price: "$599 - $999",
         summary: "A theme built for your catalogue and brand.",
         features: [
           "Custom OS 2.0 theme",
@@ -560,13 +560,13 @@ export const platformServices: Service[] = [
           "Ecommerce SEO foundation",
           "Team training",
         ],
-        timeline: "6 weeks",
+        timeline: "1 week",
         bestFor: "Growing DTC brands",
         highlight: true,
       },
       {
         name: "Headless (Hydrogen)",
-        price: "From $1,500",
+        price: "$1099 - $1999",
         summary: "For large catalogues or storefronts needing more than Liquid allows.",
         features: [
           "Hydrogen storefront",
@@ -575,7 +575,7 @@ export const platformServices: Service[] = [
           "B2B or wholesale flows",
           "Performance budget enforced in CI",
         ],
-        timeline: "10–14 weeks",
+        timeline: "2 weeks",
         bestFor: "High-volume and multi-market stores",
       },
     ],
@@ -944,7 +944,7 @@ export const platformServices: Service[] = [
     pricingTiers: [
       {
         name: "Essential",
-        price: "$11",
+        price: "$199",
         period: "/ month",
         summary: "Keep it patched, backed up, and monitored.",
         features: [
@@ -959,7 +959,7 @@ export const platformServices: Service[] = [
       },
       {
         name: "Growth",
-        price: "$14",
+        price: "$444",
         period: "/ month",
         summary: "Maintenance plus hands for the small stuff.",
         features: [
@@ -974,7 +974,7 @@ export const platformServices: Service[] = [
       },
       {
         name: "Priority",
-        price: "$30",
+        price: "$999",
         period: "/ month",
         summary: "For sites where downtime costs real money.",
         features: [
@@ -1169,7 +1169,7 @@ export const platformServices: Service[] = [
     pricingTiers: [
       {
         name: "Audit",
-        price: "$56",
+        price: "$199",
         summary: "Diagnosis and a ranked plan. You or your team implement.",
         features: [
           "Profiling across up to 4 templates",
@@ -1178,12 +1178,12 @@ export const platformServices: Service[] = [
           "60-minute walkthrough call",
         ],
         excludes: ["Implementation"],
-        timeline: "1 week",
+        timeline: "3 days",
         bestFor: "Teams with developers in-house",
       },
       {
         name: "Audit and fix",
-        price: "From $106",
+        price: "$555 - $999",
         summary: "We diagnose and implement, then prove the gain.",
         features: [
           "Everything in Audit",
@@ -1192,13 +1192,13 @@ export const platformServices: Service[] = [
           "Caching and CDN configuration",
           "Before/after report",
         ],
-        timeline: "2–3 weeks",
+        timeline: "1 week",
         bestFor: "Most sites",
         highlight: true,
       },
       {
         name: "Fix and protect",
-        price: "From $350",
+        price: "$777 - $1299",
         summary: "Plus the guardrails that stop regression.",
         features: [
           "Everything in Audit and fix",
@@ -1207,7 +1207,7 @@ export const platformServices: Service[] = [
           "Team training session",
           "90-day re-check",
         ],
-        timeline: "3–4 weeks",
+        timeline: "1-2 weeks",
         bestFor: "Sites where several people ship changes",
       },
     ],

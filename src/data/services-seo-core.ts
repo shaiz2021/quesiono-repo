@@ -129,7 +129,7 @@ export const seoCoreServices: Service[] = [
     pricingTiers: [
       {
         name: "Audit only",
-        price: "$56",
+        price: "$99",
         summary: "Find out what's wrong and what to do about it.",
         features: [
           "Full technical audit",
@@ -139,12 +139,12 @@ export const seoCoreServices: Service[] = [
           "90-minute walkthrough",
         ],
         excludes: ["Implementation", "Content", "Link building"],
-        timeline: "3 weeks",
+        timeline: "2-3 days",
         bestFor: "Teams who'll execute in-house",
       },
       {
         name: "Growth retainer",
-        price: "$162",
+        price: "$499",
         period: "/ month",
         summary: "Ongoing technical, on-page, and content work.",
         features: [
@@ -156,13 +156,13 @@ export const seoCoreServices: Service[] = [
           "Quarterly strategy call",
         ],
         excludes: ["Content writing", "Link outreach"],
-        timeline: "6-month minimum",
+        timeline: "3-month minimum",
         bestFor: "Most businesses",
         highlight: true,
       },
       {
         name: "Full programme",
-        price: "$168",
+        price: "$999",
         period: "/ month",
         summary: "Everything, including the writing and the outreach.",
         features: [

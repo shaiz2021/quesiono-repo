@@ -294,7 +294,7 @@ export const seoGrowthServices: Service[] = [
     pricingTiers: [
       {
         name: "Starter",
-        price: "$100",
+        price: "$299",
         period: "/ month",
         summary: "Reclamation and low-hanging opportunities.",
         features: [
@@ -309,7 +309,7 @@ export const seoGrowthServices: Service[] = [
       },
       {
         name: "Growth",
-        price: "$200",
+        price: "$599",
         period: "/ month",
         summary: "Full outreach programme with an asset behind it.",
         features: [
@@ -504,7 +504,7 @@ export const seoGrowthServices: Service[] = [
     pricingTiers: [
       {
         name: "Single location",
-        price: "$48",
+        price: "$199",
         period: "/ month",
         summary: "One profile, one primary service area.",
         features: [
@@ -519,7 +519,7 @@ export const seoGrowthServices: Service[] = [
       },
       {
         name: "Multi-area",
-        price: "$102",
+        price: "$499",
         period: "/ month",
         summary: "Several service areas from one or two locations.",
         features: [
@@ -529,13 +529,13 @@ export const seoGrowthServices: Service[] = [
           "Local content plan",
           "Competitor monitoring",
         ],
-        timeline: "6-month minimum",
+        timeline: "3 to 4-month minimum",
         bestFor: "Service-area businesses",
         highlight: true,
       },
       {
         name: "Multi-location",
-        price: "From $181",
+        price: "From $999",
         period: "/ month",
         summary: "Multiple physical locations, each with its own profile.",
         features: [

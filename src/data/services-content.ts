@@ -120,7 +120,7 @@ export const contentServices: Service[] = [
     pricingTiers: [
       {
         name: "Per page",
-        price: "$12",
+        price: "$99",
         summary: "Individual pages, priced per piece.",
         features: [
           "Service or landing page copy",
@@ -128,12 +128,12 @@ export const contentServices: Service[] = [
           "Two revision rounds",
           "Editorial pass",
         ],
-        timeline: "5 working days",
+        timeline: "1-2 working days",
         bestFor: "Filling specific gaps",
       },
       {
         name: "Full site copy",
-        price: "From $112",
+        price: "From $299",
         summary: "Every page of a site, with a voice guide first.",
         features: [
           "Up to 10 pages",
@@ -142,13 +142,13 @@ export const contentServices: Service[] = [
           "Two revision rounds per page",
           "Internal linking plan",
         ],
-        timeline: "4 weeks",
+        timeline: "1-2 weeks",
         bestFor: "New sites and rebrands",
         highlight: true,
       },
       {
         name: "Monthly retainer",
-        price: "$68",
+        price: "$120",
         period: "/ month",
         summary: "Four long-form pieces a month, published.",
         features: [

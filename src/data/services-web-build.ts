@@ -120,7 +120,7 @@ export const buildServices: Service[] = [
     pricingTiers: [
       {
         name: "Essential",
-        price: "$59",
+        price: "$349",
         summary: "A focused site for a business with a clear, single offer.",
         features: [
           "Up to 5 unique page designs",
@@ -129,12 +129,12 @@ export const buildServices: Service[] = [
           "Component library basics",
         ],
         excludes: ["Custom illustration", "Photography direction"],
-        timeline: "3 weeks",
+        timeline: "1 week",
         bestFor: "Consultancies, local services",
       },
       {
         name: "Standard",
-        price: "$231",
+        price: "$649",
         summary: "The usual shape of a company site with several service lines.",
         features: [
           "Up to 12 unique page designs",
@@ -143,13 +143,13 @@ export const buildServices: Service[] = [
           "Full component library with states",
           "Annotated developer handoff",
         ],
-        timeline: "5 weeks",
+        timeline: "2 weeks",
         bestFor: "SaaS, multi-service firms",
         highlight: true,
       },
       {
         name: "Extended",
-        price: "From $437",
+        price: "From $1199",
         summary: "Larger sites, or a design system several teams will build against.",
         features: [
           "Unlimited templates within scope",
@@ -158,7 +158,7 @@ export const buildServices: Service[] = [
           "Content modelling for the CMS",
           "Two months of design support post-handoff",
         ],
-        timeline: "8–12 weeks",
+        timeline: "2-3 weeks",
         bestFor: "Multi-brand, ecommerce, platforms",
       },
     ],
@@ -363,7 +363,7 @@ export const buildServices: Service[] = [
     pricingTiers: [
       {
         name: "Marketing site",
-        price: "From $202",
+        price: "From $399",
         summary: "A content site with a CMS, forms, and blog.",
         features: [
           "Up to 10 templates",
@@ -373,12 +373,12 @@ export const buildServices: Service[] = [
           "Analytics and Search Console",
         ],
         excludes: ["Ecommerce", "User accounts"],
-        timeline: "6 weeks",
+        timeline: "1 week",
         bestFor: "Service businesses, agencies",
       },
       {
         name: "Growth site",
-        price: "From $406",
+        price: "From $899",
         summary: "More templates, more integrations, more moving parts.",
         features: [
           "Unlimited templates in scope",
@@ -388,13 +388,13 @@ export const buildServices: Service[] = [
           "Playwright test suite",
           "90 days of post-launch support",
         ],
-        timeline: "10 weeks",
+        timeline: "1-2 weeks",
         bestFor: "SaaS, funded startups",
         highlight: true,
       },
       {
         name: "Application",
-        price: "From $875",
+        price: "From $1999",
         summary: "Authenticated product work rather than a brochure.",
         features: [
           "User accounts and permissions",
@@ -403,7 +403,7 @@ export const buildServices: Service[] = [
           "Staging and QA environments",
           "Documented handover to your team",
         ],
-        timeline: "12+ weeks",
+        timeline: "3 weeks",
         bestFor: "Platforms, internal tools",
       },
     ],
@@ -776,7 +776,7 @@ export const buildServices: Service[] = [
     pricingTiers: [
       {
         name: "Single page",
-        price: "$117",
+        price: "$249",
         summary: "One offer, one audience, tracking included.",
         features: [
           "One landing page, mobile and desktop",
@@ -784,12 +784,12 @@ export const buildServices: Service[] = [
           "GA4 and ad platform conversion tracking",
           "Two headline variants",
         ],
-        timeline: "7–10 days",
+        timeline: "2-3 days",
         bestFor: "A single campaign",
       },
       {
         name: "Campaign set",
-        price: "$287",
+        price: "$699",
         summary: "Three pages sharing a system, one per audience segment.",
         features: [
           "Three landing pages",
@@ -798,13 +798,13 @@ export const buildServices: Service[] = [
           "A/B testing setup",
           "Thank-you and nurture pages",
         ],
-        timeline: "3 weeks",
+        timeline: "1 week",
         bestFor: "Multi-segment paid campaigns",
         highlight: true,
       },
       {
         name: "Ongoing programme",
-        price: "$175",
+        price: "$199",
         period: "/ month",
         summary: "A page a fortnight plus continuous testing.",
         features: [

@@ -573,7 +573,7 @@ export const pricingBands: PricingBand[] = [
 export const retainerTiers: ServiceTier[] = [
   {
     name: "Care plan",
-    price: "$11",
+    price: "$249",
     period: "per month",
     summary: "Keeping a site we built fast, patched, and backed up. No strategy, no new pages.",
     features: [
@@ -588,7 +588,7 @@ export const retainerTiers: ServiceTier[] = [
   },
   {
     name: "Search retainer",
-    price: "$45",
+    price: "$499",
     period: "per month",
     summary:
       "Ongoing SEO on a site that already works. Technical fixes, content briefs, and links.",
@@ -605,7 +605,7 @@ export const retainerTiers: ServiceTier[] = [
   },
   {
     name: "Growth partner",
-    price: "From $100",
+    price: "From $999",
     period: "per month",
     summary:
       "Design, build, SEO, and writing on a rolling basis. For teams shipping continuously.",
