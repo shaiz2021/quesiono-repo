@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, MapPin } from "lucide-react";
 
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { FeatureGrid } from "@/components/ui/FeatureGrid";
@@ -18,7 +16,6 @@ import { RevealText } from "@/components/motion/RevealText";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/metadata";
 import { breadcrumbSchema, graph, itemListSchema, webPageSchema } from "@/lib/schema";
-import { formatPostDate } from "@/data/blog";
 import { site } from "@/lib/site";
 import { openRoles, team } from "@/data/studio";
 
