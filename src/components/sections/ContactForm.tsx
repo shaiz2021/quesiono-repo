@@ -1,401 +1,471 @@
 "use client";
-
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AlertCircle, ArrowRight, Check, Loader2, Mail } from "lucide-react";
-
+import { ArrowUpRight, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { services } from "@/data/services";
 import { site } from "@/lib/site";
-
-type FormValues = {
-  name: string;
-  email: string;
-  company: string;
-  phone: string;
-  service: string;
-  budget: string;
-  timeline: string;
-  message: string;
-  /** Honeypot. Hidden from people, irresistible to bots. */
-  website: string;
-};
-
-type Status =
-  | { kind: "idle" }
-  | { kind: "sending" }
-  | { kind: "sent" }
-  | { kind: "error"; message: string; mailto?: string };
-
-const budgets = [
-  "Under $1,500",
-  "$1,500 – $4,000",
-  "$4,000 – $10,000",
-  "$10,000 – $25,000",
-  "Over $25,000",
-  "Not sure yet",
-];
-
-const timelines = [
-  "As soon as you can start",
-  "Next month",
-  "This quarter",
-  "Fixed launch date",
-  "Just researching",
-];
-
-const field =
-  "w-full rounded-xl border border-sand bg-white px-4 py-3 text-text-dark transition-colors duration-200 placeholder:text-text-muted/60 focus:border-midnight/40 focus:outline-none focus:ring-2 focus:ring-midnight/15";
-const label = "block text-[0.85rem] font-semibold text-text-dark";
-const errorText = "mt-1.5 text-[0.82rem] font-medium text-red-600";
-
-export function ContactForm() {
+import {
+  contactLimits,
+  budgetOptions,
+  timelineOptions,
+  validWebsite,
+  type ContactValues,
+  type ContactField,
+} from "@/lib/contact";
+import { trackEvent } from "@/lib/analytics";
+const contextKeys = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "landing",
+  "referrer",
+] as const;
+type Status = { kind: "idle" | "sending" | "sent" | "error"; message?: string };
+export function ContactForm({
+  services,
+}: {
+  services: { slug: string; name: string }[];
+}) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
-
+  const [review, setReview] = useState(false);
+  const [context, setContext] = useState<Record<string, string>>({});
+  const started = useRef(false),
+    lock = useRef(false),
+    feedback = useRef<HTMLDivElement>(null);
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     getValues,
     setError,
+    reset,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<ContactValues>({
     defaultValues: {
       name: "",
       email: "",
+      message: "",
+      websiteUrl: "",
       company: "",
       phone: "",
       service: "",
       budget: "",
       timeline: "",
-      message: "",
       website: "",
+      consent: false,
     },
   });
-
-  /** Prefilled email link, used whenever the API can't deliver. */
-  const buildMailto = () => {
-    const values = getValues();
-    const body = [
-      `Name: ${values.name}`,
-      values.company ? `Company: ${values.company}` : null,
-      values.service ? `Service: ${values.service}` : null,
-      values.budget ? `Budget: ${values.budget}` : null,
-      values.timeline ? `Timeline: ${values.timeline}` : null,
-      "",
-      values.message,
-    ]
-      .filter((line) => line !== null)
-      .join("\n");
-
-    return `mailto:${site.email}?subject=${encodeURIComponent(
-      `Project enquiry — ${values.name || "website"}`
-    )}&body=${encodeURIComponent(body)}`;
-  };
-
-  const onSubmit = async (values: FormValues) => {
-    setStatus({ kind: "sending" });
-
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    const chosen = q.get("service");
+    if (services.some((s) => s.slug === chosen)) setValue("service", chosen!);
+    const source = q.get("source");
+    const intent = q.get("intent");
+    setReview(intent === "website-review");
+    let stored: Record<string, string> = {};
     try {
-      const response = await fetch("/api/contact", {
+      stored = JSON.parse(
+        sessionStorage.getItem("quesiono-attribution") || "{}",
+      );
+    } catch {}
+    const values: Record<string, string> = {};
+    for (const key of contextKeys) {
+      const v = q.get(key) || stored[key];
+      if (typeof v === "string") values[key] = v.slice(0, contactLimits[key]);
+    }
+    if (source?.startsWith("/") && !source.startsWith("//"))
+      values.source = source.split(/[?#]/)[0].slice(0, 250);
+    if (intent === "website-review") values.intent = intent;
+    setContext(values);
+  }, [services, setValue]);
+  useEffect(() => {
+    if (status.kind === "sent" || status.kind === "error")
+      feedback.current?.focus();
+  }, [status]);
+  function mailto() {
+    const v = getValues();
+    return `mailto:${site.email}?subject=${encodeURIComponent(review ? "Website review enquiry" : "Project enquiry")}&body=${encodeURIComponent([`Name: ${v.name}`, `Reply to: ${v.email}`, `Website: ${v.websiteUrl}`, `Service: ${v.service}`, `Company: ${v.company}`, `Phone: ${v.phone}`, `Budget: ${v.budget}`, `Timeline: ${v.timeline}`, "", v.message].join("\n"))}`;
+  }
+  async function submit(values: ContactValues) {
+    if (lock.current) return;
+    lock.current = true;
+    setStatus({ kind: "sending" });
+    trackEvent("enquiry_submit", {
+      service: values.service,
+      source: context.source,
+    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+    try {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, ...context }),
+        signal: controller.signal,
       });
-
-      const payload = (await response.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-        errors?: Partial<Record<keyof FormValues, string>>;
-        fallback?: boolean;
-      };
-
-      if (response.ok && payload.ok) {
-        reset();
+      const payload = await res.json();
+      if (res.ok && payload.ok) {
         setStatus({ kind: "sent" });
-        return;
+        trackEvent("enquiry_success", {
+          service: values.service,
+          source: context.source,
+        });
+        reset();
+      } else {
+        if (payload.errors)
+          for (const [key, message] of Object.entries(payload.errors)) {
+            if (key in contactLimits || key === "consent")
+              setError(key as ContactField, {
+                type: "server",
+                message: String(message),
+              });
+          }
+        setStatus({
+          kind: "error",
+          message:
+            payload.error ||
+            "Your enquiry could not be sent. Please try again or email us.",
+        });
+        trackEvent("enquiry_error", {
+          service: values.service,
+          source: context.source,
+          kind: String(res.status),
+        });
       }
-
-      /* Field-level messages from the server get attached to the inputs, so the
-         user sees them where the problem is rather than in a banner. */
-      if (payload.errors) {
-        for (const [key, message] of Object.entries(payload.errors)) {
-          if (message) setError(key as keyof FormValues, { type: "server", message });
-        }
-      }
-
-      setStatus({
-        kind: "error",
-        message: payload.error ?? "That didn't go through.",
-        mailto: payload.fallback ? buildMailto() : undefined,
-      });
     } catch {
-      /* Network failure — offline, blocked, DNS. The mailto still works. */
       setStatus({
         kind: "error",
-        message: "We couldn't reach the server. Your connection, or ours.",
-        mailto: buildMailto(),
+        message:
+          "We could not confirm delivery. Your details are still here. Please try again or send them by email.",
       });
+      trackEvent("enquiry_error", { source: context.source, kind: "network" });
+    } finally {
+      clearTimeout(timeout);
+      lock.current = false;
     }
-  };
-
-  if (status.kind === "sent") {
+  }
+  const error = (name: ContactField | "consent") =>
+    errors[name] ? (
+      <p id={`${name}-error`} className="field-error">
+        {errors[name]?.message}
+      </p>
+    ) : null;
+  const attrs = (name: ContactField) => ({
+    "aria-invalid": !!errors[name],
+    "aria-describedby": errors[name] ? `${name}-error` : undefined,
+    maxLength: contactLimits[name],
+  });
+  if (status.kind === "sent")
     return (
-      <div className="rounded-3xl border border-sand bg-white p-10 text-center sm:p-14">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo/10 text-indigo">
-          <Check className="h-7 w-7" aria-hidden />
-        </span>
-        <h3 className="mt-7 font-display text-step-3 font-extrabold tracking-tight text-text-dark">
-          Got it.
-        </h3>
-        <p className="mx-auto mt-4 max-w-md leading-relaxed text-text-muted">
-          It&apos;s in our inbox. You&apos;ll hear back within {site.responseTime} — from one of the
-          five of us, not an autoresponder. If it&apos;s urgent, reply to that email and say so.
+      <div
+        ref={feedback}
+        tabIndex={-1}
+        role="status"
+        className="border border-sand bg-white p-8 sm:p-10"
+      >
+        <Check className="h-8 w-8 text-indigo" aria-hidden />
+        <h2 className="mt-6 text-step-3 font-semibold">
+          Thank you. Your enquiry is on its way.
+        </h2>
+        <p className="mt-5 text-text-muted">
+          Our email service has accepted your message for delivery. We’ll review
+          the details and reply to the email address you provided with any
+          questions or a useful next step.
         </p>
-        <div className="mt-9">
-          <Button variant="outline" size="md" onClick={() => setStatus({ kind: "idle" })}>
-            Send another
-          </Button>
-        </div>
+        <p className="mt-4 text-sm text-text-muted">
+          No payment or project commitment has been made.
+        </p>
+        <Button
+          className="mt-7"
+          variant="dark"
+          onClick={() => {
+            setStatus({ kind: "idle" });
+            started.current = false;
+          }}
+        >
+          Send another enquiry
+        </Button>
       </div>
     );
-  }
-
-  const sending = status.kind === "sending";
-
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(submit, () =>
+        trackEvent("enquiry_error", {
+          source: context.source,
+          kind: "validation",
+        }),
+      )}
       noValidate
-      className="rounded-3xl border border-sand bg-white p-8 sm:p-10"
+      aria-busy={status.kind === "sending"}
+      onFocus={() => {
+        if (!started.current) {
+          trackEvent("enquiry_start", { source: context.source });
+          started.current = true;
+        }
+      }}
+      className="relative border border-sand bg-white p-6 sm:p-10"
     >
-      <p className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-text-muted">
-        Project enquiry
+      <p className="eyebrow text-text-muted">
+        {review ? "Website review" : "Project enquiry"}
       </p>
-      <h2 className="mt-3 font-display text-step-3 font-extrabold tracking-tight text-text-dark">
-        Tell us what you&apos;re building
+      <h2 className="mt-4 text-step-3 font-semibold">
+        {review
+          ? "What would you like your website to do better?"
+          : "Tell us what needs to change."}
       </h2>
-      <p className="mt-3 text-[0.95rem] leading-relaxed text-text-muted">
-        Two fields are required. The rest just means fewer questions on the first call.
+      <p className="mt-4 text-sm text-text-muted">
+        Name, email, and a short project description are all we need to start.
+        Fields marked * are required.
       </p>
-
-      <div className="mt-9 space-y-6">
+      <fieldset disabled={status.kind === "sending"} className="mt-8 space-y-6">
+        <legend className="sr-only">Your project details</legend>
         <div className="grid gap-6 sm:grid-cols-2">
           <div>
-            <label className={label} htmlFor="contact-name">
-              Name <span className="text-indigo">*</span>
+            <label className="field-label" htmlFor="contact-name">
+              Name *
             </label>
             <input
               id="contact-name"
-              type="text"
               autoComplete="name"
-              placeholder="Jordan Reyes"
-              className={`mt-2 ${field}`}
-              aria-invalid={errors.name ? "true" : "false"}
-              aria-describedby={errors.name ? "contact-name-error" : undefined}
-              {...register("name", { required: "Tell us your name." })}
+              className="field"
+              {...attrs("name")}
+              {...register("name", {
+                required: "Please enter your name.",
+                maxLength: {
+                  value: 120,
+                  message: "Use 120 characters or fewer.",
+                },
+              })}
             />
-            {errors.name ? (
-              <p id="contact-name-error" className={errorText}>
-                {errors.name.message}
-              </p>
-            ) : null}
+            {error("name")}
           </div>
-
           <div>
-            <label className={label} htmlFor="contact-email">
-              Email <span className="text-indigo">*</span>
+            <label className="field-label" htmlFor="contact-email">
+              Email *
             </label>
             <input
               id="contact-email"
               type="email"
               autoComplete="email"
-              placeholder="you@company.com"
-              className={`mt-2 ${field}`}
-              aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby={errors.email ? "contact-email-error" : undefined}
+              className="field"
+              {...attrs("email")}
               {...register("email", {
-                required: "We need an email to reply to.",
+                required: "Please enter an email address.",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
-                  message: "That email doesn't look right.",
+                  message: "Enter a valid email address.",
                 },
               })}
             />
-            {errors.email ? (
-              <p id="contact-email-error" className={errorText}>
-                {errors.email.message}
-              </p>
-            ) : null}
+            {error("email")}
           </div>
         </div>
-
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label className={label} htmlFor="contact-company">
-              Company
-            </label>
-            <input
-              id="contact-company"
-              type="text"
-              autoComplete="organization"
-              placeholder="Optional"
-              className={`mt-2 ${field}`}
-              {...register("company")}
-            />
-          </div>
-
-          <div>
-            <label className={label} htmlFor="contact-phone">
-              Phone
-            </label>
-            <input
-              id="contact-phone"
-              type="tel"
-              autoComplete="tel"
-              placeholder="Optional"
-              className={`mt-2 ${field}`}
-              {...register("phone")}
-            />
-          </div>
-        </div>
-
         <div>
-          <label className={label} htmlFor="contact-service">
-            What do you need?
-          </label>
-          <select id="contact-service" className={`mt-2 ${field}`} {...register("service")}>
-            <option value="">Not sure yet — help me work it out</option>
-            {services
-              .filter((service) => !service.parentService)
-              .map((service) => (
-                <option key={service.slug} value={service.slug}>
-                  {service.name}
-                </option>
-              ))}
-          </select>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label className={label} htmlFor="contact-budget">
-              Budget
-            </label>
-            <select id="contact-budget" className={`mt-2 ${field}`} {...register("budget")}>
-              <option value="">Prefer not to say</option>
-              {budgets.map((band) => (
-                <option key={band} value={band}>
-                  {band}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className={label} htmlFor="contact-timeline">
-              Timeline
-            </label>
-            <select id="contact-timeline" className={`mt-2 ${field}`} {...register("timeline")}>
-              <option value="">No fixed date</option>
-              {timelines.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label className={label} htmlFor="contact-message">
-            What&apos;s the project? <span className="text-indigo">*</span>
+          <label className="field-label" htmlFor="contact-message">
+            What do you want to achieve? *
           </label>
           <textarea
             id="contact-message"
-            rows={6}
-            placeholder="What the site needs to do, what's stopping it now, and any hard constraints — launch date, budget ceiling, systems it has to talk to."
-            className={`mt-2 ${field} resize-y`}
-            aria-invalid={errors.message ? "true" : "false"}
-            aria-describedby={errors.message ? "contact-message-error" : undefined}
+            rows={5}
+            className="field resize-y"
+            placeholder="Tell us about the problem, who the website is for, and what a useful outcome would look like."
+            {...attrs("message")}
             {...register("message", {
-              required: "Tell us a bit about the project.",
+              required: "Please describe your project.",
               minLength: {
                 value: 12,
-                message: "A sentence or two, so we can give you a useful answer.",
+                message: "Please add a short sentence about your goal.",
               },
             })}
           />
-          {errors.message ? (
-            <p id="contact-message-error" className={errorText}>
-              {errors.message.message}
-            </p>
-          ) : null}
+          {error("message")}
         </div>
-
-        {/* Honeypot. Off-screen rather than display:none — some bots skip
-            hidden inputs but happily fill positioned ones. */}
-        <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden" aria-hidden>
-          <label htmlFor="contact-website">Website</label>
+        <div>
+          <label className="field-label" htmlFor="contact-url">
+            Website URL{" "}
+            <span className="font-normal text-text-muted">(optional)</span>
+          </label>
           <input
-            id="contact-website"
-            type="text"
+            id="contact-url"
+            type="url"
+            autoComplete="url"
+            inputMode="url"
+            placeholder="https://yourwebsite.com"
+            className="field"
+            {...attrs("websiteUrl")}
+            {...register("websiteUrl", {
+              validate: (v) =>
+                !v ||
+                validWebsite(v) ||
+                "Enter a full website URL, beginning with https://.",
+            })}
+          />
+          {error("websiteUrl")}
+        </div>
+        <div>
+          <label className="field-label" htmlFor="contact-service">
+            Interested service{" "}
+            <span className="font-normal text-text-muted">(optional)</span>
+          </label>
+          <select
+            id="contact-service"
+            className="field"
+            {...register("service")}
+          >
+            <option value="">Help me choose</option>
+            {services.map((s) => (
+              <option key={s.slug} value={s.slug}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+          {error("service")}
+        </div>
+        <details className="border-y border-sand py-4">
+          <summary className="cursor-pointer py-2 text-sm font-semibold">
+            Add budget, timeline, or contact details{" "}
+            <span className="font-normal text-text-muted">(optional)</span>
+          </summary>
+          <div className="grid gap-6 py-5 sm:grid-cols-2">
+            <div>
+              <label className="field-label" htmlFor="contact-budget">
+                Budget range (USD)
+              </label>
+              <select
+                id="contact-budget"
+                className="field"
+                {...register("budget")}
+              >
+                <option value="">Prefer to discuss</option>
+                {budgetOptions.map((x) => (
+                  <option key={x}>{x}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="field-label" htmlFor="contact-timeline">
+                Timeline
+              </label>
+              <select
+                id="contact-timeline"
+                className="field"
+                {...register("timeline")}
+              >
+                <option value="">No fixed date</option>
+                {timelineOptions.map((x) => (
+                  <option key={x}>{x}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="field-label" htmlFor="contact-company">
+                Company
+              </label>
+              <input
+                id="contact-company"
+                autoComplete="organization"
+                className="field"
+                {...attrs("company")}
+                {...register("company")}
+              />
+              {error("company")}
+            </div>
+            <div>
+              <label className="field-label" htmlFor="contact-phone">
+                Phone
+              </label>
+              <input
+                id="contact-phone"
+                type="tel"
+                autoComplete="tel"
+                className="field"
+                {...attrs("phone")}
+                {...register("phone")}
+              />
+              {error("phone")}
+            </div>
+          </div>
+        </details>
+        <div
+          className="absolute h-px w-px overflow-hidden opacity-0"
+          aria-hidden="true"
+        >
+          <label htmlFor="company-site-check">Leave this field empty</label>
+          <input
+            id="company-site-check"
             tabIndex={-1}
             autoComplete="off"
             {...register("website")}
           />
         </div>
-      </div>
-
-      {status.kind === "error" ? (
-        <div
-          role="alert"
-          className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-5 text-[0.9rem]"
-        >
-          <p className="flex items-start gap-2.5 font-semibold text-red-700">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-            {status.message}
-          </p>
-          {status.mailto ? (
-            <p className="mt-3 pl-7 leading-relaxed text-red-700/85">
-              Nothing lost —{" "}
-              <a
-                href={status.mailto}
-                className="font-semibold underline decoration-2 underline-offset-2"
+        <div>
+          <label className="flex items-start gap-3 text-sm leading-relaxed text-text-muted">
+            <input
+              type="checkbox"
+              className="mt-1 h-5 w-5 shrink-0 accent-indigo"
+              aria-invalid={!!errors.consent}
+              aria-describedby={errors.consent ? "consent-error" : undefined}
+              {...register("consent", {
+                required:
+                  "Please confirm that we may use these details to respond.",
+              })}
+            />
+            <span>
+              I agree that Quesiono may use these details to respond to my
+              enquiry, as described in the{" "}
+              <Link
+                href="/privacy-policy"
+                className="font-medium text-indigo underline underline-offset-4"
               >
-                send it as an email instead
-              </a>
-              . Everything you typed is already in the draft.
-            </p>
-          ) : null}
+                privacy policy
+              </Link>
+              . *
+            </span>
+          </label>
+          {error("consent")}
         </div>
-      ) : null}
-
-      <div className="mt-9 flex flex-col gap-5 border-t border-sand pt-8 sm:flex-row sm:items-center sm:justify-between">
-        <Button type="submit" variant="primary" size="lg" disabled={sending}>
-          {sending ? (
+        <Button
+          type="submit"
+          variant="dark"
+          disabled={status.kind === "sending"}
+          className="w-full sm:w-auto"
+        >
+          {status.kind === "sending" ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              Sending
+              Sending enquiry…
             </>
           ) : (
             <>
-              Send it
-              <ArrowRight className="h-4 w-4" aria-hidden />
+              Send project enquiry
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
             </>
           )}
         </Button>
-
-        <p className="inline-flex items-center gap-2 text-[0.85rem] text-text-muted">
-          <Mail className="h-4 w-4" aria-hidden />
-          Or email{" "}
+      </fieldset>
+      {status.kind === "error" && (
+        <div
+          ref={feedback}
+          tabIndex={-1}
+          role="alert"
+          className="mt-6 border-l-2 border-indigo bg-cream p-5"
+        >
+          <p className="text-sm font-medium">{status.message}</p>
           <a
-            href={`mailto:${site.email}`}
-            className="font-semibold text-indigo underline decoration-champagne decoration-2 underline-offset-4 hover:text-midnight"
+            href={mailto()}
+            className="mt-3 inline-flex min-h-11 items-center text-sm text-indigo underline underline-offset-4"
           >
-            {site.email}
+            Open an email draft with your details ↗
           </a>
-        </p>
-      </div>
+        </div>
+      )}
+      <p className="mt-5 text-xs leading-relaxed text-text-muted">
+        This is an enquiry, not a booking. We’ll review it and reply with
+        questions or next steps. You will not be subscribed to marketing emails.
+      </p>
     </form>
   );
 }

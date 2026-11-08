@@ -1,6 +1,4 @@
-import { webServices } from "./services-web";
-import { seoServices } from "./services-seo";
-import { contentServices } from "./services-content";
+import { serviceContent } from "./service-content";
 
 export type ServiceGroup = "web" | "seo" | "content";
 
@@ -133,11 +131,7 @@ export interface Service {
   media?: ServiceMedia;
 }
 
-export const services: Service[] = [
-  ...webServices,
-  ...seoServices,
-  ...contentServices,
-];
+export const services: Service[] = serviceContent;
 
 export const groupLabels: Record<ServiceGroup, string> = {
   web: "Design & Build",
@@ -156,7 +150,9 @@ export const getServiceBySlug = (slug: string) =>
 
 /** Top-level services only — children are reached from their parent page. */
 export const getServicesByGroup = (group: ServiceGroup) =>
-  services.filter((service) => service.group === group && !service.parentService);
+  services.filter(
+    (service) => service.group === group && !service.parentService,
+  );
 
 export const getAllServicesByGroup = (group: ServiceGroup) =>
   services.filter((service) => service.group === group);
@@ -179,7 +175,8 @@ export const getRelatedServices = (service: Service) =>
     .map((slug) => getServiceBySlug(slug))
     .filter((related): related is Service => Boolean(related));
 
-export const featuredServices = () => services.filter((service) => service.featured);
+export const featuredServices = () =>
+  services.filter((service) => service.featured);
 
 /** Flat list of every service path for generateStaticParams and the sitemap. */
 export const serviceParams = () =>

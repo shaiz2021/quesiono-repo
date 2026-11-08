@@ -1,8 +1,12 @@
+import { approvedTiers } from "@/data/commercial";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getServiceByPath, serviceParams } from "@/data/services";
-import { ServicePageTemplate, serviceTrail } from "@/components/templates/ServicePageTemplate";
+import {
+  ServicePageTemplate,
+  serviceTrail,
+} from "@/components/templates/ServicePageTemplate";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/metadata";
 import {
@@ -23,7 +27,11 @@ export function generateStaticParams() {
   return serviceParams();
 }
 
-export function generateMetadata({ params }: { params: { slug: string[] } }): Metadata {
+export function generateMetadata({
+  params,
+}: {
+  params: { slug: string[] };
+}): Metadata {
   const service = getServiceByPath(params.slug);
   if (!service) return {};
 
@@ -41,7 +49,11 @@ export function generateMetadata({ params }: { params: { slug: string[] } }): Me
   });
 }
 
-export default function ServicePage({ params }: { params: { slug: string[] } }) {
+export default function ServicePage({
+  params,
+}: {
+  params: { slug: string[] };
+}) {
   const service = getServiceByPath(params.slug);
   if (!service) notFound();
 
@@ -61,14 +73,14 @@ export default function ServicePage({ params }: { params: { slug: string[] } }) 
             description: service.shortDescription,
             path: service.href,
             serviceType: service.keywords.primary,
-            offers: service.pricingTiers?.map((tier) => ({
+            offers: approvedTiers(service.slug).map((tier) => ({
               name: tier.name,
               price: tier.price,
               description: tier.summary,
             })),
           }),
           breadcrumbSchema(trail),
-          ...(service.faqs.length ? [faqSchema(service.faqs)] : [])
+          ...(service.faqs.length ? [faqSchema(service.faqs)] : []),
         )}
       />
       <ServicePageTemplate service={service} />

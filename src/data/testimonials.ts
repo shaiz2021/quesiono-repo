@@ -1,4 +1,5 @@
 export interface Testimonial {
+  verified?: boolean;
   quote: string;
   name: string;
   role: string;
@@ -16,7 +17,7 @@ export interface Testimonial {
   featured?: boolean;
 }
 
-export const testimonials: Testimonial[] = [
+export const testimonialDrafts: Testimonial[] = [
   {
     quote:
       "The menu was the thing. It used to be a PDF that took forever to open and I had to email someone every time we changed a price. Now my manager edits it from her phone between services. Bookings are up about a third, and I get fewer calls asking what time we open.",
@@ -38,7 +39,11 @@ export const testimonials: Testimonial[] = [
     company: "Urban Apparel",
     projectSlug: "ecommerce-store",
     industrySlug: "ecommerce-retail",
-    serviceSlugs: ["shopify-development", "ecommerce-development", "speed-optimization"],
+    serviceSlugs: [
+      "shopify-development",
+      "ecommerce-development",
+      "speed-optimization",
+    ],
     location: "Karachi",
     year: "2024",
     featured: true,
@@ -113,7 +118,12 @@ export const testimonials: Testimonial[] = [
     company: "Coastline Outfitters",
     projectSlug: "coastline-outfitters",
     industrySlug: "ecommerce-retail",
-    serviceSlugs: ["ecommerce-development", "shopify-development", "ecommerce-seo", "keyword-research"],
+    serviceSlugs: [
+      "ecommerce-development",
+      "shopify-development",
+      "ecommerce-seo",
+      "keyword-research",
+    ],
     location: "Cornwall",
     year: "2025",
   },
@@ -124,7 +134,11 @@ export const testimonials: Testimonial[] = [
     role: "Operations Manager",
     company: "Fielder & Kemp",
     industrySlug: "professional-services",
-    serviceSlugs: ["website-maintenance", "speed-optimization", "wordpress-development"],
+    serviceSlugs: [
+      "website-maintenance",
+      "speed-optimization",
+      "wordpress-development",
+    ],
     location: "Birmingham",
     year: "2025",
   },
@@ -135,12 +149,22 @@ export const testimonials: Testimonial[] = [
     role: "Head of Marketing",
     company: "Loomtree",
     industrySlug: "saas-startups",
-    serviceSlugs: ["content-writing", "blog-posts", "keyword-research", "on-page-seo"],
+    serviceSlugs: [
+      "content-writing",
+      "blog-posts",
+      "keyword-research",
+      "on-page-seo",
+    ],
     year: "2025",
   },
 ];
 
-export const featuredTestimonials = () => testimonials.filter((t) => t.featured);
+export const testimonials = testimonialDrafts.filter(
+  (item) => item.verified === true,
+);
+
+export const featuredTestimonials = () =>
+  testimonials.filter((t) => t.featured);
 
 export const getTestimonialsByService = (serviceSlug: string) =>
   testimonials.filter((t) => t.serviceSlugs?.includes(serviceSlug));

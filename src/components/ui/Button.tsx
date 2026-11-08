@@ -9,10 +9,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants = {
-  primary: "bg-vanilla text-ink hover:bg-white shadow-sm hover:shadow-md",
-  accent: "bg-champagne text-ink hover:bg-champagne/90 shadow-sm hover:shadow-md",
-  dark: "bg-ink text-vanilla hover:bg-midnight shadow-sm hover:shadow-md",
-  ghost: "border border-vanilla/30 text-vanilla hover:border-vanilla/70 hover:bg-vanilla/10",
+  primary: "bg-indigo text-vanilla hover:bg-midnight",
+  accent: "bg-champagne text-ink hover:bg-champagne/90",
+  dark: "bg-ink text-vanilla hover:bg-midnight",
+  ghost:
+    "border border-vanilla/30 text-vanilla hover:border-vanilla/70 hover:bg-vanilla/10",
   outline:
     "border border-midnight/25 text-text-dark hover:border-midnight/60 hover:bg-midnight/[0.04]",
 };
@@ -20,7 +21,7 @@ const variants = {
 const sizes = {
   sm: "px-4 py-2 text-[0.9rem]",
   md: "px-6 py-3",
-  lg: "px-8 py-4 text-step-1",
+  lg: "px-8 py-4 text-base",
 };
 
 /**
@@ -36,16 +37,21 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-300 ease-smooth hover:-translate-y-0.5 active:translate-y-0 disabled:pointer-events-none disabled:opacity-60",
+    "inline-flex items-center justify-center gap-2 min-h-12 rounded font-semibold transition-colors duration-200 disabled:pointer-events-none disabled:opacity-60",
     variants[variant],
     sizes[size],
-    className
+    className,
   );
 
   if (href) {
     if (external) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={classes}
+        >
           {props.children}
         </a>
       );

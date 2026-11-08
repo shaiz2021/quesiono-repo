@@ -90,16 +90,6 @@
     text-wrap: pretty;
   }
 
-  /* Film grain. Sits over gradients so they read as printed, not digital. */
-  .grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.055;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
   /* Hairline rule that fades out. Used under eyebrows and section headers. */
   .hairline {
     background-image: linear-gradient(
@@ -111,7 +101,13 @@
   }
 
   .mask-fade-r {
-    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
   }
 
   /* Pauses a marquee track on hover. Paired with .animate-marquee-*. */
@@ -213,5 +209,76 @@
 
   .prose td {
     @apply border-b border-sand/60 py-3 pr-4 align-top;
+  }
+}
+
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+  .page-hero {
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: clamp(3rem, 6vw, 6rem);
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.16em];
+  }
+  .text-link {
+    @apply inline-flex min-h-11 items-center gap-2 font-semibold text-indigo underline decoration-sand underline-offset-4 hover:decoration-indigo;
+  }
+  .field {
+    @apply mt-2 block min-h-12 w-full rounded border border-sand bg-white px-4 py-3 text-base text-text-dark placeholder:text-text-muted focus:border-indigo focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-indigo;
+  }
+  .field-label {
+    @apply block text-sm font-semibold text-text-dark;
+  }
+  .field-error {
+    @apply mt-2 text-sm font-medium text-indigo;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item[open] .faq-toggle {
+    transform: rotate(45deg);
+  }
+  .prose {
+    max-width: 70ch;
+  }
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+@layer base {
+  body {
+    overflow-wrap: break-word;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.12;
+  }
+  :focus-visible {
+    outline: 3px solid #3d4a85;
+    outline-offset: 4px;
+  }
+  .bg-ink :focus-visible,
+  .bg-midnight :focus-visible,
+  .bg-indigo :focus-visible {
+    outline-color: #c9a961;
+  }
+  main {
+    min-height: 65vh;
+  }
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+  summary,
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
   }
 }

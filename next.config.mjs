@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Isolate production QA from an already-running development server.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   trailingSlash: false,
   images: {
     // All visuals are locally authored (SVG/CSS art + files under /public),

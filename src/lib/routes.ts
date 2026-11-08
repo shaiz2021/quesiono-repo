@@ -54,42 +54,43 @@ const core: RouteEntry[] = [
   {
     href: "/portfolio",
     label: "Work",
-    blurb: `${projects.length} case studies with the numbers attached.`,
+    blurb: `${projects.length} portfolio entries and project archives.`,
     priority: 0.9,
     changeFrequency: "weekly",
   },
   {
     href: "/industries",
     label: "Industries",
-    blurb: `The ${industries.length} sectors we've built enough in to know where they go wrong.`,
+    blurb: `The ${industries.length} sectors with distinct customer journeys.`,
     priority: 0.8,
     changeFrequency: "monthly",
   },
   {
     href: "/pricing",
     label: "Pricing",
-    blurb: "Real ranges by project type, plus what moves a quote up or down.",
+    blurb: "Scope guidance and the factors that affect your quote.",
     priority: 0.9,
     changeFrequency: "monthly",
   },
   {
     href: "/process",
     label: "Process",
-    blurb: "Six stages from first call to handover, week by week.",
+    blurb:
+      "Six stages, with deliverables and client participation at each step.",
     priority: 0.8,
     changeFrequency: "monthly",
   },
   {
     href: "/about",
     label: "About",
-    blurb: "Who works here, how the studio runs, and what we turn down.",
+    blurb: "Our approach to design, development and collaboration.",
     priority: 0.8,
     changeFrequency: "monthly",
   },
   {
     href: "/testimonials",
     label: "Testimonials",
-    blurb: "Clients on what changed, including the uncomfortable parts.",
+    blurb: "Client feedback and project references.",
     priority: 0.7,
     changeFrequency: "monthly",
   },
@@ -124,7 +125,7 @@ const core: RouteEntry[] = [
   {
     href: "/contact",
     label: "Contact",
-    blurb: "Tell us what the site has to do. Reply inside one business day.",
+    blurb: "Share your project goal and receive a useful next step.",
     priority: 0.9,
     changeFrequency: "monthly",
   },
@@ -162,12 +163,12 @@ export function routeGroups(): RouteGroup[] {
       })),
     },
     {
-      label: "Case studies",
-      blurb: "One page per project, with the before, the decision and the result.",
+      label: "Portfolio",
+      blurb: "Website presentations and retained project archives.",
       href: "/portfolio",
       routes: projects.map((project) => ({
         href: `/portfolio/${project.slug}`,
-        label: `${project.client} — ${project.name}`,
+        label: project.name,
         blurb: project.summary,
         priority: 0.8,
         changeFrequency: "yearly" as const,
@@ -175,7 +176,7 @@ export function routeGroups(): RouteGroup[] {
     },
     {
       label: "Journal",
-      blurb: "Newest first. Written by the people who do the work.",
+      blurb: "Guides to planning, design, development, search and content.",
       href: "/blog",
       routes: blogPosts.map((post) => ({
         href: `/blog/${post.slug}`,

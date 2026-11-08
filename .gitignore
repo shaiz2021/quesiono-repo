@@ -36,3 +36,6 @@ next-env.d.ts
 # next-sitemap
 public/sitemap*.xml
 public/robots.txt
+
+# Isolated production verification output
+/.next-qa/

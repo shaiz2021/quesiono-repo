@@ -1,3 +1,4 @@
+import { enquiryHref } from "@/lib/enquiry";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,8 +28,12 @@ import { Reveal } from "@/components/motion/Reveal";
 
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/metadata";
-import { articleSchema, breadcrumbSchema, graph, webPageSchema } from "@/lib/schema";
-import { site } from "@/lib/site";
+import {
+  articleSchema,
+  breadcrumbSchema,
+  graph,
+  webPageSchema,
+} from "@/lib/schema";
 
 export const dynamicParams = false;
 
@@ -36,7 +41,11 @@ export function generateStaticParams() {
   return blogParams();
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Metadata {
   const post = getBlogPostBySlug(params.slug);
   if (!post) return {};
 
@@ -67,10 +76,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const related = getRelatedPosts(post.slug, 3);
   const services = (post.relatedServiceSlugs ?? [])
     .map(getServiceBySlug)
-    .filter((service): service is NonNullable<typeof service> => Boolean(service));
+    .filter((service): service is NonNullable<typeof service> =>
+      Boolean(service),
+    );
   const work = (post.relatedProjectSlugs ?? [])
     .map(getProjectBySlug)
-    .filter((project): project is NonNullable<typeof project> => Boolean(project));
+    .filter((project): project is NonNullable<typeof project> =>
+      Boolean(project),
+    );
 
   const initials = post.author
     .split(" ")
@@ -81,7 +94,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <>
       <JsonLd
         data={graph(
-          webPageSchema({ path, name: post.meta.title, description: post.meta.description }),
+          webPageSchema({
+            path,
+            name: post.meta.title,
+            description: post.meta.description,
+          }),
           articleSchema({
             title: post.title,
             description: post.excerpt,
@@ -94,7 +111,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             section: post.category,
             keywords: [post.keywords.primary, ...post.keywords.secondary],
           }),
-          breadcrumbSchema([{ name: "Home", href: "/" }, ...trail])
+          breadcrumbSchema([{ name: "Home", href: "/" }, ...trail]),
         )}
       />
 
@@ -109,11 +126,13 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Badge label={post.category} variant="accent" />
-            <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/50">
+            <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/75">
               <CalendarDays className="h-3.5 w-3.5" aria-hidden />
-              <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+              <time dateTime={post.updated ?? post.date}>
+                Updated {formatPostDate(post.updated ?? post.date)}
+              </time>
             </span>
-            <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/50">
+            <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/75">
               <Clock className="h-3.5 w-3.5" aria-hidden />
               {post.readTime}
             </span>
@@ -122,7 +141,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <h1 className="mt-7 text-step-5 font-extrabold leading-[1.02] text-vanilla">
             {post.title}
           </h1>
-          <p className="mt-6 text-step-1 leading-relaxed text-vanilla/65">{post.excerpt}</p>
+          <p className="mt-6 text-step-1 leading-relaxed text-vanilla/75">
+            {post.excerpt}
+          </p>
 
           <div className="mt-10 flex items-center gap-4 border-t border-vanilla/10 pt-8">
             <span
@@ -132,9 +153,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               {initials}
             </span>
             <div>
-              <p className="font-display font-bold text-vanilla">{post.author}</p>
-              <p className="text-[0.85rem] text-vanilla/50">
-                {post.authorRole}, {site.name}
+              <p className="font-display font-bold text-vanilla">
+                {post.author}
+              </p>
+              <p className="text-[0.85rem] text-vanilla/75">
+                {post.authorRole}
               </p>
             </div>
           </div>
@@ -212,9 +235,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {services.length ? (
         <Section tone="cream" spacing="md" width="wide">
           <SectionHeading
-            eyebrow="Want us to do it"
+            eyebrow="Explore the topic"
             title="The services behind this article"
-            subtitle="If you'd rather not run this yourself, these are the pages that cover it."
+            subtitle="Scope and delivery information for the work discussed in this guide."
             size="md"
           />
           <div className="mt-10 flex flex-wrap gap-3">
@@ -266,7 +289,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {related.length ? (
         <Section tone="cream" spacing="lg" width="wide">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading eyebrow="Keep reading" title="More from the journal" size="lg" />
+            <SectionHeading
+              eyebrow="Keep reading"
+              title="More from the journal"
+              size="lg"
+            />
             <Link
               href="/blog"
               className="group inline-flex items-center gap-2 font-semibold text-indigo transition-colors hover:text-midnight"
@@ -287,7 +314,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               >
                 <div className="flex items-center gap-3">
                   <Badge label={item.category} variant="outline" />
-                  <span className="text-[0.8rem] text-text-muted">{item.readTime}</span>
+                  <span className="text-[0.8rem] text-text-muted">
+                    {item.readTime}
+                  </span>
                 </div>
                 <h3 className="mt-5 font-display text-step-1 font-bold text-text-dark">
                   {item.title}
@@ -310,9 +339,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
       <CTABanner
         eyebrow="Got a project"
-        title="Prefer to hand this to someone else?"
-        subtitle="Tell us what the site needs to do. You'll get a straight answer on scope, timeline and cost — usually inside one working day."
-        primaryAction={{ label: "Start a project", href: "/contact" }}
+        title="Want to explore this for your website?"
+        subtitle="Share the problem and the current website. We can help identify a useful next step."
+        primaryAction={{
+          label: "Discuss this with us",
+          href: enquiryHref(services[0]?.slug, path),
+        }}
         secondaryAction={{ label: "See our work", href: "/portfolio" }}
         showEmail
       />

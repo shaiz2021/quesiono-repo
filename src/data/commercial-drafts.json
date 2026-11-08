@@ -1,0 +1,722 @@
+{
+  "web-design": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Essential",
+        "price": "$349",
+        "summary": "A focused site for a business with a clear, single offer.",
+        "features": [
+          "Up to 5 unique page designs",
+          "One art direction, one revision round",
+          "Mobile and desktop layouts",
+          "Component library basics"
+        ],
+        "excludes": [
+          "Custom illustration",
+          "Photography direction"
+        ],
+        "timeline": "1 week",
+        "bestFor": "Consultancies, local services"
+      },
+      {
+        "name": "Standard",
+        "price": "$649",
+        "summary": "The usual shape of a company site with several service lines.",
+        "features": [
+          "Up to 12 unique page designs",
+          "Two art directions, two revision rounds",
+          "Four designed breakpoints",
+          "Full component library with states",
+          "Annotated developer handoff"
+        ],
+        "timeline": "2 weeks",
+        "bestFor": "SaaS, multi-service firms",
+        "highlight": true
+      },
+      {
+        "name": "Extended",
+        "price": "From $1199",
+        "summary": "Larger sites, or a design system several teams will build against.",
+        "features": [
+          "Unlimited templates within scope",
+          "Design system documentation",
+          "Illustration and iconography set",
+          "Content modelling for the CMS",
+          "Two months of design support post-handoff"
+        ],
+        "timeline": "2-3 weeks",
+        "bestFor": "Multi-brand, ecommerce, platforms"
+      }
+    ]
+  },
+  "web-development": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Marketing site",
+        "price": "From $399",
+        "summary": "A content site with a CMS, forms, and blog.",
+        "features": [
+          "Up to 10 templates",
+          "Headless CMS setup",
+          "Contact and lead forms",
+          "Technical SEO foundation",
+          "Analytics and Search Console"
+        ],
+        "excludes": [
+          "Ecommerce",
+          "User accounts"
+        ],
+        "timeline": "1 week",
+        "bestFor": "Service businesses, agencies"
+      },
+      {
+        "name": "Growth site",
+        "price": "From $899",
+        "summary": "More templates, more integrations, more moving parts.",
+        "features": [
+          "Unlimited templates in scope",
+          "CRM and marketing automation hooks",
+          "Multi-language or multi-region",
+          "Search, filtering, and gated content",
+          "Playwright test suite",
+          "90 days of post-launch support"
+        ],
+        "timeline": "1-2 weeks",
+        "bestFor": "SaaS, funded startups",
+        "highlight": true
+      },
+      {
+        "name": "Application",
+        "price": "From $1999",
+        "summary": "Authenticated product work rather than a brochure.",
+        "features": [
+          "User accounts and permissions",
+          "Custom API and database design",
+          "Third-party system integration",
+          "Staging and QA environments",
+          "Documented handover to your team"
+        ],
+        "timeline": "3 weeks",
+        "bestFor": "Platforms, internal tools"
+      }
+    ]
+  },
+  "ui-ux-design": {
+    "approved": false,
+    "tiers": []
+  },
+  "ecommerce-development": {
+    "approved": false,
+    "tiers": []
+  },
+  "wordpress-development": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Rescue",
+        "price": "$199",
+        "summary": "Keep your current design, fix what's broken underneath.",
+        "features": [
+          "Plugin audit and cleanup",
+          "Performance optimisation",
+          "Security hardening and backups",
+          "Before/after performance report"
+        ],
+        "excludes": [
+          "New design",
+          "Custom theme"
+        ],
+        "timeline": "4 days",
+        "bestFor": "Slow, plugin-heavy sites"
+      },
+      {
+        "name": "Custom theme",
+        "price": "From $599",
+        "summary": "New design, custom theme, content migrated.",
+        "features": [
+          "Custom block-editor theme",
+          "Block patterns for every section",
+          "ACF field groups",
+          "Content migration",
+          "Performance and security setup",
+          "Editor training"
+        ],
+        "timeline": "1 week",
+        "bestFor": "Most WordPress rebuilds",
+        "highlight": true
+      },
+      {
+        "name": "WooCommerce",
+        "price": "From $999",
+        "summary": "Store build on top of a custom theme.",
+        "features": [
+          "Everything in Custom theme",
+          "WooCommerce configuration",
+          "Custom checkout flow",
+          "Payment and shipping setup",
+          "Product import",
+          "Order and inventory integrations"
+        ],
+        "timeline": "2 weeks",
+        "bestFor": "Retailers staying on WordPress"
+      }
+    ]
+  },
+  "shopify-development": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Theme tune-up",
+        "price": "$199",
+        "summary": "Keep the theme, fix speed and conversion leaks.",
+        "features": [
+          "App audit and cleanup",
+          "Speed optimisation",
+          "Product and cart page improvements",
+          "Conversion report with a ranked fix list"
+        ],
+        "excludes": [
+          "Custom theme",
+          "New design"
+        ],
+        "timeline": "3 dayss",
+        "bestFor": "Stores on a stock theme"
+      },
+      {
+        "name": "Custom theme",
+        "price": "$599 - $999",
+        "summary": "A theme built for your catalogue and brand.",
+        "features": [
+          "Custom OS 2.0 theme",
+          "Sections for every page type",
+          "Metafield and metaobject model",
+          "App integration",
+          "Ecommerce SEO foundation",
+          "Team training"
+        ],
+        "timeline": "1 week",
+        "bestFor": "Growing DTC brands",
+        "highlight": true
+      },
+      {
+        "name": "Headless (Hydrogen)",
+        "price": "$1099 - $1999",
+        "summary": "For large catalogues or storefronts needing more than Liquid allows.",
+        "features": [
+          "Hydrogen storefront",
+          "Custom search and filtering",
+          "Content from a headless CMS",
+          "B2B or wholesale flows",
+          "Performance budget enforced in CI"
+        ],
+        "timeline": "2 weeks",
+        "bestFor": "High-volume and multi-market stores"
+      }
+    ]
+  },
+  "cms-development": {
+    "approved": false,
+    "tiers": []
+  },
+  "custom-development": {
+    "approved": false,
+    "tiers": []
+  },
+  "landing-page-development": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Single page",
+        "price": "$249",
+        "summary": "One offer, one audience, tracking included.",
+        "features": [
+          "One landing page, mobile and desktop",
+          "Form with CRM integration",
+          "GA4 and ad platform conversion tracking",
+          "Two headline variants"
+        ],
+        "timeline": "2-3 days",
+        "bestFor": "A single campaign"
+      },
+      {
+        "name": "Campaign set",
+        "price": "$699",
+        "summary": "Three pages sharing a system, one per audience segment.",
+        "features": [
+          "Three landing pages",
+          "Shared component system",
+          "Per-segment message match",
+          "A/B testing setup",
+          "Thank-you and nurture pages"
+        ],
+        "timeline": "1 week",
+        "bestFor": "Multi-segment paid campaigns",
+        "highlight": true
+      },
+      {
+        "name": "Ongoing programme",
+        "price": "$199",
+        "period": "/ month",
+        "summary": "A page a fortnight plus continuous testing.",
+        "features": [
+          "Two new pages monthly",
+          "Continuous A/B testing",
+          "Monthly conversion report",
+          "Copy iteration on losing variants"
+        ],
+        "timeline": "Rolling, 3-month minimum",
+        "bestFor": "Teams spending $7.5k+/month on ads"
+      }
+    ]
+  },
+  "website-maintenance": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Essential",
+        "price": "$199",
+        "period": "/ month",
+        "summary": "Keep it patched, backed up, and monitored.",
+        "features": [
+          "Monthly updates on staging",
+          "Daily offsite backups",
+          "Uptime monitoring",
+          "Quarterly restore test",
+          "Monthly report"
+        ],
+        "excludes": [
+          "Content hours",
+          "Emergency SLA"
+        ],
+        "bestFor": "Brochure and small business sites"
+      },
+      {
+        "name": "Growth",
+        "price": "$444",
+        "period": "/ month",
+        "summary": "Maintenance plus hands for the small stuff.",
+        "features": [
+          "Everything in Essential",
+          "3 hours of content and tweak work",
+          "Core Web Vitals tracking",
+          "Form and integration testing",
+          "48-hour response SLA"
+        ],
+        "bestFor": "Marketing sites publishing regularly",
+        "highlight": true
+      },
+      {
+        "name": "Priority",
+        "price": "$999",
+        "period": "/ month",
+        "summary": "For sites where downtime costs real money.",
+        "features": [
+          "Everything in Growth",
+          "8 hours of development work",
+          "4-hour emergency response",
+          "Weekly update cycle",
+          "Quarterly strategy call",
+          "Named account contact"
+        ],
+        "bestFor": "Ecommerce and lead-critical sites"
+      }
+    ]
+  },
+  "speed-optimization": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Audit",
+        "price": "$199",
+        "summary": "Diagnosis and a ranked plan. You or your team implement.",
+        "features": [
+          "Profiling across up to 4 templates",
+          "Ranked fix list with effort and impact",
+          "Third-party script cost breakdown",
+          "60-minute walkthrough call"
+        ],
+        "excludes": [
+          "Implementation"
+        ],
+        "timeline": "3 days",
+        "bestFor": "Teams with developers in-house"
+      },
+      {
+        "name": "Audit and fix",
+        "price": "$555 - $999",
+        "summary": "We diagnose and implement, then prove the gain.",
+        "features": [
+          "Everything in Audit",
+          "Implementation of the fix list",
+          "Image and font pipeline rebuild",
+          "Caching and CDN configuration",
+          "Before/after report"
+        ],
+        "timeline": "1 week",
+        "bestFor": "Most sites",
+        "highlight": true
+      },
+      {
+        "name": "Fix and protect",
+        "price": "$777 - $1299",
+        "summary": "Plus the guardrails that stop regression.",
+        "features": [
+          "Everything in Audit and fix",
+          "Lighthouse CI with failing thresholds",
+          "Real-user monitoring setup",
+          "Team training session",
+          "90-day re-check"
+        ],
+        "timeline": "1-2 weeks",
+        "bestFor": "Sites where several people ship changes"
+      }
+    ]
+  },
+  "seo": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Audit only",
+        "price": "$99",
+        "summary": "Find out what's wrong and what to do about it.",
+        "features": [
+          "Full technical audit",
+          "Keyword and intent map",
+          "Competitor gap analysis",
+          "Prioritised 12-month roadmap",
+          "90-minute walkthrough"
+        ],
+        "excludes": [
+          "Implementation",
+          "Content",
+          "Link building"
+        ],
+        "timeline": "2-3 days",
+        "bestFor": "Teams who'll execute in-house"
+      },
+      {
+        "name": "Growth retainer",
+        "price": "$499",
+        "period": "/ month",
+        "summary": "Ongoing technical, on-page, and content work.",
+        "features": [
+          "Technical fixes implemented",
+          "On-page optimisation",
+          "4 content briefs monthly",
+          "Internal linking programme",
+          "Monthly written report",
+          "Quarterly strategy call"
+        ],
+        "excludes": [
+          "Content writing",
+          "Link outreach"
+        ],
+        "timeline": "3-month minimum",
+        "bestFor": "Most businesses",
+        "highlight": true
+      },
+      {
+        "name": "Full programme",
+        "price": "$999",
+        "period": "/ month",
+        "summary": "Everything, including the writing and the outreach.",
+        "features": [
+          "Everything in Growth",
+          "6 pages written and published monthly",
+          "Link building and digital PR",
+          "Conversion rate work on landing pages",
+          "Bi-weekly calls"
+        ],
+        "timeline": "6-month minimum",
+        "bestFor": "Competitive markets"
+      }
+    ]
+  },
+  "technical-seo": {
+    "approved": false,
+    "tiers": []
+  },
+  "keyword-research": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Focused",
+        "price": "$37",
+        "summary": "One service line or product category.",
+        "features": [
+          "Up to 150 mapped queries",
+          "Intent classification",
+          "Difficulty scoring",
+          "Keyword-to-page map",
+          "Walkthrough call"
+        ],
+        "timeline": "2 weeks",
+        "bestFor": "Single-service businesses"
+      },
+      {
+        "name": "Full catalogue",
+        "price": "$90",
+        "summary": "Every service line, clustered and sequenced.",
+        "features": [
+          "300+ mapped queries",
+          "Topic clusters with pillars",
+          "Competitor gap analysis",
+          "12-month roadmap",
+          "Content briefs for the first 5 pages"
+        ],
+        "timeline": "3 weeks",
+        "bestFor": "Multi-service and ecommerce",
+        "highlight": true
+      }
+    ]
+  },
+  "on-page-seo": {
+    "approved": false,
+    "tiers": []
+  },
+  "off-page-seo": {
+    "approved": false,
+    "tiers": []
+  },
+  "link-building": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Starter",
+        "price": "$299",
+        "period": "/ month",
+        "summary": "Reclamation and low-hanging opportunities.",
+        "features": [
+          "Unlinked mention recovery",
+          "Broken link reclamation",
+          "Partner and association outreach",
+          "Monthly placement report"
+        ],
+        "excludes": [
+          "Asset production",
+          "Digital PR"
+        ],
+        "timeline": "3-month minimum",
+        "bestFor": "Sites with existing brand presence"
+      },
+      {
+        "name": "Growth",
+        "price": "$599",
+        "period": "/ month",
+        "summary": "Full outreach programme with an asset behind it.",
+        "features": [
+          "Everything in Starter",
+          "One linkable asset per quarter",
+          "Competitor gap outreach",
+          "Expert contribution placements",
+          "Approved prospect lists"
+        ],
+        "timeline": "6-month minimum",
+        "bestFor": "Most competitive markets",
+        "highlight": true
+      }
+    ]
+  },
+  "local-seo": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Single location",
+        "price": "$199",
+        "period": "/ month",
+        "summary": "One profile, one primary service area.",
+        "features": [
+          "GBP optimisation and monthly posts",
+          "Citation cleanup",
+          "Review workflow and responses",
+          "Local schema",
+          "Monthly grid report"
+        ],
+        "timeline": "3-month minimum",
+        "bestFor": "Single-site businesses"
+      },
+      {
+        "name": "Multi-area",
+        "price": "$499",
+        "period": "/ month",
+        "summary": "Several service areas from one or two locations.",
+        "features": [
+          "Everything in Single location",
+          "Up to 8 location pages",
+          "Per-area grid tracking",
+          "Local content plan",
+          "Competitor monitoring"
+        ],
+        "timeline": "3 to 4-month minimum",
+        "bestFor": "Service-area businesses",
+        "highlight": true
+      },
+      {
+        "name": "Multi-location",
+        "price": "From $999",
+        "period": "/ month",
+        "summary": "Multiple physical locations, each with its own profile.",
+        "features": [
+          "Everything in Multi-area",
+          "Per-location profile management",
+          "Store locator implementation",
+          "Bulk citation management",
+          "Location-level reporting"
+        ],
+        "timeline": "6-month minimum",
+        "bestFor": "Franchises and clinics"
+      }
+    ]
+  },
+  "ecommerce-seo": {
+    "approved": false,
+    "tiers": []
+  },
+  "content-writing": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Per page",
+        "price": "$99",
+        "summary": "Individual pages, priced per piece.",
+        "features": [
+          "Service or landing page copy",
+          "SME interview included",
+          "Two revision rounds",
+          "Editorial pass"
+        ],
+        "timeline": "1-2 working days",
+        "bestFor": "Filling specific gaps"
+      },
+      {
+        "name": "Full site copy",
+        "price": "From $299",
+        "summary": "Every page of a site, with a voice guide first.",
+        "features": [
+          "Up to 10 pages",
+          "Voice and messaging guide",
+          "SEO keyword integration",
+          "Two revision rounds per page",
+          "Internal linking plan"
+        ],
+        "timeline": "1-2 weeks",
+        "bestFor": "New sites and rebrands",
+        "highlight": true
+      },
+      {
+        "name": "Monthly retainer",
+        "price": "$120",
+        "period": "/ month",
+        "summary": "Four long-form pieces a month, published.",
+        "features": [
+          "4 pieces (1,500\u20132,500 words each)",
+          "Keyword-mapped to your roadmap",
+          "Published to your CMS",
+          "Internal links added to existing pages",
+          "Monthly performance review"
+        ],
+        "timeline": "3-month minimum",
+        "bestFor": "Ongoing content programmes"
+      }
+    ]
+  },
+  "blog-posts": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Two a month",
+        "price": "$36",
+        "period": "/ month",
+        "summary": "A sustainable cadence for a small team.",
+        "features": [
+          "2 posts monthly",
+          "Briefs and keyword mapping",
+          "Images and on-page SEO",
+          "Published to your CMS"
+        ],
+        "timeline": "3-month minimum",
+        "bestFor": "Getting started properly"
+      },
+      {
+        "name": "Four a month",
+        "price": "$68",
+        "period": "/ month",
+        "summary": "Weekly publishing, the usual choice.",
+        "features": [
+          "4 posts monthly",
+          "Quarterly content calendar",
+          "Internal linking programme",
+          "Monthly performance review",
+          "One refresh of an older post"
+        ],
+        "timeline": "3-month minimum",
+        "bestFor": "Most content programmes",
+        "highlight": true
+      },
+      {
+        "name": "Eight a month",
+        "price": "$127",
+        "period": "/ month",
+        "summary": "For competitive markets or a broad topic set.",
+        "features": [
+          "8 posts monthly",
+          "Two writers assigned",
+          "Topic cluster coverage",
+          "Two refreshes monthly",
+          "Bi-weekly editorial call"
+        ],
+        "timeline": "6-month minimum",
+        "bestFor": "Aggressive content strategies"
+      }
+    ]
+  },
+  "article-writing": {
+    "approved": false,
+    "tiers": [
+      {
+        "name": "Pillar page",
+        "price": "$91",
+        "summary": "A comprehensive guide built to rank and hold.",
+        "features": [
+          "2,000\u20133,500 words",
+          "SME interview",
+          "Jump links and structure",
+          "Schema and internal linking",
+          "Two revision rounds"
+        ],
+        "timeline": "2\u20133 weeks",
+        "bestFor": "Cluster centrepieces",
+        "highlight": true
+      },
+      {
+        "name": "Research piece",
+        "price": "From $200",
+        "summary": "Original data, analysed and written up.",
+        "features": [
+          "Survey design or data analysis",
+          "Charts and visualisations",
+          "Full write-up",
+          "Press-ready summary",
+          "Outreach angles for PR"
+        ],
+        "timeline": "4\u20136 weeks",
+        "bestFor": "Link acquisition and PR"
+      },
+      {
+        "name": "Guest contribution",
+        "price": "$61",
+        "summary": "Written to a publication's brief and voice.",
+        "features": [
+          "1,200\u20132,000 words",
+          "Written to the outlet's style",
+          "Author bio and byline",
+          "Pitch support"
+        ],
+        "timeline": "2 weeks",
+        "bestFor": "Authority and referral traffic"
+      }
+    ]
+  }
+}

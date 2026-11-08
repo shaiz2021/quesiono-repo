@@ -1,32 +1,37 @@
+import { principles } from "@/data/studio";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { FeatureGrid } from "@/components/ui/FeatureGrid";
-import { StatBlock } from "@/components/ui/StatBlock";
-import { principles, studioStats } from "@/data/studio";
-
-/**
- * Replaces the old WhyQuesiono section, which opened with "We're not just
- * another agency" — a line every agency site on the internet uses. These are
- * six things we'll actually be held to, pulled from src/data/studio.ts so
- * /about and /process say the same thing.
- */
 export function PrinciplesSection() {
   return (
-    <Section tone="white" spacing="xl" width="wide" id="how-we-work">
-      <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-        <div className="lg:sticky lg:top-[calc(var(--nav-h)+3rem)] lg:self-start">
-          <SectionHeading
-            eyebrow="How we work"
-            title="Six things we'll hold ourselves to"
-            subtitle="None of this is unusual. It's just written down, which turns out to be the unusual part."
-            size="xl"
-          />
-          <div className="mt-12">
-            <StatBlock stats={studioStats.slice(0, 2)} columns={2} />
-          </div>
+    <Section tone="white" width="wide">
+      <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+        <div>
+          <p className="eyebrow text-text-muted">Why work with Quesiono</p>
+          <h2 className="mt-5 text-step-5 font-bold">
+            Good work starts
+            <br />
+            with clear decisions.
+          </h2>
+          <p className="mt-6 max-w-sm text-text-muted">
+            The website is the deliverable. A clear scope, useful reviews, and a
+            practical handover are how we get there.
+          </p>
         </div>
-
-        <FeatureGrid features={principles} columns={2} />
+        <div>
+          {principles.map((p, i) => (
+            <div
+              key={p.title}
+              className="grid grid-cols-[2rem_1fr] gap-4 border-t border-sand py-6"
+            >
+              <span className="text-sm text-text-muted">0{i + 1}</span>
+              <div>
+                <h3 className="text-step-2 font-semibold">{p.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted">
+                  {p.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </Section>
   );

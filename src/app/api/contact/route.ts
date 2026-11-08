@@ -1,96 +1,35 @@
-/**
- * Contact form endpoint.
- *
- * The previous version of the form resolved a setTimeout and showed a success
- * screen without sending anything, so every enquiry through the site was lost.
- * This actually delivers.
- *
- * Behaviour without configuration: if RESEND_API_KEY is absent the route
- * returns 503 with `fallback: true` and the client shows a prefilled mailto
- * link instead of a success screen. That's deliberate — silently accepting a
- * message we can't deliver is how the original bug happened.
- *
- * Environment:
- *   RESEND_API_KEY   required to send
- *   CONTACT_TO       optional, defaults to site.email
- *   CONTACT_FROM     optional, defaults to onboarding@resend.dev (Resend's
- *                    test sender — set a verified domain sender in production)
- */
-
 import { NextResponse } from "next/server";
-
 import { site } from "@/lib/site";
 import { getServiceBySlug } from "@/data/services";
-
+import { contactLimits, validWebsite } from "@/lib/contact";
 export const runtime = "nodejs";
-/** Never cached — it's a POST-only mutation endpoint. */
 export const dynamic = "force-dynamic";
-
-const LIMITS = {
-  name: 120,
-  email: 254,
-  company: 160,
-  phone: 40,
-  service: 80,
-  budget: 40,
-  timeline: 60,
-  message: 5000,
-} as const;
-
-const MIN_MESSAGE = 12;
-
-/* --------------------------------------------------------------- limiting -- */
-
-/**
- * In-memory sliding window: 5 submissions per IP per 10 minutes.
- *
- * Per-instance, so it resets on redeploy and doesn't coordinate across
- * serverless instances. That's an accepted trade-off — it stops the obvious
- * scripted flood without adding a Redis dependency to a brochure site. Move
- * this to a shared store if the form ever becomes a real target.
- */
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
+const MAX_BODY = 24000,
+  WINDOW = 600000,
+  MAX_HITS = 5;
 const hits = new Map<string, number[]>();
-
-function rateLimited(key: string, now: number) {
-  const recent = (hits.get(key) ?? []).filter((stamp) => now - stamp < WINDOW_MS);
-
-  if (recent.length >= MAX_PER_WINDOW) {
-    hits.set(key, recent);
-    return true;
-  }
-
-  recent.push(now);
-  hits.set(key, recent);
-
-  /* Opportunistic sweep so the map can't grow without bound on a long-lived
-     instance. Cheap: it only runs when the map is already large. */
-  if (hits.size > 500) {
-    hits.forEach((stamps, ip) => {
-      if (stamps.every((stamp: number) => now - stamp >= WINDOW_MS)) hits.delete(ip);
+function limited(key: string) {
+  const now = Date.now();
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW);
+  if (recent.length >= MAX_HITS) return true;
+  if (hits.size >= 1000) {
+    hits.forEach((v, k) => {
+      if (v.every((t) => now - t >= WINDOW)) hits.delete(k);
     });
+    if (hits.size >= 1000 && !hits.has(key)) return true;
   }
-
+  hits.set(key, [...recent, now]);
   return false;
 }
-
-/* -------------------------------------------------------------- validation -- */
-
-/** Deliberately permissive — the goal is to reject typos, not to police TLDs. */
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-function clean(value: unknown, max: number, multiline = false) {
-  if (typeof value !== "string") return "";
-  /* Strip control characters so nothing can inject a header break into the
-     outgoing mail. Newlines are allowed only where the caller asks for them,
-     which is the message body and nowhere else. */
-  const stripped = multiline
-    ? value.replace(/\r\n/g, "\n").replace(/[^\S\n]+/g, " ").replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, "")
-    : value.replace(/[\u0000-\u001f\u007f]/g, " ");
-  return stripped.trim().slice(0, max);
+function clean(value: string, multiline = false) {
+  return (
+    multiline
+      ? value
+          .replace(/\r\n/g, "\n")
+          .replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, "")
+      : value.replace(/[\u0000-\u001f\u007f]/g, " ")
+  ).trim();
 }
-
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -98,153 +37,222 @@ function escapeHtml(value: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
-
+function reply(
+  body: Record<string, unknown>,
+  status = 200,
+  headers: Record<string, string> = {},
+) {
+  return NextResponse.json(body, {
+    status,
+    headers: { "Cache-Control": "no-store", ...headers },
+  });
+}
+async function boundedBody(request: Request) {
+  if (Number(request.headers.get("content-length")) > MAX_BODY)
+    throw new Error("large");
+  const reader = request.body?.getReader();
+  if (!reader) throw new Error("json");
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > MAX_BODY) {
+      await reader.cancel();
+      throw new Error("large");
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
 export async function POST(request: Request) {
-  let body: unknown;
-
+  const origin = request.headers.get("origin");
+  if (origin && !new Set([site.url, new URL(request.url).origin]).has(origin))
+    return reply(
+      { error: "This form must be submitted from the Quesiono website." },
+      403,
+    );
+  if (request.headers.get("sec-fetch-site") === "cross-site")
+    return reply({ error: "Cross-site submission is not allowed." }, 403);
+  if (
+    !request.headers
+      .get("content-type")
+      ?.toLowerCase()
+      .startsWith("application/json")
+  )
+    return reply({ error: "Send the form as JSON." }, 415);
+  let raw: Record<string, unknown>;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Send valid JSON." }, { status: 400 });
-  }
-
-  if (typeof body !== "object" || body === null) {
-    return NextResponse.json({ error: "Send valid JSON." }, { status: 400 });
-  }
-
-  const raw = body as Record<string, unknown>;
-
-  /* Honeypot. A real person never sees this field, so anything in it is a bot.
-     Return 200 rather than an error — a spammer that gets a failure just
-     retries with the field removed. */
-  if (clean(raw.website, 200)) {
-    return NextResponse.json({ ok: true });
-  }
-
-  const fields = {
-    name: clean(raw.name, LIMITS.name),
-    email: clean(raw.email, LIMITS.email),
-    company: clean(raw.company, LIMITS.company),
-    phone: clean(raw.phone, LIMITS.phone),
-    service: clean(raw.service, LIMITS.service),
-    budget: clean(raw.budget, LIMITS.budget),
-    timeline: clean(raw.timeline, LIMITS.timeline),
-    message: clean(raw.message, LIMITS.message, true),
-  };
-
-  const errors: Record<string, string> = {};
-  if (!fields.name) errors.name = "Tell us your name.";
-  if (!fields.email) errors.email = "We need an email to reply to.";
-  else if (!EMAIL.test(fields.email)) errors.email = "That email doesn't look right.";
-  if (!fields.message) errors.message = "Tell us a bit about the project.";
-  else if (fields.message.length < MIN_MESSAGE) {
-    errors.message = "A sentence or two, so we can give you a useful answer.";
-  }
-
-  if (Object.keys(errors).length) {
-    return NextResponse.json({ error: "Some fields need fixing.", errors }, { status: 400 });
-  }
-
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
-
-  /* Counted after validation on purpose: the thing worth limiting is messages
-     that would actually send mail, not someone fixing a typo in their email
-     address four times. */
-  if (rateLimited(ip, Date.now())) {
-    return NextResponse.json(
+    const body = await boundedBody(request);
+    if (!body || Array.isArray(body) || typeof body !== "object")
+      throw new Error("json");
+    raw = body;
+  } catch (error) {
+    return reply(
       {
-        error: `That's a few messages in a short window. Email ${site.email} directly and we'll pick it up.`,
+        error:
+          error instanceof Error && error.message === "large"
+            ? "The enquiry is too long. Please shorten it."
+            : "The form could not be read. Please try again.",
       },
-      { status: 429, headers: { "Retry-After": "600" } }
+      error instanceof Error && error.message === "large" ? 413 : 400,
     );
   }
-
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    /* No mail transport configured. Say so honestly and let the client offer
-       a mailto: link rather than pretending the message went somewhere. */
-    return NextResponse.json(
+  // Never return a success screen for a submission that will not be delivered.
+  if (raw.website)
+    return reply(
       {
-        error: "Our form isn't connected to email yet.",
+        error:
+          "We could not accept this submission. Please email us if you need help.",
+      },
+      400,
+    );
+  const fields: Record<string, string> = {},
+    errors: Record<string, string> = {};
+  for (const [name, max] of Object.entries(contactLimits)) {
+    const value = raw[name];
+    if (value !== undefined && typeof value !== "string") {
+      errors[name] = "Please use a text value.";
+      continue;
+    }
+    if (typeof value === "string" && value.length > max)
+      errors[name] = `Use ${max} characters or fewer.`;
+    fields[name] = clean(
+      typeof value === "string" ? value : "",
+      name === "message",
+    );
+  }
+  if (!fields.name) errors.name = "Please enter your name.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(fields.email ?? ""))
+    errors.email = "Enter a valid email address.";
+  if ((fields.message ?? "").length < 12)
+    errors.message = "Please add a short sentence about your goal.";
+  if (fields.websiteUrl && !validWebsite(fields.websiteUrl))
+    errors.websiteUrl = "Enter a full http:// or https:// website URL.";
+  if (fields.service && !getServiceBySlug(fields.service))
+    errors.service = "Please choose a service from the list.";
+  if (raw.consent !== true)
+    errors.consent = "Please confirm that we may use these details to respond.";
+  for (const key of ["source", "landing"]) {
+    if (fields[key])
+      fields[key] =
+        fields[key].startsWith("/") && !fields[key].startsWith("//")
+          ? fields[key].split(/[?#]/)[0]
+          : "";
+  }
+  if (fields.referrer) {
+    try {
+      fields.referrer = new URL(fields.referrer).origin;
+    } catch {
+      fields.referrer = "";
+    }
+  }
+  if (Object.keys(errors).length)
+    return reply(
+      { error: "Please check the highlighted fields.", errors },
+      400,
+    );
+  // Proxy headers must be overwritten by a trusted deployment ingress. Instance-local fallback.
+  const ip =
+    request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown";
+  if (limited(ip))
+    return reply(
+      {
+        error: `Too many enquiries in a short time. Please wait or email ${site.email}.`,
+      },
+      429,
+      { "Retry-After": "600" },
+    );
+  const apiKey = process.env.RESEND_API_KEY,
+    from = process.env.CONTACT_FROM,
+    to = process.env.CONTACT_TO || site.email;
+  if (!apiKey || !from)
+    return reply(
+      {
+        error:
+          "We cannot send through the form right now. Please use the email option below.",
         fallback: true,
       },
-      { status: 503 }
+      503,
     );
-  }
-
-  const serviceName = fields.service
-    ? getServiceBySlug(fields.service)?.name ?? fields.service
-    : "Not specified";
-
   const rows: [string, string][] = [
     ["Name", fields.name],
     ["Email", fields.email],
-    ["Company", fields.company || "—"],
-    ["Phone", fields.phone || "—"],
-    ["Service", serviceName],
-    ["Budget", fields.budget || "—"],
-    ["Timeline", fields.timeline || "—"],
-  ];
-
-  const text = [
-    ...rows.map(([label, value]) => `${label}: ${value}`),
-    "",
-    "Message:",
-    fields.message,
-  ].join("\n");
-
-  const html = [
-    '<div style="font-family:system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#1a1a2e">',
-    `<h2 style="margin:0 0 16px">New enquiry from ${escapeHtml(fields.name)}</h2>`,
-    '<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:24px">',
-    ...rows.map(
-      ([label, value]) =>
-        `<tr><td style="padding:6px 20px 6px 0;color:#6b6b7b">${label}</td>` +
-        `<td style="padding:6px 0;font-weight:600">${escapeHtml(value)}</td></tr>`
-    ),
-    "</table>",
-    '<div style="padding:16px;background:#f7f4ef;border-radius:8px;white-space:pre-wrap">',
-    escapeHtml(fields.message),
-    "</div>",
-    "</div>",
-  ].join("");
-
+    ["Project goal", fields.message],
+    ["Website", fields.websiteUrl],
+    ["Service", getServiceBySlug(fields.service)?.name || "Not sure yet"],
+    ["Company", fields.company],
+    ["Phone", fields.phone],
+    ["Budget", fields.budget],
+    ["Timeline", fields.timeline],
+    ["Enquiry source", fields.source],
+    ["Enquiry type", fields.intent || "Project"],
+    ["Landing page", fields.landing],
+    ["Referrer origin", fields.referrer],
+    ...[
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term",
+    ].map((k) => [k, fields[k]] as [string, string]),
+    ["Permission", "Agreed to use these details to respond to this enquiry."],
+    ["Privacy notice", `${site.url}/privacy-policy`],
+  ].filter(([, v]) => !!v) as [string, string][];
+  const text = rows.map(([label, value]) => `${label}: ${value}`).join("\n\n");
+  const html =
+    '<div style="font-family:system-ui;line-height:1.6"><h1>New Quesiono enquiry</h1>' +
+    rows
+      .map(
+        ([label, value]) =>
+          `<p><strong>${escapeHtml(label)}</strong><br><span style="white-space:pre-wrap">${escapeHtml(value)}</span></p>`,
+      )
+      .join("") +
+    "</div>";
   try {
     const { Resend } = await import("resend");
     const resend = new Resend(apiKey);
-
-    const { error } = await resend.emails.send({
-      from: process.env.CONTACT_FROM ?? "Quesiono site <onboarding@resend.dev>",
-      to: process.env.CONTACT_TO ?? site.email,
+    const { data, error } = await resend.emails.send({
+      from,
+      to,
       replyTo: fields.email,
-      subject: `New enquiry — ${fields.name}${fields.company ? ` (${fields.company})` : ""}`,
+      subject: `Quesiono enquiry — ${fields.service || "project"}`,
       text,
       html,
     });
-
-    if (error) {
-      console.error("[contact] Resend rejected the send:", error);
-      return NextResponse.json(
-        { error: "We couldn't send that just now.", fallback: true },
-        { status: 502 }
+    if (error || !data?.id) {
+      console.error("[contact] email provider rejected submission");
+      return reply(
+        {
+          error:
+            "Your enquiry was not accepted by our email service. Please try again or email us.",
+          fallback: true,
+        },
+        502,
       );
     }
-
-    return NextResponse.json({ ok: true });
-  } catch (cause) {
-    console.error("[contact] send threw:", cause);
-    return NextResponse.json(
-      { error: "Something broke on our side.", fallback: true },
-      { status: 500 }
+    return reply({ ok: true });
+  } catch {
+    console.error("[contact] email transport unavailable");
+    return reply(
+      {
+        error:
+          "We could not confirm email delivery. Please try again or email us.",
+        fallback: true,
+      },
+      502,
     );
   }
 }
-
-/** Anything other than POST gets a clear 405 rather than a Next.js 404. */
 export async function GET() {
-  return NextResponse.json({ error: "Use POST." }, { status: 405, headers: { Allow: "POST" } });
+  return reply({ error: "Use POST." }, 405, { Allow: "POST" });
 }

@@ -8,7 +8,13 @@
  * bytes and stays in sync because it's derived, not retyped.
  */
 
-import { getServicesByGroup, groupBlurbs, groupLabels, services, type ServiceGroup } from "@/data/services";
+import {
+  getServicesByGroup,
+  groupBlurbs,
+  groupLabels,
+  services,
+  type ServiceGroup,
+} from "@/data/services";
 import { industries } from "@/data/industries";
 import { getFeaturedProjects } from "@/data/projects";
 
@@ -44,13 +50,33 @@ export interface NavTree {
 
 /** Company links, in the order someone researching us would want them. */
 export const companyLinks: NavItem[] = [
-  { label: "About the studio", href: "/about", blurb: "Who works here and how we think" },
-  { label: "How we work", href: "/process", blurb: "Six stages, and what you do in each" },
-  { label: "Pricing", href: "/pricing", blurb: "Real ranges, and what moves them" },
-  { label: "Client results", href: "/testimonials", blurb: "What people said afterwards" },
+  {
+    label: "About the studio",
+    href: "/about",
+    blurb: "Our approach to the work",
+  },
+  {
+    label: "How we work",
+    href: "/process",
+    blurb: "Six stages, and what you do in each",
+  },
+  {
+    label: "Pricing",
+    href: "/pricing",
+    blurb: "Scope, costs, and what affects them",
+  },
+  {
+    label: "Client feedback",
+    href: "/testimonials",
+    blurb: "References and project evidence",
+  },
   { label: "Questions", href: "/faq", blurb: "The ones we get asked most" },
-  { label: "Careers", href: "/careers", blurb: "Open roles and how we hire" },
-  { label: "Our products", href: "/products", blurb: "Tools we built for ourselves" },
+  { label: "Careers", href: "/careers", blurb: "Current hiring information" },
+  {
+    label: "Our products",
+    href: "/products",
+    blurb: "Explore our product work",
+  },
 ];
 
 /** Footer-only. Kept here so there is one list of legal URLs. */

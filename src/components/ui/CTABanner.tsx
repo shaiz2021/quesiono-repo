@@ -1,95 +1,50 @@
-"use client";
-
-import { ArrowRight, Mail } from "lucide-react";
-import { GradientMesh } from "@/components/motion/GradientMesh";
-import { MagneticButton } from "@/components/motion/MagneticButton";
-import { RevealText } from "@/components/motion/RevealText";
-import { Reveal } from "@/components/motion/Reveal";
-import { Eyebrow } from "./Eyebrow";
+import { ArrowUpRight } from "lucide-react";
+import { Button } from "./Button";
 import { site } from "@/lib/site";
-
-interface CTABannerProps {
-  title: string;
-  subtitle?: string;
-  eyebrow?: string;
-  /** Words in `title` to tint champagne. */
-  accent?: string[];
-  primaryAction?: { label: string; href: string };
-  secondaryAction?: { label: string; href: string } | null;
-  /** Adds the email line under the buttons — good for page-bottom placements. */
-  showEmail?: boolean;
-}
-
-/**
- * Closing call to action. One per page, at the bottom.
- */
 export function CTABanner({
   title,
   subtitle,
-  eyebrow = "Next step",
-  accent = [],
-  primaryAction = { label: "Start a project", href: "/contact" },
-  secondaryAction = { label: "See the work", href: "/portfolio" },
+  eyebrow = "A useful next step",
+  primaryAction = { label: "Discuss Your Project", href: "/contact" },
+  secondaryAction = { label: "Explore Our Work", href: "/portfolio" },
   showEmail = true,
-}: CTABannerProps) {
+}: {
+  title: string;
+  subtitle?: string;
+  eyebrow?: string;
+  accent?: string[];
+  primaryAction?: { label: string; href: string };
+  secondaryAction?: { label: string; href: string } | null;
+  showEmail?: boolean;
+}) {
   return (
-    <section className="relative overflow-hidden bg-ink py-20 md:py-28 lg:py-32">
-      <GradientMesh variant="ink" />
-
-      <div className="relative mx-auto w-full px-5 sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-4xl text-center">
-          <Reveal>
-            <Eyebrow tone="dark" centered>
-              {eyebrow}
-            </Eyebrow>
-          </Reveal>
-
-          <RevealText
-            as="h2"
-            text={title}
-            accent={accent}
-            delay={0.08}
-            className="mt-6 font-display text-step-6 font-extrabold text-vanilla"
-          />
-
-          {subtitle && (
-            <Reveal delay={0.18}>
-              <p className="mx-auto mt-6 max-w-2xl text-step-1 leading-relaxed text-vanilla/65 text-pretty">
-                {subtitle}
-              </p>
-            </Reveal>
+    <section className="bg-champagne text-ink">
+      <div className="site-container grid gap-10 py-16 md:py-24 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+        <div>
+          <p className="eyebrow text-ink">{eyebrow}</p>
+          <h2 className="mt-5 max-w-3xl text-step-5 font-bold">{title}</h2>
+          {subtitle && <p className="mt-6 max-w-2xl text-ink/85">{subtitle}</p>}
+        </div>
+        <div className="flex flex-col items-start gap-5 lg:items-end">
+          <Button href={primaryAction.href} variant="dark">
+            {primaryAction.label}
+            <ArrowUpRight className="h-5 w-5" aria-hidden />
+          </Button>
+          {secondaryAction && (
+            <a
+              href={secondaryAction.href}
+              className="text-sm font-semibold underline underline-offset-4"
+            >
+              {secondaryAction.label}
+            </a>
           )}
-
-          <Reveal delay={0.26}>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <MagneticButton href={primaryAction.href} variant="accent" size="lg">
-                {primaryAction.label}
-                <ArrowRight className="h-4 w-4" />
-              </MagneticButton>
-              {secondaryAction && (
-                <MagneticButton href={secondaryAction.href} variant="ghost" size="lg">
-                  {secondaryAction.label}
-                </MagneticButton>
-              )}
-            </div>
-          </Reveal>
-
           {showEmail && (
-            <Reveal delay={0.34}>
-              <p className="mt-8 flex flex-wrap items-center justify-center gap-2 text-[0.9rem] text-vanilla/45">
-                <Mail className="h-4 w-4 text-champagne" aria-hidden />
-                Rather write first?
-                <a
-                  href={`mailto:${site.email}`}
-                  className="font-medium text-vanilla underline decoration-champagne decoration-2 underline-offset-4 transition-colors hover:text-champagne"
-                >
-                  {site.email}
-                </a>
-                <span className="text-vanilla/30">
-                  — we reply within {site.responseTime}.
-                </span>
-              </p>
-            </Reveal>
+            <a
+              href={`mailto:${site.email}`}
+              className="text-sm underline underline-offset-4"
+            >
+              {site.email}
+            </a>
           )}
         </div>
       </div>

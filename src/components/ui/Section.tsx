@@ -47,9 +47,9 @@ export function Section({
   const spacings = {
     none: "",
     sm: "py-12 md:py-16",
-    md: "py-16 md:py-24",
-    lg: "py-20 md:py-28 lg:py-32",
-    xl: "py-24 md:py-36 lg:py-44",
+    md: "py-16 md:py-20",
+    lg: "py-16 md:py-24",
+    xl: "py-20 md:py-28",
   };
 
   const isDark = tone === "ink" || tone === "midnight" || tone === "indigo";
@@ -57,11 +57,22 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("relative overflow-hidden", tones[tone], spacings[spacing], className)}
+      className={cn(
+        "relative overflow-hidden",
+        tones[tone],
+        spacings[spacing],
+        className,
+      )}
     >
-      {mesh && <GradientMesh variant={isDark ? (tone === "ink" ? "ink" : "midnight") : "cream"} />}
+      {mesh && (
+        <GradientMesh
+          variant={isDark ? (tone === "ink" ? "ink" : "midnight") : "cream"}
+        />
+      )}
       <div className="relative mx-auto w-full px-5 sm:px-8 lg:px-12">
-        <div className={cn("mx-auto", widths[width], innerClassName)}>{children}</div>
+        <div className={cn("mx-auto", widths[width], innerClassName)}>
+          {children}
+        </div>
       </div>
     </section>
   );

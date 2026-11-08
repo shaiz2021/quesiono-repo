@@ -21,78 +21,17 @@ const SITE_ID = `${site.url}/#website`;
 /** The agency itself. Referenced by @id from every other node. */
 export function organizationSchema(): Json {
   return {
-    "@type": ["Organization", "ProfessionalService"],
+    "@type": "Organization",
     "@id": ORG_ID,
     name: site.name,
-    legalName: site.legalName,
     url: site.url,
     description: site.description,
-    foundingDate: site.founded,
     email: site.email,
-    telephone: site.phone,
     logo: {
       "@type": "ImageObject",
       url: absoluteUrl("/images/logos/quesiono-logo-dark.svg"),
-      width: 320,
-      height: 72,
-    },
-    image: absoluteUrl("/images/logos/quesiono-icon.svg"),
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      addressLocality: site.address.city,
-      addressRegion: site.address.region,
-      postalCode: site.address.postalCode,
-      addressCountry: site.address.country,
     },
     sameAs: [site.social.linkedin, site.social.instagram, site.social.x],
-    areaServed: {
-      "@type": "Place",
-      name: "Worldwide",
-    },
-    knowsAbout: [
-      "Web design",
-      "Web development",
-      "Search engine optimization",
-      "E-commerce development",
-      "Content strategy",
-      "Conversion rate optimization",
-    ],
-  };
-}
-
-/** Physical presence. Separate node so opening hours and geo stay scoped. */
-export function localBusinessSchema(): Json {
-  return {
-    "@type": "LocalBusiness",
-    "@id": `${site.url}/#localbusiness`,
-    name: site.name,
-    url: site.url,
-    parentOrganization: { "@id": ORG_ID },
-    email: site.email,
-    telephone: site.phone,
-    priceRange: "$$",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      addressLocality: site.address.city,
-      addressRegion: site.address.region,
-      postalCode: site.address.postalCode,
-      addressCountry: site.address.country,
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: site.geo.latitude,
-      longitude: site.geo.longitude,
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: site.hours.days,
-        opens: site.hours.opens,
-        closes: site.hours.closes,
-      },
-    ],
   };
 }
 
@@ -106,14 +45,6 @@ export function webSiteSchema(): Json {
     description: site.description,
     publisher: { "@id": ORG_ID },
     inLanguage: "en-US",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${site.url}/blog?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -152,25 +83,28 @@ export function serviceSchema(params: {
     areaServed: { "@type": "Place", name: "Worldwide" },
   };
 
-  if (params.offers?.length) {
+  // Offers are emitted only for approved, unambiguous numeric prices.
+  const offers = params.offers?.filter((o) =>
+    /^\$?[\d,]+(?:\.\d{2})?$/.test(o.price),
+  );
+  if (offers?.length)
     schema.hasOfferCatalog = {
       "@type": "OfferCatalog",
       name: `${params.name} packages`,
-      itemListElement: params.offers.map((offer) => ({
+      itemListElement: offers.map((o) => ({
         "@type": "Offer",
-        name: offer.name,
-        price: offer.price.replace(/[^0-9]/g, "") || undefined,
+        name: o.name,
+        price: o.price.replace(/[$,]/g, ""),
         priceCurrency: "USD",
-        description: offer.description,
+        description: o.description,
       })),
     };
-  }
 
   return schema;
 }
 
 export function breadcrumbSchema(
-  trail: { name: string; href: string }[]
+  trail: { name: string; href: string }[],
 ): Json {
   return {
     "@type": "BreadcrumbList",
@@ -219,7 +153,7 @@ export function articleSchema(params: {
     datePublished: params.datePublished,
     dateModified: params.dateModified ?? params.datePublished,
     author: {
-      "@type": "Person",
+      "@type": params.author === site.name ? "Organization" : "Person",
       name: params.author,
       url: absoluteUrl("/about"),
     },
@@ -280,7 +214,7 @@ export function itemListSchema(params: {
  * honestly as Review nodes with a reviewBody and no invented score.
  */
 export function reviewSchema(
-  reviews: { quote: string; name: string; role: string; company: string }[]
+  reviews: { quote: string; name: string; role: string; company: string }[],
 ): Json {
   return {
     "@type": "ItemList",

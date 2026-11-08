@@ -49,7 +49,12 @@ export interface Industry {
 
   keywords: { primary: string; secondary: string[]; semantic: string[] };
   meta: { title: string; description: string };
-  media?: { image?: string; imageAlt?: string; videoSrc?: string; posterSrc?: string };
+  media?: {
+    image?: string;
+    imageAlt?: string;
+    videoSrc?: string;
+    posterSrc?: string;
+  };
 }
 
 export const industries: Industry[] = [
@@ -59,19 +64,16 @@ export const industries: Industry[] = [
     icon: "rocket",
     href: "/industries/saas-startups",
     shortDescription:
-      "Sites that explain a product clearly and hold up when a launch sends ten thousand people at once.",
+      "Help prospective users see what the product does, who it is for, and what happens after they sign up.",
     hero: {
-      eyebrow: "SaaS & startups",
-      headline: "Explain the product before you sell it",
-      accent: ["Explain"],
-      sub: "Most SaaS homepages describe a category instead of a product. Someone lands, reads two sentences about unified workflows, and leaves without knowing what the software does. That's a copy problem wearing a design problem's clothes.",
+      eyebrow: "SaaS & Startups",
+      headline: "Make your product easier to understand.",
+      sub: "Help prospective users see what the product does, who it is for, and what happens after they sign up.",
     },
     overview: {
-      heading: "Web design and development for SaaS companies",
+      heading: "What your visitors need to decide",
       paragraphs: [
-        "SaaS marketing sites have a specific job: get a visitor from \"I have a problem\" to \"I understand how this solves it\" fast enough that they'll start a trial. Every extra layer of abstraction in the copy costs you signups.",
-        "So we start with the product. A demo, an actual walkthrough, sometimes an hour with the person who built it. Then the page gets structured around the job the software does and the objection that stops people — usually price, migration effort, or whether it works with what they already run.",
-        "The technical side matters too. Launch traffic is spiky, a docs section needs to be searchable and indexable, and pricing pages get tested constantly. We build for that instead of retrofitting it after the first Product Hunt day.",
+        "For a SaaS website, the key decision is often whether a trial or demo is worth the effort. Product screenshots, clear use cases, pricing explanations and integration information should answer that question before a visitor reaches the form.",
       ],
     },
     challengesHeading: "What's hard about SaaS sites",
@@ -117,7 +119,7 @@ export const industries: Industry[] = [
       {
         title: "Pricing built for self-selection",
         description:
-          "A recommendation per tier, a plain \"best for\" line, and the two or three differences that actually decide it. Comparison tables collapse sensibly on mobile.",
+          'A recommendation per tier, a plain "best for" line, and the two or three differences that actually decide it. Comparison tables collapse sensibly on mobile.',
       },
       {
         title: "Static delivery from the CDN",
@@ -135,36 +137,33 @@ export const industries: Industry[] = [
           "Trial signups, demo requests, and pricing interactions tracked as events and verified against your product analytics, so attribution is real.",
       },
     ],
-    stats: [
-      { value: 96, label: "Median Lighthouse, mobile", note: "On the SaaS sites we've launched." },
-      { display: "6–10", label: "Weeks, typical build", note: "Marketing site with a CMS and docs." },
-      { value: 0, label: "Downtime on launch days", note: "Static pages, edge-delivered." },
-    ],
+    stats: [],
     faqs: [
       {
-        question: "We're pre-launch with no customers. Is a marketing site premature?",
+        question: "Can the marketing site connect to our product?",
         answer:
-          "You need one page that explains the product and captures interest, not a twelve-page site. We'll build that in two weeks for a fraction of the cost, and the copy work you do to write it is genuinely useful for your pitch too. The full site can wait until you know who's buying.",
+          "Yes. We can scope authentication links, trial or demo flows, product analytics events and a shared design system. The marketing site and application can remain separate where that makes maintenance easier.",
       },
       {
-        question: "Should our docs live on the same domain?",
+        question: "What should we prepare for the first conversation?",
         answer:
-          "Where your docs platform allows it, yes — same domain means the organic authority accrues in one place, and docs traffic is frequently the largest source of qualified search visits for a SaaS product. If you're on a hosted docs tool that forces a subdomain, we make sure the internal linking and schema compensate.",
-      },
-      {
-        question: "Can you integrate with our product for a live demo?",
-        answer:
-          "Often, and it converts well. An interactive sandbox or a scripted product tour beats a screenshot gallery. Scope depends on what your API exposes, which we work out during technical scoping.",
-      },
-      {
-        question: "How do you handle frequent pricing changes?",
-        answer:
-          "Pricing lives in the CMS, so your team edits tiers, features, and copy without a deploy. Currency and regional variants are supported if you sell in multiple markets.",
+          "Bring your current website, the main customer journeys you need to improve and any systems or approval requirements the project must work with.",
       },
     ],
-    serviceSlugs: ["web-design", "web-development", "ui-ux-design", "custom-development", "content-writing", "seo"],
-    caseStudySlugs: ["saas-dashboard", "dazzle-website"],
-    blogSlugs: ["nextjs-14-best-practices", "how-to-build-website-that-converts", "core-web-vitals-guide"],
+    serviceSlugs: [
+      "web-design",
+      "web-development",
+      "ui-ux-design",
+      "custom-development",
+      "content-writing",
+      "seo",
+    ],
+    caseStudySlugs: [],
+    blogSlugs: [
+      "nextjs-14-best-practices",
+      "how-to-build-website-that-converts",
+      "core-web-vitals-guide",
+    ],
     keywords: {
       primary: "SaaS website design and development",
       secondary: [
@@ -191,32 +190,30 @@ export const industries: Industry[] = [
     meta: {
       title: "SaaS & Startup Web Design and Development | Quesiono",
       description:
-        "Marketing sites that explain the product clearly, pricing pages people can self-select from, and static delivery that survives a launch spike.",
+        "Help prospective users see what the product does, who it is for, and what happens after they sign up.",
     },
     media: {
-      imageAlt: "SaaS marketing site with a product screenshot and pricing tiers",
+      imageAlt:
+        "SaaS marketing site with a product screenshot and pricing tiers",
     },
   },
-
   {
     slug: "ecommerce-retail",
     name: "Ecommerce & Retail",
     icon: "shopping-cart",
     href: "/industries/ecommerce-retail",
     shortDescription:
-      "Stores where product discovery, checkout, and stock accuracy all have to be right at once.",
+      "Connect product discovery, useful detail pages, reliable checkout, and the operations behind each order.",
     hero: {
-      eyebrow: "Ecommerce & retail",
-      headline: "Every extra second costs you a percentage of the cart",
-      accent: ["extra second"],
-      sub: "Ecommerce is the least forgiving thing we build. A slow product page, a filter that returns nothing, or stock that says available when it isn't — each one is measurable revenue, and it shows up the same week.",
+      eyebrow: "Ecommerce & Retail",
+      headline:
+        "Help shoppers find the right product. Then make buying simple.",
+      sub: "Connect product discovery, useful detail pages, reliable checkout, and the operations behind each order.",
     },
     overview: {
-      heading: "Ecommerce web design and development",
+      heading: "What your visitors need to decide",
       paragraphs: [
-        "Retail sites are judged on numbers you can watch daily, which is a good discipline. It also means every decision has to be defensible: does this filter help people find things, or does it just look thorough?",
-        "The work divides into discovery and completion. Discovery is search, filtering, category structure, and how much decision-making information sits on the collection page. Completion is the cart and checkout, where every field, shipping surprise, and unexpected step drops a percentage.",
-        "Behind both is the operational layer nobody sees until it breaks: stock sync, tax by region, shipping rules that match your carriers, and returns. We test those with real orders through every combination before launch, because a store that oversells is worse than a store that's plain.",
+        "A large catalogue needs more than a grid of products. Clear categories, meaningful filters, shipping information and accurate stock data help customers decide what to buy and reduce avoidable questions for your team.",
       ],
     },
     challengesHeading: "Where retail sites lose money",
@@ -243,7 +240,7 @@ export const industries: Industry[] = [
         icon: "zap",
         title: "App and script bloat",
         description:
-          "Reviews, chat, upsells, loyalty, three analytics tools. We've seen eleven apps adding three seconds to every page — the single largest conversion drag in most stores.",
+          "Reviews, chat, upsells and analytics can add competing interfaces and extra loading work. Audit which tools the store needs and how they affect the customer journey.",
       },
       {
         icon: "file-search",
@@ -267,12 +264,12 @@ export const industries: Industry[] = [
       {
         title: "Real integrations, tested",
         description:
-          "ERP, 3PL, or POS sync with reconciliation reporting, plus test orders through every tax and shipping combination before go-live.",
+          "ERP, 3PL, or POS sync with reconciliation reporting, plus test orders covering the agreed tax and shipping scenarios before launch.",
       },
       {
         title: "App audit as standard",
         description:
-          "Every app measured for load cost. Anything a theme can do gets built into the theme. Typically three to five apps come out.",
+          "Review the purpose and loading cost of installed apps, then recommend removal, replacement or theme implementation where appropriate.",
       },
       {
         title: "Category pages built to rank",
@@ -280,36 +277,33 @@ export const industries: Industry[] = [
           "Buying guidance, subcategory links, and FAQ content on collection pages, with faceted-navigation rules so filters don't spawn duplicate URLs.",
       },
     ],
-    stats: [
-      { value: 31, suffix: "%", label: "Median checkout completion lift", note: "Rebuild projects, first 90 days." },
-      { value: 4, label: "Apps removed, median", note: "On stores we take over." },
-      { value: 100, suffix: "%", label: "Test-order coverage", note: "Every tax and shipping path." },
-    ],
+    stats: [],
     faqs: [
       {
-        question: "Shopify, WooCommerce, or headless?",
+        question: "Can you work with our inventory and fulfilment tools?",
         answer:
-          "Shopify for most stores — the operational load it absorbs is worth the platform fee. WooCommerce if you're tied to WordPress or need unusual product logic. Headless when the catalogue is large, you sell across markets, or the storefront is content-heavy. We recommend after looking at your catalogue and order volume, not before.",
+          "We review supported integrations, stock rules and data quality before proposing the store architecture. Testing should include out-of-stock items, order updates and the points where systems exchange data.",
       },
       {
-        question: "Will a redesign hurt our search traffic?",
+        question: "What should we prepare for the first conversation?",
         answer:
-          "Not if the redirect map is complete. Product and collection URL structures differ between platforms, so every old URL needs a 301 to its closest equivalent and the titles that already rank need preserving. Expect two to four weeks of movement while Google recrawls a large catalogue, then recovery.",
-      },
-      {
-        question: "How do you handle a messy product spreadsheet?",
-        answer:
-          "Cleaning it up is part of the project, and it's usually the least glamorous week. Attributes get structured properly — size, material, compatibility, lead time as real fields — because that's what makes filtering, search, and Product schema work at all.",
-      },
-      {
-        question: "Can you work with our existing theme?",
-        answer:
-          "Yes. If the design is fine and the problem is speed or conversion, a tune-up engagement addresses that in two to three weeks for a fraction of a rebuild. We'll tell you honestly which one your store needs.",
+          "Bring your current website, the main customer journeys you need to improve and any systems or approval requirements the project must work with.",
       },
     ],
-    serviceSlugs: ["ecommerce-development", "shopify-development", "ecommerce-seo", "speed-optimization", "ui-ux-design", "web-design"],
-    caseStudySlugs: ["ecommerce-store", "coastline-outfitters"],
-    blogSlugs: ["shopify-store-conversion-optimization", "core-web-vitals-guide", "how-to-build-website-that-converts"],
+    serviceSlugs: [
+      "ecommerce-development",
+      "shopify-development",
+      "ecommerce-seo",
+      "speed-optimization",
+      "ui-ux-design",
+      "web-design",
+    ],
+    caseStudySlugs: [],
+    blogSlugs: [
+      "shopify-store-conversion-optimization",
+      "core-web-vitals-guide",
+      "how-to-build-website-that-converts",
+    ],
     keywords: {
       primary: "ecommerce web design and development",
       secondary: [
@@ -336,13 +330,13 @@ export const industries: Industry[] = [
     meta: {
       title: "Ecommerce & Retail Web Design and Development | Quesiono",
       description:
-        "Product discovery matched to your catalogue, checkout measured step by step, inventory and tax integrations tested with real orders, and category pages built to rank.",
+        "Connect product discovery, useful detail pages, reliable checkout, and the operations behind each order.",
     },
     media: {
-      imageAlt: "Retail collection page with filters beside a mobile checkout flow",
+      imageAlt:
+        "Retail collection page with filters beside a mobile checkout flow",
     },
   },
-
   {
     slug: "restaurants-hospitality",
     name: "Restaurants & Hospitality",
@@ -350,19 +344,16 @@ export const industries: Industry[] = [
     icon: "utensils",
     href: "/industries/restaurants-hospitality",
     shortDescription:
-      "Menus that load instantly, bookings that work on a phone, and local search that fills tables.",
+      "Give guests the information they need on a phone: what is on, when you are open, and how to reserve or order.",
     hero: {
-      eyebrow: "Restaurants & hospitality",
-      headline: "Someone is deciding where to eat, right now, on their phone",
-      accent: ["right now"],
-      sub: "They want the menu, the hours, and a table for two at seven. If your menu is a PDF that opens in a new tab and pinches to zoom, they've already opened a different tab.",
+      eyebrow: "Restaurants & Hospitality",
+      headline: "Make the menu, the booking, and the visit easier.",
+      sub: "Give guests the information they need on a phone: what is on, when you are open, and how to reserve or order.",
     },
     overview: {
-      heading: "Restaurant and hospitality website design",
+      heading: "What your visitors need to decide",
       paragraphs: [
-        "Hospitality web traffic is overwhelmingly mobile, overwhelmingly local, and overwhelmingly urgent. Someone standing on a street corner at 6:40pm is not browsing your story page. They want three things and they want them in one tap.",
-        "So we build for that: menus as real HTML that load instantly and read at arm's length, hours that are correct including holidays, one-tap calling and directions, and booking that doesn't bounce out to a slow third-party page mid-flow.",
-        "Then local search, which is where the demand actually lives. Google Business Profile properly set up, photos posted regularly, reviews responded to, and Restaurant and Menu schema so your dishes and prices can appear directly in results.",
+        "Guests may be comparing options while they are already on the move. Readable menus, accurate opening hours, location details and a straightforward reservation path should be easy to reach without downloads or unnecessary steps.",
       ],
     },
     challengesHeading: "What goes wrong on restaurant sites",
@@ -389,7 +380,7 @@ export const industries: Industry[] = [
         icon: "monitor",
         title: "Built for desktop",
         description:
-          "Around four in five hospitality visits are mobile. A site designed on a 27-inch monitor and checked on mobile afterwards gets the priority backwards.",
+          "Guests often look for a menu, directions or a booking on a phone. Those tasks should be reviewed on small screens from the start.",
       },
       {
         icon: "calendar",
@@ -426,36 +417,32 @@ export const industries: Industry[] = [
           "Special hours, closures, and events managed in the CMS and pushed to your Google profile so they can't disagree.",
       },
     ],
-    stats: [
-      { value: 79, suffix: "%", label: "Mobile share of visits", note: "Median across hospitality clients." },
-      { value: 30, suffix: "%", label: "Booking lift", note: "Local Bistro, first month after launch." },
-      { display: "3–5", label: "Weeks, typical build", note: "Single-location restaurant site." },
-    ],
+    stats: [],
     faqs: [
       {
-        question: "Can we keep our PDF menu?",
+        question: "Can our team update the menu?",
         answer:
-          "You can host it as a download for people who want to print, but it shouldn't be the primary menu. HTML menus load instantly, read properly on a phone, get indexed by Google, and can be updated by your manager in two minutes when the fish changes.",
+          "Yes. Editable menu sections, prices and dietary information can be part of the CMS scope. Your team confirms food and allergen information and remains responsible for keeping it accurate.",
       },
       {
-        question: "Which reservation system should we use?",
+        question: "What should we prepare for the first conversation?",
         answer:
-          "If you already have one your staff know, keep it — we'll integrate it cleanly. If you're choosing, OpenTable brings diner traffic but charges per cover, Resy suits higher-end rooms, and a custom form with capacity rules costs nothing per booking if you don't need the marketplace.",
-      },
-      {
-        question: "Do we need online ordering?",
-        answer:
-          "It depends on your margins. Third-party delivery apps take 15–30%, so a direct ordering option on your own site is worth building if a meaningful share of your volume is takeaway. For a dine-in-led restaurant it's often not worth the complexity.",
-      },
-      {
-        question: "How do we handle reviews?",
-        answer:
-          "Respond to all of them, quickly, including the bad ones — a calm specific reply reassures the next reader more than a wall of five stars. We set up a request process for your service flow and write response templates your managers can adapt.",
+          "Bring your current website, the main customer journeys you need to improve and any systems or approval requirements the project must work with.",
       },
     ],
-    serviceSlugs: ["web-design", "local-seo", "wordpress-development", "landing-page-development", "website-maintenance"],
-    caseStudySlugs: ["local-restaurant-website"],
-    blogSlugs: ["local-seo-strategy-small-business", "how-to-build-website-that-converts", "core-web-vitals-guide"],
+    serviceSlugs: [
+      "web-design",
+      "local-seo",
+      "wordpress-development",
+      "landing-page-development",
+      "website-maintenance",
+    ],
+    caseStudySlugs: [],
+    blogSlugs: [
+      "local-seo-strategy-small-business",
+      "how-to-build-website-that-converts",
+      "core-web-vitals-guide",
+    ],
     keywords: {
       primary: "restaurant website design",
       secondary: [
@@ -482,32 +469,29 @@ export const industries: Industry[] = [
     meta: {
       title: "Restaurant & Hospitality Website Design | Quesiono",
       description:
-        "HTML menus that load instantly and rank, booking flows that stay on the page, one-tap calls and directions, and local SEO that fills tables.",
+        "Give guests the information they need on a phone: what is on, when you are open, and how to reserve or order.",
     },
     media: {
-      imageAlt: "Restaurant website on a phone showing the menu and a reservation form",
+      imageAlt:
+        "Restaurant website on a phone showing the menu and a reservation form",
     },
   },
-
   {
     slug: "real-estate",
     name: "Real Estate",
     icon: "building",
     href: "/industries/real-estate",
     shortDescription:
-      "Listing sites with fast search, IDX or MLS feeds, and area pages that rank locally.",
+      "Help buyers and tenants explore listings, compare details, and contact the right person with a specific property in mind.",
     hero: {
-      eyebrow: "Real estate",
-      headline: "Listings load fast or buyers browse somewhere else",
-      accent: ["load fast"],
-      sub: "You're competing with portals that have engineering teams. You won't beat them on inventory, but you can beat them on speed, on local knowledge, and on being the agency people already trust in your area.",
+      eyebrow: "Real Estate",
+      headline: "Turn property browsing into a useful conversation.",
+      sub: "Help buyers and tenants explore listings, compare details, and contact the right person with a specific property in mind.",
     },
     overview: {
-      heading: "Real estate website design and development",
+      heading: "What your visitors need to decide",
       paragraphs: [
-        "Property search is image-heavy, filter-heavy, and impatient. Twelve listings with eight photos each is a lot of bytes, and a gallery that stutters on a phone loses the browse session that would have produced an enquiry.",
-        "So the technical work is mostly about weight and responsiveness: images served in modern formats at the right size, map and list views that don't reload the page, and search state that survives a back button. Then the feed — IDX, MLS, or your own CRM — synced reliably, with sold and withdrawn listings handled properly so the URL doesn't just 404.",
-        "The marketing side is local search. Area and neighbourhood pages with real substance — schools, transport, price trends, your own recent sales — earn the searches portals compete for weakly, because they can't write about a neighbourhood the way someone who works it can.",
+        "Property websites need useful search, accurate information and strong imagery. We plan the listing structure, enquiry context and feed dependencies together so the site can support both discovery and the work of your agents.",
       ],
     },
     challengesHeading: "What's hard about property sites",
@@ -548,7 +532,7 @@ export const industries: Industry[] = [
       {
         title: "Image pipeline built for galleries",
         description:
-          "AVIF and WebP at multiple sizes, lazy loading below the fold, the hero preloaded, and blur placeholders so the layout never jumps.",
+          "Responsive image delivery, appropriate loading priorities and reserved media dimensions to improve loading and reduce avoidable layout shifts.",
       },
       {
         title: "Resilient feed sync",
@@ -571,36 +555,32 @@ export const industries: Industry[] = [
           "Your recent sales, price trends, schools, and transport, plus LocalBusiness and RealEstateListing schema. Written, not generated.",
       },
     ],
-    stats: [
-      { value: 1.6, decimals: 1, suffix: "s", label: "Median listing page LCP", note: "Mobile, full photo gallery." },
-      { display: "8–12", label: "Weeks, typical build", note: "With feed integration." },
-      { value: 15, label: "Minute feed sync", note: "Configurable per source." },
-    ],
+    stats: [],
     faqs: [
       {
-        question: "Can you integrate our MLS or IDX feed?",
+        question: "Can you connect a property feed?",
         answer:
-          "Usually yes. We've worked with RETS, RESO Web API, and a fair number of proprietary XML feeds. The variable is data quality — some feeds are missing fields or send duplicates, and handling that cleanly is most of the integration work. We'll review your feed during scoping and tell you what to expect.",
+          "We assess the feed provider, access permissions, update frequency and field quality first. The proposal identifies supported search features, synchronisation behaviour and any third-party costs.",
       },
       {
-        question: "Should listings live on our site or just link to the portal?",
+        question: "What should we prepare for the first conversation?",
         answer:
-          "On your site. Listings on your own domain generate organic traffic, capture enquiries you don't pay a lead fee for, and give you an audience you own. Portals are a supplement, not a substitute.",
-      },
-      {
-        question: "How do you handle sold properties?",
-        answer:
-          "Keep the page with a clear sold status and links to similar available stock, or redirect to the relevant area page if the listing had links and traffic. Sold archives also make good local-search content — evidence you actually sell in that neighbourhood.",
-      },
-      {
-        question: "Do you build agent profiles and lead routing?",
-        answer:
-          "Yes. Agent pages with their own listings and reviews, plus enquiry routing to the right agent by area or property type, with CRM handoff. Response time is where most property leads are lost, so we instrument that too.",
+          "Bring your current website, the main customer journeys you need to improve and any systems or approval requirements the project must work with.",
       },
     ],
-    serviceSlugs: ["web-design", "custom-development", "local-seo", "landing-page-development", "speed-optimization"],
-    caseStudySlugs: ["castellan-realty"],
-    blogSlugs: ["local-seo-strategy-small-business", "core-web-vitals-guide", "how-to-build-website-that-converts"],
+    serviceSlugs: [
+      "web-design",
+      "custom-development",
+      "local-seo",
+      "landing-page-development",
+      "speed-optimization",
+    ],
+    caseStudySlugs: [],
+    blogSlugs: [
+      "local-seo-strategy-small-business",
+      "core-web-vitals-guide",
+      "how-to-build-website-that-converts",
+    ],
     keywords: {
       primary: "real estate website development",
       secondary: [
@@ -627,13 +607,13 @@ export const industries: Industry[] = [
     meta: {
       title: "Real Estate Website Design & IDX Development | Quesiono",
       description:
-        "Fast listing pages with optimised galleries, reliable IDX and MLS feed sync, instant filtered search, and neighbourhood pages written with real local knowledge.",
+        "Help buyers and tenants explore listings, compare details, and contact the right person with a specific property in mind.",
     },
     media: {
-      imageAlt: "Property search page with map and list views beside a listing gallery",
+      imageAlt:
+        "Property search page with map and list views beside a listing gallery",
     },
   },
-
   {
     slug: "healthcare",
     name: "Healthcare & Clinics",
@@ -641,19 +621,16 @@ export const industries: Industry[] = [
     icon: "heart-pulse",
     href: "/industries/healthcare",
     shortDescription:
-      "Accessible, trustworthy clinic sites with booking, and privacy handled properly.",
+      "Make services, practitioners, locations, and appointment options clear, with accessible content and carefully scoped enquiry forms.",
     hero: {
-      eyebrow: "Healthcare & clinics",
-      headline: "People arrive worried. Don't make them work",
-      accent: ["worried"],
-      sub: "A patient looking for a specialist wants to know you treat their condition, that you're covered by their insurance, and how soon they can be seen. Three answers, findable in seconds, written without jargon.",
+      eyebrow: "Healthcare & Clinics",
+      headline: "Help patients feel informed before they book.",
+      sub: "Make services, practitioners, locations, and appointment options clear, with accessible content and carefully scoped enquiry forms.",
     },
     overview: {
-      heading: "Healthcare and clinic website design",
+      heading: "What your visitors need to decide",
       paragraphs: [
-        "Healthcare sites carry a weight most don't. Someone reading yours may be anxious, in pain, or making a decision for a parent. Clever design that prioritises mood over clarity actively fails them.",
-        "The things patients look for are consistent: do you treat this condition, are you covered by my insurance, who is the clinician, where are you, and when can I be seen. Those answers should be one click from anywhere, in plain language, at a text size someone reads comfortably.",
-        "Accessibility isn't optional here — your patient population includes people with low vision, motor impairments, and cognitive load from illness or medication. We build to WCAG 2.1 AA as a floor. And any form touching health information gets its handling documented: where it goes, who can read it, how long it's kept.",
+        "A clinic website should help someone find the right service without asking them to navigate medical jargon. We prioritize readable information, accessible journeys and a clear separation between general enquiries and sensitive patient systems.",
       ],
     },
     challengesHeading: "What healthcare sites get wrong",
@@ -717,36 +694,32 @@ export const industries: Industry[] = [
           "Profiles with credentials, specialisms, languages spoken, and their own booking link. Photography specced even when we're not shooting it.",
       },
     ],
-    stats: [
-      { display: "AA", label: "WCAG 2.1 conformance", note: "Verified, not assumed." },
-      { display: "4–7", label: "Weeks, typical build", note: "Clinic site with booking." },
-      { value: 100, suffix: "%", label: "Forms with documented handling", note: "Storage, access, retention." },
-    ],
+    stats: [],
     faqs: [
       {
-        question: "Do you build HIPAA-compliant websites?",
+        question: "Can the website collect patient information?",
         answer:
-          "We build the site to handle protected health information correctly and we'll sign a BAA where our services touch it. Full HIPAA compliance covers your whole organisation — training, policies, physical safeguards — not just the website, so we'd rather be precise about our part than claim to certify yours. We'll walk through the data flow with you before writing any code.",
+          "We scope general website enquiries separately from clinical workflows. Sensitive information should use systems and processes approved by your organization and qualified privacy or compliance advisers.",
       },
       {
-        question: "Can patients book appointments online?",
+        question: "What should we prepare for the first conversation?",
         answer:
-          "If your practice management system has an API, yes — real availability, real bookings, with reminders. Many older systems don't, in which case we build a structured request form with honest expectations about response time and route it to the right team.",
-      },
-      {
-        question: "How important is accessibility for a clinic site?",
-        answer:
-          "More than for almost any other sector, and in many jurisdictions it's a legal requirement for healthcare providers. Beyond that, your patient population disproportionately includes people who need it. We treat WCAG 2.1 AA as the minimum, not the goal.",
-      },
-      {
-        question: "Should we publish patient reviews?",
-        answer:
-          "Google reviews, yes, with careful responses that never confirm someone was a patient. Testimonials on the site need explicit written consent and should avoid clinical specifics. We'll set up the consent process alongside the build.",
+          "Bring your current website, the main customer journeys you need to improve and any systems or approval requirements the project must work with.",
       },
     ],
-    serviceSlugs: ["web-design", "ui-ux-design", "local-seo", "content-writing", "website-maintenance"],
-    caseStudySlugs: ["northgate-dental"],
-    blogSlugs: ["local-seo-strategy-small-business", "ux-design-principles-that-increase-conversions", "how-to-build-website-that-converts"],
+    serviceSlugs: [
+      "web-design",
+      "ui-ux-design",
+      "local-seo",
+      "content-writing",
+      "website-maintenance",
+    ],
+    caseStudySlugs: [],
+    blogSlugs: [
+      "local-seo-strategy-small-business",
+      "ux-design-principles-that-increase-conversions",
+      "how-to-build-website-that-converts",
+    ],
     keywords: {
       primary: "healthcare website design",
       secondary: [
@@ -773,32 +746,29 @@ export const industries: Industry[] = [
     meta: {
       title: "Healthcare & Clinic Website Design | Quesiono",
       description:
-        "Accessible clinic sites built to WCAG 2.1 AA, with documented handling for any form carrying health information, real appointment booking, and clinician profiles.",
+        "Make services, practitioners, locations, and appointment options clear, with accessible content and carefully scoped enquiry forms.",
     },
     media: {
-      imageAlt: "Clinic website showing clinician profiles and an appointment booking step",
+      imageAlt:
+        "Clinic website showing clinician profiles and an appointment booking step",
     },
   },
-
   {
     slug: "professional-services",
     name: "Professional Services",
     icon: "scale",
     href: "/industries/professional-services",
     shortDescription:
-      "Sites for law, accounting, and consulting firms — credibility first, then the enquiry.",
+      "Help prospective clients understand your services, assess the fit, and make an informed enquiry.",
     hero: {
-      eyebrow: "Professional services",
-      headline: "You're being vetted before anyone calls you",
-      accent: ["vetted"],
-      sub: "Nobody hires a law firm or an accountant on impulse. They read three sites, form an opinion about which one seems most capable, and only then pick up the phone. Your site is the reference check you don't get to attend.",
+      eyebrow: "Professional Services",
+      headline: "Make your expertise easier to choose.",
+      sub: "Help prospective clients understand your services, assess the fit, and make an informed enquiry.",
     },
     overview: {
-      heading: "Web design for law, accounting, and consulting firms",
+      heading: "What your visitors need to decide",
       paragraphs: [
-        "Professional services buying is slow and comparative. A prospect is weighing expertise, relevance to their specific situation, and whether they'd want to sit across a table from you. That's a lot of judgement to support with a site that says \"trusted advisors since 1994\".",
-        "What actually persuades is specificity. Not \"commercial litigation\" but the kinds of disputes you handle, the size of matters, the outcomes you can describe within your professional conduct rules. Named people with real backgrounds, because clients hire individuals rather than firms.",
-        "Then a clear path to a conversation. Professional services enquiries are high-value and low-volume, so the site doesn't need mass conversion tactics — it needs the right visitor to feel confident enough to make contact, and enough qualification detail that the call is worth having.",
+        "Professional service websites need to answer three questions clearly: do you handle this problem, what does working with you involve, and what should the client do next? We structure service pages around those decisions and use evidence that your team can substantiate.",
       ],
     },
     challengesHeading: "What holds these firms back",
@@ -849,7 +819,7 @@ export const industries: Industry[] = [
       {
         title: "Compliant but specific",
         description:
-          "We work within your jurisdiction's advertising rules and find the substance that's still permitted — matter types, sectors, scale, process, and outcomes described appropriately.",
+          "We work within your jurisdiction's advertising rules and find the substance that's still permitted \u2014 matter types, sectors, scale, process, and outcomes described appropriately.",
       },
       {
         title: "A page per practice area",
@@ -862,36 +832,33 @@ export const industries: Industry[] = [
           "Structured intake that captures matter type, jurisdiction, and timing, routed to the right practitioner. Fewer wasted calls, better first conversations.",
       },
     ],
-    stats: [
-      { display: "5–9", label: "Weeks, typical build", note: "Firm site with practice area pages." },
-      { value: 2.4, decimals: 1, suffix: "×", label: "Median enquiry quality lift", note: "Enquiries within practice scope." },
-      { display: "6–8", label: "Practice area pages", note: "Median, one per real specialism." },
-    ],
+    stats: [],
     faqs: [
       {
-        question: "Our professional body restricts what we can say. Is that a problem?",
+        question: "Can you work with our review or compliance team?",
         answer:
-          "It's a constraint we work within regularly. Bar and accountancy advertising rules generally prohibit guarantees, superlatives, and comparative claims — not describing your work. There's a lot of room between \"best litigators in the state\" and \"we handle shareholder disputes in the $2m–$20m range.\" We'll draft within your rules and your compliance team reviews before publication.",
+          "Yes. We agree who reviews claims, credentials and sector-specific wording before drafting. Required approvals and review time become explicit project dependencies.",
       },
       {
-        question: "Do we need individual bios for everyone?",
+        question: "What should we prepare for the first conversation?",
         answer:
-          "For fee earners, yes — clients hire people. Support staff can be a group listing. Thin bios are worse than none, so if a partner won't sit for twenty minutes to give us something substantive, that page will underperform and we'll say so.",
-      },
-      {
-        question: "Can we publish case results?",
-        answer:
-          "Depends on your jurisdiction and your client confidentiality obligations. Where results are restricted, anonymised matter descriptions — the situation, the approach, the type of outcome — are usually permitted and still persuasive. We'll structure them for your compliance team to review.",
-      },
-      {
-        question: "Is a blog worth it for a professional services firm?",
-        answer:
-          "Substantive commentary on developments in your area works well — it demonstrates expertise, earns links, and ranks. Generic \"five tips\" posts do neither. Two well-researched pieces a quarter written by a partner beat twelve outsourced ones.",
+          "Bring your current website, the main customer journeys you need to improve and any systems or approval requirements the project must work with.",
       },
     ],
-    serviceSlugs: ["web-design", "web-development", "content-writing", "seo", "local-seo", "cms-development"],
-    caseStudySlugs: ["hartwell-mercer-law", "dazzle-website", "castellan-realty"],
-    blogSlugs: ["content-strategy-that-actually-works", "how-to-build-website-that-converts", "local-seo-strategy-small-business"],
+    serviceSlugs: [
+      "web-design",
+      "web-development",
+      "content-writing",
+      "seo",
+      "local-seo",
+      "cms-development",
+    ],
+    caseStudySlugs: [],
+    blogSlugs: [
+      "content-strategy-that-actually-works",
+      "how-to-build-website-that-converts",
+      "local-seo-strategy-small-business",
+    ],
     keywords: {
       primary: "professional services website design",
       secondary: [
@@ -918,10 +885,11 @@ export const industries: Industry[] = [
     meta: {
       title: "Law, Accounting & Consulting Website Design | Quesiono",
       description:
-        "Positioning built from the work you actually do, practitioner profiles that carry weight, a page per practice area, and intake that qualifies before the call.",
+        "Help prospective clients understand your services, assess the fit, and make an informed enquiry.",
     },
     media: {
-      imageAlt: "Professional services site showing practice area pages and a practitioner profile",
+      imageAlt:
+        "Professional services site showing practice area pages and a practitioner profile",
     },
   },
 ];
@@ -929,4 +897,5 @@ export const industries: Industry[] = [
 export const getIndustryBySlug = (slug: string) =>
   industries.find((industry) => industry.slug === slug);
 
-export const industryParams = () => industries.map((industry) => ({ slug: industry.slug }));
+export const industryParams = () =>
+  industries.map((industry) => ({ slug: industry.slug }));

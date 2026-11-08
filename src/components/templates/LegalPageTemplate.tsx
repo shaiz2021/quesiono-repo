@@ -70,7 +70,7 @@ export function LegalPageTemplate({
           <Breadcrumbs
             trail={[{ name: title, href: path }]}
             tone="dark"
-            emitSchema={false}
+            emitSchema={true}
           />
           <div className="mt-8">
             <Eyebrow tone="dark">{eyebrow}</Eyebrow>
@@ -83,7 +83,9 @@ export function LegalPageTemplate({
             className="mt-6 max-w-4xl text-step-5 font-extrabold leading-[1.02] text-vanilla"
           />
 
-          <p className="mt-7 max-w-2xl text-step-1 leading-relaxed text-vanilla/65">{intro}</p>
+          <p className="mt-7 max-w-2xl text-step-1 leading-relaxed text-vanilla/75">
+            {intro}
+          </p>
 
           <dl className="mt-12 grid gap-6 border-t border-vanilla/12 pt-9 sm:grid-cols-2 lg:grid-cols-4">
             <div>
@@ -124,12 +126,15 @@ export function LegalPageTemplate({
             </p>
             <ol className="mt-5 space-y-0">
               {sections.map((section, index) => (
-                <li key={section.id} className="border-t border-sand first:border-t-0">
+                <li
+                  key={section.id}
+                  className="border-t border-sand first:border-t-0"
+                >
                   <a
                     href={`#${section.id}`}
                     className="flex gap-3 py-3 text-[0.9rem] leading-snug text-text-muted transition-colors hover:text-indigo"
                   >
-                    <span className="font-display font-bold text-champagne">
+                    <span className="font-display font-bold text-indigo">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     {section.heading}
@@ -147,7 +152,7 @@ export function LegalPageTemplate({
                 id={section.id}
                 className="scroll-mt-[calc(var(--nav-h)+2rem)] border-t border-sand pt-12 first:border-t-0 first:pt-0 [&+section]:mt-16"
               >
-                <p className="font-display text-[0.85rem] font-bold tracking-[0.1em] text-champagne">
+                <p className="font-display text-[0.85rem] font-bold tracking-[0.1em] text-indigo">
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h2 className="mt-3 font-display text-step-3 font-extrabold tracking-tight text-text-dark">
@@ -156,7 +161,10 @@ export function LegalPageTemplate({
 
                 <div className="prose mt-7">
                   {section.blocks.map((block, blockIndex) => (
-                    <div key={`${section.id}-${blockIndex}`} className="[&+div]:mt-6">
+                    <div
+                      key={`${section.id}-${blockIndex}`}
+                      className="[&+div]:mt-6"
+                    >
                       {block.h3 ? <h3>{block.h3}</h3> : null}
                       {block.p ? <p>{block.p}</p> : null}
                       {block.list?.length ? (
@@ -180,7 +188,9 @@ export function LegalPageTemplate({
                               key={row.term}
                               className="grid gap-2 border-b border-sand bg-cream/40 px-6 py-5 last:border-b-0 sm:grid-cols-[12rem_1fr] sm:gap-6"
                             >
-                              <dt className="font-display font-bold text-text-dark">{row.term}</dt>
+                              <dt className="font-display font-bold text-text-dark">
+                                {row.term}
+                              </dt>
                               <dd className="text-[0.95rem] leading-relaxed text-text-muted">
                                 {row.detail}
                               </dd>
@@ -204,21 +214,21 @@ export function LegalPageTemplate({
                   Questions about this page?
                 </h2>
                 <p className="mt-4 max-w-xl leading-relaxed text-text-muted">
-                  A person reads that inbox, not a ticketing system. Email {site.email} and
-                  you&apos;ll hear back inside {site.responseTime}.
+                  Email {site.email} with your question and the page it relates
+                  to.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Button href={`mailto:${site.email}`} variant="primary" size="md">
+                  <Button
+                    href={`mailto:${site.email}`}
+                    variant="primary"
+                    size="md"
+                  >
                     {site.email}
                   </Button>
                   <Button href="/contact" variant="outline" size="md">
                     Contact page
                   </Button>
                 </div>
-                <p className="mt-8 border-t border-sand pt-6 text-[0.875rem] leading-relaxed text-text-muted">
-                  Postal: {site.legalName}, {site.address.street}, {site.address.city},{" "}
-                  {site.address.region} {site.address.postalCode}, {site.address.countryName}.
-                </p>
               </div>
             </Reveal>
           </div>

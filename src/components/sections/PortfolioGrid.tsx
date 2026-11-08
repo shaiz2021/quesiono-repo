@@ -1,100 +1,41 @@
 "use client";
-
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-
+import { useState } from "react";
 import { PortfolioCard } from "@/components/ui/PortfolioCard";
-import { projectCategories, projects } from "@/data/projects";
-
-/**
- * Filterable case study grid.
- *
- * The filter is client state rather than a URL param on purpose — with eight
- * projects it isn't worth a route change, and the layout animation reads much
- * better without a navigation in the middle of it.
- */
-export function PortfolioGrid() {
+type Card = Parameters<typeof PortfolioCard>[0];
+export function PortfolioGrid({ items }: { items: Card[] }) {
   const [active, setActive] = useState("All");
-  const reduceMotion = useReducedMotion();
-
-  const filters = useMemo(() => {
-    const categories = projectCategories();
-    return [
-      { label: "All", count: projects.length },
-      ...categories.map((category) => ({
-        label: category,
-        count: projects.filter((project) => project.category === category).length,
-      })),
-    ];
-  }, []);
-
-  const shown =
-    active === "All" ? projects : projects.filter((project) => project.category === active);
-
+  const categories = [
+    "All",
+    ...Array.from(new Set(items.map((p) => p.category))),
+  ];
+  const shown = items.filter((p) => active === "All" || p.category === active);
   return (
     <div>
       <div
-        className="flex flex-wrap gap-3"
+        className="flex flex-wrap gap-2"
         role="group"
-        aria-label="Filter case studies by category"
+        aria-label="Filter portfolio by industry"
       >
-        {filters.map((filter) => {
-          const selected = filter.label === active;
-
-          return (
-            <button
-              key={filter.label}
-              type="button"
-              onClick={() => setActive(filter.label)}
-              aria-pressed={selected}
-              className={[
-                "inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-[0.9rem] font-semibold transition-all duration-300",
-                selected
-                  ? "border-midnight bg-midnight text-vanilla shadow-lg"
-                  : "border-sand bg-white text-text-dark hover:-translate-y-0.5 hover:border-midnight/40",
-              ].join(" ")}
-            >
-              {filter.label}
-              <span className={selected ? "text-vanilla/50" : "text-text-muted"}>
-                {filter.count}
-              </span>
-            </button>
-          );
-        })}
+        {categories.map((c) => (
+          <button
+            type="button"
+            key={c}
+            aria-pressed={c === active}
+            onClick={() => setActive(c)}
+            className={`min-h-11 rounded border px-4 py-2 text-sm ${active === c ? "border-ink bg-ink text-vanilla" : "border-sand bg-white text-text-dark hover:border-indigo"}`}
+          >
+            {c}
+          </button>
+        ))}
       </div>
-
-      <motion.div layout={!reduceMotion} className="mt-14 grid gap-8 lg:grid-cols-2">
-        <AnimatePresence mode="popLayout" initial={false}>
-          {shown.map((project) => (
-            <motion.div
-              key={project.slug}
-              layout={!reduceMotion}
-              initial={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-              animate={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <PortfolioCard
-                title={project.name}
-                category={project.category}
-                slug={project.slug}
-                image={project.image}
-                imageAlt={project.imageAlt}
-                metric={project.metric}
-                metricLabel={project.metricLabel}
-                summary={project.summary}
-                tags={project.tags}
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
-
-      {shown.length === 0 ? (
-        <p className="mt-14 text-text-muted">
-          Nothing in that category yet. Try &ldquo;All&rdquo;.
-        </p>
-      ) : null}
+      <p role="status" className="mt-5 text-sm text-text-muted">
+        {shown.length} {shown.length === 1 ? "project" : "projects"}
+      </p>
+      <div className="mt-8 grid gap-x-10 gap-y-14 md:grid-cols-2">
+        {shown.map((p) => (
+          <PortfolioCard key={p.slug} {...p} />
+        ))}
+      </div>
     </div>
   );
 }

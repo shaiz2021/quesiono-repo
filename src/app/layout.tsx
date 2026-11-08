@@ -3,17 +3,13 @@ import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { NavBar } from "@/components/layout/NavBar";
 import { Footer } from "@/components/layout/Footer";
-import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { AnalyticsConsent } from "@/components/sections/AnalyticsConsent";
+import { Attribution } from "@/components/sections/Attribution";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { Analytics } from "@vercel/analytics/react";
+
 import { site } from "@/lib/site";
 import { buildNavTree } from "@/lib/nav";
-import {
-  graph,
-  organizationSchema,
-  localBusinessSchema,
-  webSiteSchema,
-} from "@/lib/schema";
+import { graph, organizationSchema, webSiteSchema } from "@/lib/schema";
 
 /* Bricolage Grotesque has no italic — it carries weight and width instead.
    Variable across 200–800, so no weight array is needed. */
@@ -73,10 +69,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-/* Only inject GTM when a real container ID is configured. The previous
-   fallback loaded "GTM-XXXXXX", which is a wasted request against a
-   container that cannot exist. */
-const GTM_ID = process.env.GTM_ID;
+const GTM_ID =
+  /^GTM-[A-Z0-9]+$/.test(process.env.GTM_ID ?? "") &&
+  process.env.GTM_ID !== "GTM-XXXXXX"
+    ? process.env.GTM_ID
+    : undefined;
 
 export default function RootLayout({
   children,
@@ -89,39 +86,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <head>
-        <JsonLd
-          data={graph(
-            organizationSchema(),
-            localBusinessSchema(),
-            webSiteSchema()
-          )}
-        />
-        {GTM_ID && (
-          <script
-            dangerouslySetInnerHTML={{
-              /* Gated on Do Not Track and Global Privacy Control. GTM is the only
-                 thing on the site that can set a cookie, so honouring the signal
-                 here is what makes the cookie policy's claim true. */
-              __html: `(function(w,d,s,l,i){
-if(w.doNotTrack==='1'||navigator.doNotTrack==='1'||navigator.msDoNotTrack==='1'||navigator.globalPrivacyControl===true){return;}
-w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-            }}
-          />
-        )}
+        <JsonLd data={graph(organizationSchema(), webSiteSchema())} />
       </head>
       <body className="font-body bg-cream text-text-dark antialiased">
-        {GTM_ID && (
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-            }}
-          />
-        )}
-
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-champagne focus:px-5 focus:py-3 focus:font-semibold focus:text-ink"
@@ -129,11 +96,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           Skip to content
         </a>
 
-        <ScrollProgress />
+        <Attribution />
         <NavBar tree={navTree} />
         <main id="main">{children}</main>
         <Footer />
-        <Analytics />
+        <AnalyticsConsent containerId={GTM_ID} />
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ export const site = {
   tagline: "Web Design & Digital Agency",
   url: "https://quesiono.com",
   description:
-    "Quesiono is a web design and digital agency. We build fast websites, run SEO that earns rankings, and write content that brings in work.",
+    "Quesiono is a web design and digital agency. We design and develop websites, ecommerce stores and software, with SEO, content and ongoing support.",
   founded: "2022",
 
   email: "hello@quesiono.com",
@@ -52,7 +52,11 @@ export const site = {
 
 export const socialLinks = [
   { label: "LinkedIn", href: site.social.linkedin, icon: "linkedin" as const },
-  { label: "Instagram", href: site.social.instagram, icon: "instagram" as const },
+  {
+    label: "Instagram",
+    href: site.social.instagram,
+    icon: "instagram" as const,
+  },
   { label: "X", href: site.social.x, icon: "x" as const },
 ];
 

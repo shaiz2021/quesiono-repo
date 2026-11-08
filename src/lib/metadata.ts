@@ -37,7 +37,9 @@ export function buildMetadata(params: {
   const image = ogImage({ title, eyebrow, type: cardType });
 
   return {
-    title,
+    title: {
+      absolute: title.includes(site.name) ? title : `${title} | ${site.name}`,
+    },
     description,
     keywords,
     alternates: { canonical: path },

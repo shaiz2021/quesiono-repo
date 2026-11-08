@@ -1,16 +1,7 @@
-import { designPosts } from "./blog-design";
-import { developmentPosts } from "./blog-development";
-import { seoPosts } from "./blog-seo";
-import { growthPosts } from "./blog-growth";
-import { businessPosts } from "./blog-business";
+import { journalContent } from "./blog-content";
 
 export type BlogCategory =
-  | "Web Design"
-  | "Development"
-  | "SEO"
-  | "Ecommerce"
-  | "Content"
-  | "Business";
+  "Web Design" | "Development" | "SEO" | "Ecommerce" | "Content" | "Business";
 
 export interface BlogPost {
   slug: string;
@@ -47,13 +38,9 @@ export interface BlogPost {
  * Newest first. The five source files group by subject; ordering is by date and
  * lives here so the index, the RSS feed, and the related rails all agree.
  */
-export const blogPosts: BlogPost[] = [
-  ...designPosts,
-  ...developmentPosts,
-  ...seoPosts,
-  ...growthPosts,
-  ...businessPosts,
-].sort((a, b) => (a.date < b.date ? 1 : -1));
+export const blogPosts: BlogPost[] = journalContent.sort((a, b) =>
+  a.date < b.date ? 1 : -1,
+);
 
 export const blogCategories: BlogCategory[] = [
   "Web Design",
@@ -64,13 +51,17 @@ export const blogCategories: BlogCategory[] = [
   "Business",
 ];
 
-export const getBlogPostBySlug = (slug: string) => blogPosts.find((p) => p.slug === slug);
+export const getBlogPostBySlug = (slug: string) =>
+  blogPosts.find((p) => p.slug === slug);
 
 export const getBlogPostsByCategory = (category: string) =>
-  category === "All" ? blogPosts : blogPosts.filter((p) => p.category === category);
+  category === "All"
+    ? blogPosts
+    : blogPosts.filter((p) => p.category === category);
 
 /** The single hero post on /blog and the home page rail. */
-export const getFeaturedBlogPost = () => blogPosts.find((p) => p.featured) ?? blogPosts[0];
+export const getFeaturedBlogPost = () =>
+  blogPosts.find((p) => p.featured) ?? blogPosts[0];
 
 export const featuredBlogPosts = () => blogPosts.filter((p) => p.featured);
 
@@ -93,7 +84,10 @@ export const getRelatedPosts = (slug: string, limit = 3) => {
     .filter((p): p is BlogPost => Boolean(p) && p!.slug !== slug);
 
   const sameCategory = blogPosts.filter(
-    (p) => p.slug !== slug && p.category === post.category && !explicit.some((e) => e.slug === p.slug),
+    (p) =>
+      p.slug !== slug &&
+      p.category === post.category &&
+      !explicit.some((e) => e.slug === p.slug),
   );
 
   return [...explicit, ...sameCategory].slice(0, limit);
@@ -105,8 +99,18 @@ export const blogParams = () => blogPosts.map((p) => ({ slug: p.slug }));
 export const formatPostDate = (iso: string) => {
   const [year, month, day] = iso.split("-");
   const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   const monthLabel = months[Number(month) - 1] ?? month;
   return `${Number(day)} ${monthLabel} ${year}`;
@@ -125,7 +129,10 @@ export const postHeadings = (post: BlogPost) => {
   const found: { id: string; label: string }[] = [];
   let match = pattern.exec(post.content);
   while (match) {
-    found.push({ id: match[1], label: match[2].replace(/<[^>]+>/g, "").trim() });
+    found.push({
+      id: match[1],
+      label: match[2].replace(/<[^>]+>/g, "").trim(),
+    });
     match = pattern.exec(post.content);
   }
   return found;
