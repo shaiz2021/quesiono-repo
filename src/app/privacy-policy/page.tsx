@@ -60,7 +60,7 @@ const sections = [
     heading: "Questions and data requests",
     blocks: [
       {
-        p: "Email hello@quesiono.com to ask about information connected with your enquiry or request correction or deletion. Information already delivered by email is managed in the receiving mailbox and its backups. Retention and any project-specific handling should be confirmed with Quesiono.",
+        p: "Email quesionowebdesign@gmail.com to ask about information connected with your enquiry or request correction or deletion. Information already delivered by email is managed in the receiving mailbox and its backups. Retention and any project-specific handling should be confirmed with Quesiono.",
       },
       {
         p: "If a project involves access to your systems or customer data, the handling arrangements should be agreed separately before that access is provided.",

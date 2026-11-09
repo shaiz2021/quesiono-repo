@@ -15,7 +15,7 @@ export const site = {
     "Quesiono is a web design and digital agency. We design and develop websites, ecommerce stores and software, with SEO, content and ongoing support.",
   founded: "2022",
 
-  email: "hello@quesiono.com",
+  email: "quesionowebdesign@gmail.com",
   phone: "+1-713-555-0142",
 
   address: {

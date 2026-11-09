@@ -60,7 +60,7 @@ const sections = [
     heading: "Questions",
     blocks: [
       {
-        p: "For questions about the website or a proposed engagement, contact hello@quesiono.com. Existing signed project agreements continue to govern the work they cover.",
+        p: "For questions about the website or a proposed engagement, contact quesionowebdesign@gmail.com. Existing signed project agreements continue to govern the work they cover.",
       },
     ],
   },

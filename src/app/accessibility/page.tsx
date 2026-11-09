@@ -24,7 +24,7 @@ const sections = [
     heading: "Reporting a barrier",
     blocks: [
       {
-        p: "If you cannot use part of the site, email hello@quesiono.com with the page address, what you were trying to do and the browser or assistive technology involved, if you are comfortable sharing it.",
+        p: "If you cannot use part of the site, email quesionowebdesign@gmail.com with the page address, what you were trying to do and the browser or assistive technology involved, if you are comfortable sharing it.",
       },
       {
         p: "We can discuss another way to provide the information or handle your enquiry while the issue is investigated.",
