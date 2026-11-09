@@ -27,15 +27,15 @@ export function PageHero({
       <div className="site-container">
         <Breadcrumbs trail={trail} tone={light ? "light" : "dark"} />
         <div
-          className={`mt-12 grid gap-10 ${children ? "lg:grid-cols-[1.15fr_.85fr] lg:items-end" : ""}`}
+          className={`mt-12 grid min-w-0 gap-10 ${children ? "lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:items-end" : ""}`}
         >
-          <div>
+          <div className="min-w-0">
             <p
               className={`eyebrow ${light ? "text-text-muted" : "text-champagne"}`}
             >
               {eyebrow}
             </p>
-            <h1 className="mt-5 max-w-4xl text-step-6 font-bold leading-[1.04]">
+            <h1 className="mt-5 max-w-4xl break-words text-step-6 font-bold leading-[1.04]">
               {title}
             </h1>
             <p
@@ -50,7 +50,7 @@ export function PageHero({
               </Button>
             )}
           </div>
-          {children}
+          {children ? <div className="min-w-0">{children}</div> : null}
         </div>
       </div>
     </header>

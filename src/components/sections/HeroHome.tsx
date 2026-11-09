@@ -43,7 +43,7 @@ export function HeroHome() {
             </div>
           </div>
         </div>
-        <div className="mt-12 grid border border-sand bg-ink md:mt-16 md:grid-cols-[.68fr_1.32fr]">
+        <div className="mt-12 grid min-w-0 border border-sand bg-ink md:mt-16 md:grid-cols-[minmax(0,.68fr)_minmax(0,1.32fr)]">
           <div className="flex flex-col justify-between p-7 text-vanilla md:p-9">
             <div>
               <p className="eyebrow text-champagne">A closer look / 01</p>
@@ -67,7 +67,7 @@ export function HeroHome() {
               </Link>
             </div>
           </div>
-          <div className="relative aspect-[3/2]">
+          <div className="relative min-w-0 aspect-[3/2]">
             <Image
               src="/images/projects/project-1.png"
               alt="Dream Floor landscaping website presentation with desktop and mobile views"

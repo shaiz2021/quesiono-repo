@@ -204,30 +204,32 @@ export function ServicePageTemplate({ service: s }: { service: Service }) {
               <ArrowUpRight className="h-4 w-4" aria-hidden />
             </Button>
           </div>
-          <dl className="space-y-6 border-t border-sand pt-6">
-            <div>
-              <dt className="font-semibold">Delivery schedule</dt>
-              <dd className="mt-2 text-sm text-text-muted">
-                {commercialPolicy.timing}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold">What is outside the quote?</dt>
-              <dd className="mt-2 text-sm text-text-muted">
-                {commercialPolicy.exclusions}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold">Your part</dt>
-              <dd className="mt-2 text-sm text-text-muted">
-                Provide accurate business information, access to agreed systems,
-                and consolidated feedback at review points.
-              </dd>
-            </div>
-            <Link href="/pricing" className="text-link">
+          <div>
+            <dl className="space-y-6 border-t border-sand pt-6">
+              <div>
+                <dt className="font-semibold">Delivery schedule</dt>
+                <dd className="mt-2 text-sm text-text-muted">
+                  {commercialPolicy.timing}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-semibold">What is outside the quote?</dt>
+                <dd className="mt-2 text-sm text-text-muted">
+                  {commercialPolicy.exclusions}
+                </dd>
+              </div>
+              <div>
+                <dt className="font-semibold">Your part</dt>
+                <dd className="mt-2 text-sm text-text-muted">
+                  Provide accurate business information, access to agreed systems,
+                  and consolidated feedback at review points.
+                </dd>
+              </div>
+            </dl>
+            <Link href="/pricing" className="text-link mt-6 inline-flex">
               See how pricing works ↗
             </Link>
-          </dl>
+          </div>
         </div>
         {tiers.length > 0 && (
           <PricingTable

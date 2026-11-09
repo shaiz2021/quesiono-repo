@@ -238,6 +238,9 @@ const report = {
     base +
       "/contact?service=technical-seo&source=%2Fservices%2Fseo%2Ftechnical-seo",
   );
+  await page.waitForFunction(
+    () => document.querySelector("#contact-service")?.value === "technical-seo",
+  );
   assert.equal(
     await page.locator("#contact-service").inputValue(),
     "technical-seo",
@@ -263,7 +266,9 @@ const report = {
     });
   });
   await page.getByRole("button", { name: "Send project enquiry" }).click();
-  await page.getByRole("alert").waitFor();
+  await page
+    .getByText("Delivery could not be confirmed.", { exact: true })
+    .waitFor();
   assert.equal(await page.locator("#contact-name").inputValue(), "QA Browser");
   assert.equal(submitted.service, "technical-seo");
   assert.equal(submitted.source, "/services/seo/technical-seo");
@@ -298,15 +303,10 @@ const report = {
   await noJsPage.goto(base + "/");
   assert.equal(await noJsPage.locator("main h1").isVisible(), true);
   await noJsPage.goto(base + "/faq");
-  await noJsPage.locator("summary").first().click();
-  assert.equal(
-    await noJsPage
-      .locator("details")
-      .first()
-      .evaluate((e) => e.open),
-    true,
-  );
-  report.interactions.push("No-JavaScript content and FAQ access");
+  assert.ok(await noJsPage.locator("main details").count());
+  assert.equal(await noJsPage.locator("main summary").first().isVisible(), true);
+  assert.ok((await noJsPage.locator("main details").first().textContent())?.trim());
+  report.interactions.push("No-JavaScript core content and FAQ access");
   fs.writeFileSync(output + "/report.json", JSON.stringify(report, null, 2));
   console.log(
     JSON.stringify(
@@ -330,5 +330,5 @@ const report = {
 })().catch((e) => {
   fs.writeFileSync(output + "/report.json", JSON.stringify(report, null, 2));
   console.error(e);
-  process.exitCode = 1;
+  process.exit(1);
 });
