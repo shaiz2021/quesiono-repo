@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { NavBar } from "@/components/layout/NavBar";
 import { Footer } from "@/components/layout/Footer";
 import { AnalyticsConsent } from "@/components/sections/AnalyticsConsent";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { Attribution } from "@/components/sections/Attribution";
 import { JsonLd } from "@/components/seo/JsonLd";
 
@@ -89,6 +90,7 @@ export default function RootLayout({
         <JsonLd data={graph(organizationSchema(), webSiteSchema())} />
       </head>
       <body className="font-body bg-cream text-text-dark antialiased">
+        <ScrollProgress />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-champagne focus:px-5 focus:py-3 focus:font-semibold focus:text-ink"
