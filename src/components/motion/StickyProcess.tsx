@@ -51,7 +51,7 @@ export function StickyProcess({
         <p
           className={cn(
             "text-[0.7rem] font-semibold uppercase tracking-[0.22em]",
-            dark ? "text-champagne" : "text-champagne"
+            dark ? "text-champagne" : "text-indigo"
           )}
         >
           {eyebrow}
@@ -68,7 +68,7 @@ export function StickyProcess({
           <p
             className={cn(
               "mt-5 text-step-0 leading-relaxed",
-              dark ? "text-vanilla/65" : "text-text-muted"
+              dark ? "text-vanilla/75" : "text-text-muted"
             )}
           >
             {intro}
@@ -90,7 +90,7 @@ export function StickyProcess({
           <span
             className={cn(
               "text-[0.7rem] uppercase tracking-[0.2em]",
-              dark ? "text-vanilla/40" : "text-text-muted"
+              dark ? "text-vanilla/70" : "text-text-muted"
             )}
           >
             {steps.length} steps
@@ -99,18 +99,14 @@ export function StickyProcess({
       </div>
 
       {/* Steps */}
-      <ol className="space-y-5">
-        {steps.map((step, i) => (
-          <motion.li
+      <ol className="space-y-5 border-l border-champagne/35 pl-5 lg:border-l-0 lg:pl-0">
+        {steps.map((step) => (
+          <li
             key={step.step}
-            initial={reduced ? undefined : { opacity: 0, y: 30 }}
-            whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-12%" }}
-            transition={{ duration: 0.6, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "group relative rounded-2xl border p-7 transition-colors sm:p-9",
+              "premium-card group relative rounded-2xl border p-6 before:absolute before:-left-[1.56rem] before:top-8 before:h-2 before:w-2 before:rounded-full before:bg-champagne lg:before:hidden sm:p-9",
               dark
-                ? "border-vanilla/10 bg-midnight/60 hover:border-champagne/40"
+                ? "border-vanilla/10 bg-midnight/60 hover:border-champagne/60 hover:bg-indigo/60"
                 : "border-sand bg-white hover:border-champagne/60"
             )}
           >
@@ -118,7 +114,7 @@ export function StickyProcess({
               <span
                 className={cn(
                   "shrink-0 font-display text-step-4 font-extrabold leading-none",
-                  dark ? "text-vanilla/15" : "text-sand"
+                  dark ? "text-champagne" : "text-indigo"
                 )}
               >
                 {step.step}
@@ -135,7 +131,7 @@ export function StickyProcess({
                 <p
                   className={cn(
                     "mt-3 leading-relaxed",
-                    dark ? "text-vanilla/65" : "text-text-muted"
+                    dark ? "text-vanilla/75" : "text-text-muted"
                   )}
                 >
                   {step.description}
@@ -147,7 +143,7 @@ export function StickyProcess({
                         key={item}
                         className={cn(
                           "flex items-start gap-2 text-[0.92rem]",
-                          dark ? "text-vanilla/55" : "text-text-muted"
+                          dark ? "text-vanilla/75" : "text-text-muted"
                         )}
                       >
                         <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-champagne" />
@@ -158,7 +154,7 @@ export function StickyProcess({
                 )}
               </div>
             </div>
-          </motion.li>
+          </li>
         ))}
       </ol>
     </div>

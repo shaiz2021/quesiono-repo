@@ -39,8 +39,9 @@ export default function PricingPage() {
           {discoveryGroups.map((g) => (
             <article
               key={g.id}
-              className="flex flex-col border border-sand p-7"
+              className="premium-card group relative flex flex-col overflow-hidden rounded-md border border-sand bg-white p-7 hover:border-indigo hover:bg-cream hover:shadow-lg"
             >
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-indigo transition-transform duration-500 group-hover:scale-x-100" />
               <p className="text-xs text-text-muted">/{g.number}</p>
               <h3 className="mt-4 text-step-3 font-semibold">{g.title}</h3>
               <p className="mt-4 flex-1 text-sm text-text-muted">
@@ -90,6 +91,29 @@ export default function PricingPage() {
                 <h3 className="text-step-2 font-semibold">{f.title}</h3>
                 <p className="mt-3 text-sm text-text-muted">{f.description}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+      <Section width="wide" tone="white">
+        <div className="grid gap-9 lg:grid-cols-[.75fr_1.25fr] lg:gap-14">
+          <div>
+            <p className="eyebrow text-indigo">A better first estimate</p>
+            <h2 className="mt-5 text-step-4 font-bold">Share the constraints that matter.</h2>
+            <p className="mt-5 max-w-md text-text-muted">You do not need a finished specification. A little context helps distinguish a focused improvement from a larger website or application project.</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              ["The goal", "Tell us what customers need to understand, buy or do on the new site."],
+              ["The starting point", "Share your current URL, what works and what frustrates your team or visitors."],
+              ["The moving parts", "Mention ecommerce, content migration, account access, integrations or approval requirements."],
+              ["Your constraints", "A useful budget range and target date help shape the first phase. Both can remain provisional."],
+            ].map(([title, description], i) => (
+              <article key={title} className="premium-card rounded-md border border-sand bg-cream p-6 hover:border-indigo hover:bg-white hover:shadow-lg">
+                <span className="text-xs font-semibold text-indigo">0{i + 1}</span>
+                <h3 className="mt-5 text-step-2 font-semibold">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted">{description}</p>
+              </article>
             ))}
           </div>
         </div>

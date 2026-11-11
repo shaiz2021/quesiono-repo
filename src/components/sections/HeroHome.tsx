@@ -99,7 +99,7 @@ export function HeroHome() {
                   <i className="h-1.5 w-1.5 rounded-full bg-champagne/80 sm:h-2 sm:w-2" />
                   <i className="h-1.5 w-1.5 rounded-full bg-vanilla/35 sm:h-2 sm:w-2" />
                   <i className="h-1.5 w-1.5 rounded-full bg-vanilla/20 sm:h-2 sm:w-2" />
-                  <span className="ml-2 truncate text-[.55rem] text-vanilla/45 sm:text-[.65rem]">
+                  <span className="ml-2 truncate text-[.55rem] text-vanilla/75 sm:text-[.65rem]">
                     {project.name} / {project.type}
                   </span>
                 </div>

@@ -25,17 +25,18 @@ export default function ProductsPage() {
         {products.map((p) => (
           <article
             key={p.name}
-            className="grid gap-10 border-y border-sand py-10 md:grid-cols-2"
+            className="grid overflow-hidden rounded-md border border-sand bg-ink text-vanilla md:grid-cols-2"
           >
-            <div>
-              <p className="eyebrow text-text-muted">Resume software</p>
-              <h2 className="mt-5 text-step-5 font-bold">{p.name}</h2>
-              <p className="mt-6 max-w-md text-step-1 text-text-muted">
+            <div className="relative overflow-hidden p-7 sm:p-10">
+              <span aria-hidden className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full border border-champagne/20" />
+              <p className="eyebrow text-champagne">Resume software / Product</p>
+              <h2 className="mt-5 text-step-5 font-bold text-vanilla">{p.name}</h2>
+              <p className="mt-6 max-w-md text-step-1 text-vanilla/75">
                 A resume-building tool for people organizing their experience
                 and preparing job applications.
               </p>
             </div>
-            <div className="self-center">
+            <div className="self-center bg-cream p-7 text-text-dark sm:p-10">
               <h3 className="text-step-2 font-semibold">
                 Looking for the product?
               </h3>

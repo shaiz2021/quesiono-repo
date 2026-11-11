@@ -21,12 +21,13 @@ export default function CareersPage() {
       />
       <Section width="wide" tone="white" id="roles">
         <div className="grid gap-12 md:grid-cols-2">
-          <div>
-            <p className="eyebrow text-text-muted">Current hiring status</p>
+          <div className="relative overflow-hidden rounded-md border border-indigo bg-indigo p-7 text-vanilla sm:p-9">
+            <span aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border border-champagne/25" />
+            <p className="eyebrow text-champagne">Current hiring status</p>
             <h2 className="mt-5 text-step-4 font-bold">
               No confirmed vacancies are published.
             </h2>
-            <p className="mt-6 text-text-muted">
+            <p className="mt-6 text-vanilla/75">
               Please confirm availability before preparing an application. An
               introduction does not create an application to an open role.
             </p>

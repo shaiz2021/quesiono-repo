@@ -22,7 +22,7 @@ export function PortfolioGrid({ items }: { items: Card[] }) {
             key={c}
             aria-pressed={c === active}
             onClick={() => setActive(c)}
-            className={`min-h-11 rounded border px-4 py-2 text-sm ${active === c ? "border-ink bg-ink text-vanilla" : "border-sand bg-white text-text-dark hover:border-indigo"}`}
+            className={`min-h-11 rounded-full border px-5 py-2 text-sm font-semibold transition-[background-color,border-color,color,transform] duration-300 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo ${active === c ? "border-ink bg-ink text-vanilla" : "border-sand bg-white text-text-dark hover:border-indigo hover:bg-cream"}`}
           >
             {c}
           </button>
@@ -31,7 +31,7 @@ export function PortfolioGrid({ items }: { items: Card[] }) {
       <p role="status" className="mt-5 text-sm text-text-muted">
         {shown.length} {shown.length === 1 ? "project" : "projects"}
       </p>
-      <div className="mt-8 grid gap-x-10 gap-y-14 md:grid-cols-2">
+      <div key={active} className="portfolio-filter-in mt-8 grid gap-x-10 gap-y-14 md:grid-cols-2">
         {shown.map((p) => (
           <PortfolioCard key={p.slug} {...p} />
         ))}

@@ -3,6 +3,7 @@ import { commercialPolicy } from "@/data/commercial";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
 import { CTABanner } from "@/components/ui/CTABanner";
+import { StickyProcess } from "@/components/motion/StickyProcess";
 import { buildMetadata } from "@/lib/metadata";
 export const metadata = buildMetadata({
   title: "Our Website Design & Development Process",
@@ -20,33 +21,36 @@ export default function ProcessPage() {
         trail={[{ name: "Process", href: "/process" }]}
         light
       />
-      <Section width="wide" tone="white">
-        <ol>
-          {studioProcess.map((s) => (
-            <li
-              key={s.step}
-              className="grid gap-6 border-t border-sand py-10 md:grid-cols-[5rem_1fr_1.2fr] md:gap-10"
-            >
-              <span className="font-display text-4xl text-indigo">
-                {s.step}
-              </span>
-              <div>
-                <h2 className="text-step-3 font-semibold">{s.title}</h2>
-                <p className="mt-4 text-sm text-text-muted">{s.description}</p>
-              </div>
-              <ul className="space-y-4">
-                {s.detail.map((d) => (
-                  <li
-                    key={d}
-                    className="border-l-2 border-sand pl-4 text-sm leading-relaxed text-text-muted"
-                  >
-                    {d}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
+      <Section width="wide" tone="ink">
+        <StickyProcess
+          steps={studioProcess}
+          eyebrow="The delivery path"
+          title="Six clear stages. One useful outcome."
+          intro="Follow the work from the first brief through design, development, launch and handover. Each stage includes a decision or review point for your team."
+        />
+      </Section>
+      <Section width="wide" tone="cream">
+        <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
+          <div>
+            <p className="eyebrow text-indigo">What to expect in the proposal</p>
+            <h2 className="mt-5 text-step-4 font-bold">Clarity before any build begins.</h2>
+            <p className="mt-5 max-w-md text-text-muted">A useful proposal should make the decisions visible, even when the project starts with only a rough idea.</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              ["01", "A defined scope", "Pages, features and integrations are named alongside the work that is not included."],
+              ["02", "Review points", "Know when you will see structure, designs and working pages, and how feedback is consolidated."],
+              ["03", "Dependencies", "Content, access, approvals and third-party services are identified early so they do not surprise anyone."],
+              ["04", "Handover plan", "Confirm ownership of accounts and files, editing needs and any support required after launch."],
+            ].map(([number, title, description]) => (
+              <article key={title} className="premium-card rounded-md border border-sand bg-white p-6 hover:border-indigo hover:shadow-lg">
+                <span className="text-xs font-bold text-indigo">/{number}</span>
+                <h3 className="mt-5 text-step-2 font-semibold">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted">{description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </Section>
       <Section width="wide" tone="ink">
         <div className="grid gap-10 md:grid-cols-2">

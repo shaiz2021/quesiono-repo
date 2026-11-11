@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 type Post = {
   slug: string;
   title: string;
@@ -31,7 +32,7 @@ export function BlogGrid({ posts }: { posts: Post[] }) {
                 key={c}
                 onClick={() => setCategory(c)}
                 aria-pressed={category === c}
-                className={`min-h-11 rounded border px-4 py-2 text-sm ${category === c ? "border-ink bg-ink text-vanilla" : "border-sand text-text-dark"}`}
+                className={`min-h-11 rounded-full border px-5 py-2 text-sm font-semibold transition-[background-color,border-color,color,transform] duration-300 active:scale-95 ${category === c ? "border-ink bg-ink text-vanilla" : "border-sand bg-white text-text-dark hover:border-indigo hover:bg-cream"}`}
               >
                 {c}
               </button>
@@ -55,22 +56,23 @@ export function BlogGrid({ posts }: { posts: Post[] }) {
       <p role="status" className="mt-6 text-sm text-text-muted">
         {shown.length} {shown.length === 1 ? "article" : "articles"}
       </p>
-      <div className="mt-5 grid gap-x-12 md:grid-cols-2">
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
         {shown.map((p) => (
           <Link
             key={p.slug}
             href={`/blog/${p.slug}`}
-            className="border-t border-sand py-8"
+            className="premium-card group relative flex min-h-[16rem] flex-col overflow-hidden rounded-md border border-sand bg-cream p-6 hover:border-indigo hover:bg-white hover:shadow-lg focus-visible:border-indigo sm:p-8"
           >
-            <p className="eyebrow text-text-muted">
+            <span aria-hidden className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-champagne transition-transform duration-500 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
+            <p className="eyebrow text-indigo">
               {p.category} / {p.readTime}
             </p>
             <h2 className="mt-4 text-step-3 font-semibold">{p.title}</h2>
-            <p className="mt-4 text-sm leading-relaxed text-text-muted">
+            <p className="mt-4 flex-1 text-sm leading-relaxed text-text-muted">
               {p.excerpt}
             </p>
-            <span className="mt-5 inline-block text-sm font-semibold text-indigo">
-              Read the guide ↗
+            <span className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-indigo">
+              Read the guide <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden />
             </span>
           </Link>
         ))}

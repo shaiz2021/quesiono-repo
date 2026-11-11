@@ -263,8 +263,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {work.length ? (
         <Section tone="white" spacing="lg" width="wide">
           <SectionHeading
-            eyebrow="Seen in the wild"
-            title="Where we did this on a real project"
+            eyebrow="Related visual work"
+            title="Project presentations on a related challenge"
             size="lg"
           />
           <div className="mt-14 grid gap-8 md:grid-cols-2">

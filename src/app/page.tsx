@@ -7,6 +7,7 @@ import { PrinciplesSection } from "@/components/sections/PrinciplesSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { Section } from "@/components/ui/Section";
+import { Reveal } from "@/components/motion/Reveal";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { homeFaqs } from "@/data/studio";
@@ -68,41 +69,37 @@ export default function HomePage() {
         )}
       />
       <HeroHome />
-      <Section tone="white" width="wide" id="business-problems">
-        <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr]">
-          <div>
-            <p className="eyebrow text-text-muted">Sound familiar?</p>
+      <Section tone="cream" width="wide" id="business-problems" className="border-t-4 border-champagne">
+        <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <p className="eyebrow text-indigo">01 / Find your starting point</p>
             <h2 className="mt-5 max-w-md text-step-5 font-bold">
-              Your website should help.
-              <br />
-              Not hold you back.
+              What is your website <span className="text-indigo">not doing</span> for you?
             </h2>
-            <p className="mt-6 max-w-sm text-text-muted">
-              You do not need to know the technical answer. Start with the part
-              that is not working.
+            <p className="mt-6 max-w-sm leading-relaxed text-text-muted">
+              You do not need to know which service to buy. Choose the problem
+              that sounds familiar, then explore a practical way forward.
             </p>
+            <div className="mt-8 hidden h-px w-28 bg-champagne lg:block" aria-hidden />
           </div>
-          <div>
+          <div className="grid gap-3 sm:grid-cols-2">
             {problems.map(([title, description, href], i) => (
-              <Link
-                href={href}
-                key={href}
-                className="group grid grid-cols-[1.5rem_1fr_1.2rem] gap-4 border-t border-sand py-6"
-              >
-                <span className="pt-1 text-xs text-text-muted">0{i + 1}</span>
-                <div>
-                  <h3 className="text-lg font-semibold leading-snug">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-text-muted">
-                    {description}
-                  </p>
-                </div>
-                <ArrowUpRight
-                  className="h-5 w-5 text-indigo transition-transform group-hover:-translate-y-1"
-                  aria-hidden
-                />
-              </Link>
+              <Reveal key={href} delay={(i % 2) * 0.07} className="h-full">
+                <Link
+                  href={href}
+                  className="premium-card group relative flex h-full min-h-[14rem] flex-col justify-between overflow-hidden rounded-md border border-sand bg-white p-5 hover:border-indigo hover:bg-indigo hover:shadow-[0_20px_45px_-28px_rgba(11,15,28,.7)] focus-visible:bg-indigo focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne sm:p-6"
+                >
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-champagne transition-transform duration-500 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
+                  <span className="flex items-center justify-between gap-4">
+                    <span className="text-xs font-semibold text-indigo group-hover:text-champagne group-focus-visible:text-champagne">0{i + 1} / THE CHALLENGE</span>
+                    <ArrowUpRight className="h-5 w-5 shrink-0 text-indigo transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-champagne group-focus-visible:text-champagne" aria-hidden />
+                  </span>
+                  <span className="mt-5 block">
+                    <span className="block font-display text-step-1 font-bold leading-snug text-text-dark group-hover:text-vanilla group-focus-visible:text-vanilla">{title}</span>
+                    <span className="mt-3 block text-sm leading-relaxed text-text-muted group-hover:text-vanilla/80 group-focus-visible:text-vanilla/80">{description}</span>
+                  </span>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>

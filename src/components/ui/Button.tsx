@@ -37,7 +37,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    "inline-flex items-center justify-center gap-2 min-h-12 rounded font-semibold transition-colors duration-200 disabled:pointer-events-none disabled:opacity-60",
+    "button-action relative isolate inline-flex min-h-12 items-center justify-center overflow-hidden rounded font-semibold transition-[background-color,transform,box-shadow] duration-300 ease-smooth hover:shadow-lg disabled:pointer-events-none disabled:opacity-60",
     variants[variant],
     sizes[size],
     className,
@@ -52,16 +52,26 @@ export function Button({
           rel="noopener noreferrer"
           className={classes}
         >
-          {props.children}
+          <span className="relative z-10 inline-flex items-center justify-center gap-2">
+            {props.children}
+          </span>
         </a>
       );
     }
     return (
       <Link href={href} className={classes}>
-        {props.children}
+        <span className="relative z-10 inline-flex items-center justify-center gap-2">
+          {props.children}
+        </span>
       </Link>
     );
   }
 
-  return <button className={classes} {...props} />;
+  return (
+    <button className={classes} {...props}>
+      <span className="relative z-10 inline-flex items-center justify-center gap-2">
+        {props.children}
+      </span>
+    </button>
+  );
 }

@@ -50,17 +50,28 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         light
       />
       {p.image && (
-        <Section width="wide" spacing="none">
-          <div className="relative aspect-[3/2] border border-sand">
-            <Image
-              src={p.image}
-              alt={p.imageAlt ?? p.name}
-              fill
-              sizes="(max-width: 1280px) 100vw, 1184px"
-              priority
-              className="object-contain"
-            />
-          </div>
+        <Section width="wide" tone="ink" spacing="sm">
+          <figure className="overflow-hidden rounded-lg border border-vanilla/20 bg-midnight p-2 shadow-[0_30px_80px_-45px_rgba(0,0,0,.8)] sm:p-4">
+            <div className="flex h-10 items-center gap-2 px-3 text-vanilla/75">
+              <span className="h-2 w-2 rounded-full bg-champagne" aria-hidden />
+              <span className="h-2 w-2 rounded-full bg-vanilla/50" aria-hidden />
+              <span className="h-2 w-2 rounded-full bg-vanilla/30" aria-hidden />
+              <span className="ml-3 text-xs font-medium">{p.name} / desktop & mobile</span>
+            </div>
+            <div className="relative aspect-[3/2] overflow-hidden rounded-sm bg-sand">
+              <Image
+                src={p.image}
+                alt={p.imageAlt ?? p.name}
+                fill
+                sizes="(max-width: 1280px) 100vw, 1184px"
+                priority
+                className="object-contain"
+              />
+            </div>
+            <figcaption className="px-3 py-4 text-xs text-vanilla/70">
+              Supplied project presentation. Explore the visible design decisions below.
+            </figcaption>
+          </figure>
         </Section>
       )}
       {p.evidence === "visual" && (
@@ -80,8 +91,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               </ul>
             </div>
             <div className="space-y-10">
-              {[p.situation, p.work, p.outcome].map((s) => (
-                <div key={s.heading}>
+              {[p.situation, p.work, p.outcome].map((s, index) => (
+                <div key={s.heading} className="border-l-2 border-champagne pl-6">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[.16em] text-indigo">0{index + 1} / Project reading</p>
                   <h2 className="text-step-3 font-semibold">{s.heading}</h2>
                   {s.paragraphs.map((t) => (
                     <p key={t} className="mt-5 leading-relaxed text-text-muted">
@@ -103,7 +115,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <Link
               href={s.href}
               key={s.slug}
-              className="rounded border border-sand bg-white px-5 py-3 text-sm font-semibold hover:border-indigo"
+              className="premium-card inline-flex min-h-11 items-center rounded-full border border-sand bg-white px-5 py-3 text-sm font-semibold text-indigo hover:border-indigo hover:bg-indigo hover:text-vanilla focus-visible:bg-indigo focus-visible:text-vanilla"
             >
               {s.name} ↗
             </Link>

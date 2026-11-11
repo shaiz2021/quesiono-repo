@@ -22,9 +22,12 @@ export function PageHero({
 }) {
   return (
     <header
-      className={`page-hero ${light ? "bg-cream text-text-dark" : "bg-ink text-vanilla"}`}
+      className={`page-hero relative isolate overflow-hidden ${light ? "bg-gradient-to-br from-cream via-cream to-vanilla text-text-dark" : "bg-gradient-to-br from-ink via-midnight to-ink text-vanilla"}`}
     >
-      <div className="site-container">
+      <span aria-hidden className={`pointer-events-none absolute -right-32 top-2 -z-10 h-[26rem] w-[26rem] rounded-full border sm:-right-12 lg:right-[3%] ${light ? "border-indigo/10" : "border-champagne/15"}`} />
+      <span aria-hidden className={`pointer-events-none absolute -right-12 top-24 -z-10 h-[18rem] w-[18rem] rounded-full border lg:right-[9%] ${light ? "border-indigo/10" : "border-champagne/10"}`} />
+      <div className={`pointer-events-none absolute bottom-0 left-0 h-1 w-28 bg-champagne ${light ? "opacity-80" : "opacity-60"}`} aria-hidden />
+      <div className="site-container relative">
         <Breadcrumbs trail={trail} tone={light ? "light" : "dark"} />
         <div
           className={`mt-12 grid min-w-0 gap-10 ${children ? "lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:items-end" : ""}`}

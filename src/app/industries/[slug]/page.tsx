@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { industries, getIndustryBySlug } from "@/data/industries";
 import { getServiceBySlug } from "@/data/services";
@@ -6,6 +5,7 @@ import { projects } from "@/data/projects";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section } from "@/components/ui/Section";
 import { PortfolioCard } from "@/components/ui/PortfolioCard";
+import { ServiceCard } from "@/components/ui/ServiceCard";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { buildMetadata } from "@/lib/metadata";
@@ -68,10 +68,11 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
         <h2 className="mt-5 text-step-4 font-bold">
           What the website needs to get right.
         </h2>
-        <div className="mt-12 grid gap-x-12 md:grid-cols-2">
-          {i.challenges.map((c) => (
-            <article key={c.title} className="border-t border-sand py-7">
-              <h3 className="text-step-2 font-semibold">{c.title}</h3>
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
+          {i.challenges.map((c, index) => (
+            <article key={c.title} className="premium-card rounded-md border border-sand bg-white p-6 hover:border-indigo hover:shadow-lg sm:p-7">
+              <span className="text-xs font-semibold text-indigo">/ 0{index + 1}</span>
+              <h3 className="mt-5 text-step-2 font-semibold">{c.title}</h3>
               <p className="mt-4 text-sm leading-relaxed text-text-muted">
                 {c.description}
               </p>
@@ -84,10 +85,11 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
         <h2 className="mt-5 text-step-4 font-bold">
           Build the experience around those needs.
         </h2>
-        <div className="mt-12 grid gap-10 md:grid-cols-2">
-          {i.approach.map((a) => (
-            <article key={a.title} className="border-t border-vanilla/25 pt-6">
-              <h3 className="text-step-2 font-semibold">{a.title}</h3>
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
+          {i.approach.map((a, index) => (
+            <article key={a.title} className="premium-card rounded-md border border-vanilla/20 bg-midnight p-6 hover:border-champagne/60 hover:bg-indigo/60 sm:p-7">
+              <span className="text-xs font-semibold text-champagne">/ 0{index + 1}</span>
+              <h3 className="mt-5 text-step-2 font-semibold">{a.title}</h3>
               <p className="mt-4 text-sm leading-relaxed text-vanilla/75">
                 {a.description}
               </p>
@@ -97,18 +99,17 @@ export default function IndustryPage({ params }: { params: { slug: string } }) {
       </Section>
       <Section width="wide" tone="white">
         <h2 className="text-step-4 font-bold">The services that support it.</h2>
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
           {services.map((s) => (
-            <Link
+            <ServiceCard
               key={s.slug}
+              icon={s.icon}
+              title={s.name}
+              description={s.shortDescription}
               href={s.href}
-              className="border-t border-sand py-6"
-            >
-              <h3 className="text-step-2 font-semibold">{s.name} ↗</h3>
-              <p className="mt-4 text-sm text-text-muted">
-                {s.shortDescription}
-              </p>
-            </Link>
+              tags={s.outcomes?.slice(0, 2)}
+              tone="light"
+            />
           ))}
         </div>
       </Section>

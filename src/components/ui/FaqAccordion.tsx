@@ -26,13 +26,13 @@ export function FaqAccordion({
           key={faq.question}
           open={i === defaultOpen}
           className={cn(
-            "faq-item border-b py-5",
+            "faq-item rounded-md border-b px-4 py-3 transition-colors duration-300",
             tone === "dark"
-              ? "border-vanilla/20 text-vanilla"
-              : "border-sand text-text-dark",
+              ? "border-vanilla/20 text-vanilla hover:bg-vanilla/10 open:bg-vanilla/10"
+              : "border-sand text-text-dark hover:bg-cream open:bg-cream",
           )}
         >
-          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-2 font-display text-step-1 font-semibold">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 py-2 font-display text-step-1 font-semibold">
             <span>{faq.question}</span>
             <span className="faq-toggle shrink-0" aria-hidden>
               +

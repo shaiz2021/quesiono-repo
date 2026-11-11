@@ -23,8 +23,9 @@ export default function ContactPage() {
       />
       <Section width="wide" tone="cream" spacing="sm">
         <div className="grid items-start gap-12 lg:grid-cols-[.65fr_1.35fr]">
-          <aside>
-            <p className="eyebrow text-text-muted">What happens next</p>
+          <aside className="relative overflow-hidden rounded-md border border-indigo bg-indigo p-6 text-vanilla shadow-[0_22px_50px_-36px_rgba(11,15,28,.55)] sm:p-8 lg:sticky lg:top-28">
+            <span aria-hidden className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border border-champagne/25" />
+            <p className="eyebrow text-champagne">What happens next</p>
             <ol className="mt-6 space-y-7">
               {[
                 [
@@ -40,19 +41,19 @@ export default function ContactPage() {
                   "If the project is a fit, we outline the proposed work, timing and costs before you commit.",
                 ],
               ].map(([t, d], i) => (
-                <li key={t} className="border-t border-sand pt-5">
-                  <p className="text-xs text-text-muted">0{i + 1}</p>
-                  <h2 className="mt-3 text-lg font-semibold">{t}</h2>
-                  <p className="mt-2 text-sm text-text-muted">{d}</p>
+                <li key={t} className="border-t border-vanilla/20 pt-5">
+                  <p className="text-xs font-semibold text-champagne">0{i + 1}</p>
+                  <h2 className="mt-3 text-lg font-semibold text-vanilla">{t}</h2>
+                  <p className="mt-2 text-sm text-vanilla/75">{d}</p>
                 </li>
               ))}
             </ol>
-            <div className="mt-10 border-t border-sand pt-6">
+            <div className="mt-10 border-t border-vanilla/20 pt-6">
               <h2 className="text-lg font-semibold">Prefer email?</h2>
-              <a href={`mailto:${site.email}`} className="text-link mt-2">
+              <a href={`mailto:${site.email}`} className="mt-2 inline-flex min-h-11 items-center break-all text-sm font-semibold text-champagne underline underline-offset-4">
                 {site.email} ↗
               </a>
-              <p className="mt-5 text-sm text-text-muted">
+              <p className="mt-5 text-sm text-vanilla/75">
                 Looking for a role? Visit{" "}
                 <Link href="/careers" className="underline">
                   Careers
@@ -65,10 +66,10 @@ export default function ContactPage() {
               </p>
             </div>
             <div className="mt-8 flex flex-wrap gap-5 text-sm">
-              <Link href="/pricing" className="text-link">
+              <Link href="/pricing" className="inline-flex min-h-11 items-center text-champagne underline underline-offset-4">
                 Pricing & scope ↗
               </Link>
-              <Link href="/process" className="text-link">
+              <Link href="/process" className="inline-flex min-h-11 items-center text-champagne underline underline-offset-4">
                 Our process ↗
               </Link>
             </div>

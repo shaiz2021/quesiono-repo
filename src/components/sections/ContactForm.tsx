@@ -206,7 +206,7 @@ export function ContactForm({
           started.current = true;
         }
       }}
-      className="relative border border-sand bg-white p-6 sm:p-10"
+      className="relative overflow-hidden rounded-md border border-sand bg-white p-6 shadow-[0_22px_55px_-42px_rgba(11,15,28,.55)] before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-champagne sm:p-10"
     >
       <p className="eyebrow text-text-muted">
         {review ? "Website review" : "Project enquiry"}
@@ -325,7 +325,7 @@ export function ContactForm({
           {error("service")}
         </div>
         <details className="border-y border-sand py-4">
-          <summary className="cursor-pointer py-2 text-sm font-semibold">
+          <summary className="flex min-h-11 cursor-pointer items-center py-2 text-sm font-semibold transition-colors hover:text-indigo">
             Add budget, timeline, or contact details{" "}
             <span className="font-normal text-text-muted">(optional)</span>
           </summary>

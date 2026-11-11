@@ -131,6 +131,17 @@
   to { transform: scaleX(1); }
 }
 
+@keyframes quesiono-filter-in {
+  from { opacity: .65; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.portfolio-filter-in { animation: quesiono-filter-in 360ms cubic-bezier(.22, 1, .36, 1) both; }
+
+@keyframes quesiono-faq-in {
+  from { opacity: .55; transform: translate3d(0, -5px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
 .hero-grid {
   background-image: linear-gradient(rgba(242, 234, 218, .045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(242, 234, 218, .045) 1px, transparent 1px);
@@ -173,6 +184,66 @@
   animation: quesiono-underline .8s cubic-bezier(.2,.8,.2,1) .35s both;
 }
 
+.reveal-unit {
+  transition:
+    opacity var(--reveal-duration, 550ms) cubic-bezier(.22, 1, .36, 1),
+    transform var(--reveal-duration, 550ms) cubic-bezier(.22, 1, .36, 1);
+  transition-delay: calc(var(--reveal-delay, 0s) + var(--stagger-step, 0ms));
+}
+.reveal-unit[data-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+.reveal-unit[data-reveal-direction="left"][data-reveal="pending"] {
+  transform: translate3d(22px, 0, 0);
+}
+.reveal-unit[data-reveal-direction="right"][data-reveal="pending"] {
+  transform: translate3d(-22px, 0, 0);
+}
+.reveal-unit[data-reveal="visible"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.reveal-stagger > .reveal-unit:nth-child(2) { --stagger-step: 70ms; }
+.reveal-stagger > .reveal-unit:nth-child(3) { --stagger-step: 140ms; }
+.reveal-stagger > .reveal-unit:nth-child(4) { --stagger-step: 210ms; }
+
+.button-action::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(255, 255, 255, .13);
+  transform: translate3d(0, 102%, 0);
+  transition: transform 420ms cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
+}
+.button-action:hover::before,
+.button-action:focus-visible::before {
+  transform: translate3d(0, 0, 0);
+}
+.button-action svg {
+  transition: transform 280ms cubic-bezier(.22, 1, .36, 1);
+}
+.button-action:hover svg,
+.button-action:focus-visible svg {
+  transform: translate3d(2px, -2px, 0);
+}
+
+.premium-card {
+  transition: transform 360ms cubic-bezier(.22, 1, .36, 1),
+    box-shadow 360ms cubic-bezier(.22, 1, .36, 1),
+    background-color 360ms ease,
+    border-color 360ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .premium-card:hover { transform: translate3d(0, -5px, 0); }
+}
+.premium-card:active,
+.button-action:active {
+  transform: scale(.985);
+}
+
 @media (min-width: 640px) {
   .hero-project-main { left: 9%; top: 4%; width: 77%; }
   .hero-project-back { right: 0; top: 31%; width: 66%; }
@@ -180,6 +251,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .reveal-unit[data-reveal="pending"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   .hero-project-main,
   .hero-project-back,
   .hero-project-phone,
@@ -300,7 +375,7 @@
     @apply inline-flex min-h-11 items-center gap-2 font-semibold text-indigo underline decoration-sand underline-offset-4 hover:decoration-indigo;
   }
   .field {
-    @apply mt-2 block min-h-12 w-full rounded border border-sand bg-white px-4 py-3 text-base text-text-dark placeholder:text-text-muted focus:border-indigo focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-indigo;
+    @apply mt-2 block min-h-12 w-full rounded border border-sand bg-white px-4 py-3 text-base text-text-dark placeholder:text-text-muted transition-[border-color,box-shadow] duration-200 hover:border-indigo/60 focus:border-indigo focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-indigo;
   }
   .field-label {
     @apply block text-sm font-semibold text-text-dark;
@@ -313,6 +388,12 @@
   }
   .faq-item[open] .faq-toggle {
     transform: rotate(45deg);
+  }
+  .faq-toggle {
+    transition: transform 280ms cubic-bezier(.22, 1, .36, 1);
+  }
+  .faq-item[open] > p {
+    animation: quesiono-faq-in 280ms cubic-bezier(.22, 1, .36, 1) both;
   }
   .prose {
     max-width: 70ch;

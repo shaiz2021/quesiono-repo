@@ -58,6 +58,34 @@ export default function AboutPage() {
           </div>
         </div>
       </Section>
+      <Section tone="cream" width="wide">
+        <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:gap-14">
+          <div>
+            <p className="eyebrow text-indigo">How we think about a brief</p>
+            <h2 className="mt-5 max-w-md text-step-4 font-bold">The page is only one part of the job.</h2>
+            <p className="mt-5 max-w-md leading-relaxed text-text-muted">
+              A useful website connects the customer’s decision, the systems
+              that support it and the way people discover the business. These
+              questions help us choose the right work before choosing tools.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              { number: "01", title: "What does the customer need to decide?", body: "We identify the questions, objections and proof a visitor needs before they can enquire or buy. That shapes the page structure and web design.", href: "/services/web-design", link: "Explore web design" },
+              { number: "02", title: "What must the website connect to?", body: "Editing workflows, forms, payments and integrations change what should be built. A maintainable website works for the people running it too.", href: "/services/web-development", link: "Explore development" },
+              { number: "03", title: "How will the right people find it?", body: "Search intent, technical health and useful content need space in the plan before launch. SEO works best alongside structure and copy.", href: "/services/seo", link: "Explore SEO" },
+              { number: "04", title: "What happens after launch?", body: "Account ownership, editing guidance, monitoring and support should be agreed in advance so the website can keep serving the business.", href: "/services/website-maintenance", link: "Explore maintenance" },
+            ].map((item) => (
+              <article key={item.number} className="premium-card flex h-full flex-col rounded-md border border-sand bg-white p-6 hover:border-indigo hover:shadow-lg">
+                <span className="text-xs font-semibold text-indigo">/{item.number}</span>
+                <h3 className="mt-5 text-step-2 font-semibold">{item.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-text-muted">{item.body}</p>
+                <Link href={item.href} className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-indigo underline decoration-champagne underline-offset-4 hover:text-midnight">{item.link} ↗</Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </Section>
       <PrinciplesSection />
       <Section width="wide" tone="ink">
         <div className="grid gap-12 md:grid-cols-2">

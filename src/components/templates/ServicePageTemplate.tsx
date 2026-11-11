@@ -107,10 +107,6 @@ export function ServicePageTemplate({ service: s }: { service: Service }) {
                 {p}
               </p>
             ))}
-            <p className="text-sm text-text-muted">
-              The first step is to understand your current setup and the
-              decisions your customers or team need to make.
-            </p>
           </div>
         </div>
       </Section>
@@ -126,13 +122,13 @@ export function ServicePageTemplate({ service: s }: { service: Service }) {
           </p>
         </div>
         <div
-          className={`mt-12 grid gap-x-12 ${editorial ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}
+          className={`mt-12 grid gap-4 ${editorial ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3"}`}
         >
           {s.deliverables.map((d, i) => (
-            <article key={d.title} className="border-t border-sand py-7">
-              <p className="text-xs text-text-muted">0{i + 1}</p>
-              <h3 className="mt-4 text-step-2 font-semibold">{d.title}</h3>
-              <p className="mt-4 text-sm leading-relaxed text-text-muted">
+            <article key={d.title} className={`premium-card relative overflow-hidden rounded-md border p-6 sm:p-7 ${i === 0 ? "border-indigo bg-indigo text-vanilla" : "border-sand bg-white text-text-dark hover:border-indigo hover:shadow-lg"}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[.14em] ${i === 0 ? "text-champagne" : "text-indigo"}`}>0{i + 1} / Deliverable</p>
+              <h3 className="mt-6 text-step-2 font-semibold">{d.title}</h3>
+              <p className={`mt-4 text-sm leading-relaxed ${i === 0 ? "text-vanilla/80" : "text-text-muted"}`}>
                 {d.description}
               </p>
             </article>
@@ -155,13 +151,13 @@ export function ServicePageTemplate({ service: s }: { service: Service }) {
               Our complete process ↗
             </Link>
           </div>
-          <ol>
-            {s.process.map((step) => (
+          <ol className="space-y-3 border-l border-champagne/40 pl-5">
+            {s.process.map((step, index) => (
               <li
                 key={step.step}
-                className="grid grid-cols-[2rem_1fr] gap-5 border-t border-vanilla/25 py-6"
+                className="premium-card relative grid grid-cols-[2rem_1fr] gap-5 rounded-md border border-vanilla/15 bg-midnight p-5 before:absolute before:-left-[1.56rem] before:top-8 before:h-2 before:w-2 before:rounded-full before:bg-champagne hover:border-champagne/60 hover:bg-indigo/60 sm:p-6"
               >
-                <span className="text-sm text-champagne">{step.step}</span>
+                <span className="text-sm font-semibold text-champagne">{step.step || `0${index + 1}`}</span>
                 <div>
                   <h3 className="text-step-2 font-semibold">{step.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-vanilla/75">

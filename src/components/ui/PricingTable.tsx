@@ -50,14 +50,14 @@ export function PricingTable({
           <RevealItem key={tier.name} className="h-full">
             <div
               className={cn(
-                "relative flex h-full flex-col rounded-3xl border p-8",
+                "premium-card relative flex h-full flex-col rounded-2xl border p-8 hover:shadow-xl",
                 tier.highlight
                   ? dark
-                    ? "border-champagne/60 bg-indigo "
-                    : "border-champagne bg-white "
+                    ? "border-champagne/60 bg-indigo hover:border-champagne"
+                    : "border-champagne bg-white hover:border-indigo"
                   : dark
-                    ? "border-vanilla/10 bg-midnight/60"
-                    : "border-sand bg-white",
+                    ? "border-vanilla/10 bg-midnight/60 hover:border-champagne/60"
+                    : "border-sand bg-white hover:border-indigo",
               )}
             >
               {tier.highlight && (

@@ -25,7 +25,7 @@ export function PortfolioCard({
 }) {
   return (
     <article className="group h-full">
-      <Link href={`/portfolio/${slug}`} className="block h-full rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne">
+      <Link href={`/portfolio/${slug}`} className="premium-card block h-full rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne hover:shadow-[0_22px_52px_-30px_rgba(11,15,28,.65)]">
         {image && (
           <div className="overflow-hidden rounded-t-lg border border-sand bg-ink p-3 transition-colors duration-300 group-hover:border-champagne/60 sm:p-4">
             <div className="mb-3 flex items-center gap-1.5 px-1">
@@ -35,15 +35,18 @@ export function PortfolioCard({
               <span className="ml-2 text-[.65rem] text-vanilla/70">quesiono / selected work</span>
               <ArrowUpRight className="ml-auto h-4 w-4 text-vanilla/45 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-champagne" aria-hidden />
             </div>
-            <div className="relative aspect-[3/2] overflow-hidden rounded-sm bg-[#d1cec8]">
+            <div className="relative aspect-[3/2] overflow-hidden rounded-sm bg-sand">
               <Image
                 src={image}
                 alt={imageAlt ?? `${title} website presentation`}
                 fill
                 priority={priority}
                 sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 580px"
-                className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.025]"
+                className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.05] group-focus-visible:scale-[1.05]"
               />
+              <span className="absolute bottom-3 right-3 inline-flex min-h-10 items-center rounded-full bg-ink/95 px-4 text-xs font-semibold text-vanilla shadow-lg transition-transform duration-300 sm:translate-y-14 sm:group-hover:translate-y-0 sm:group-focus-visible:translate-y-0">
+                Open project <ArrowUpRight className="ml-2 h-3.5 w-3.5 text-champagne" aria-hidden />
+              </span>
             </div>
           </div>
         )}
