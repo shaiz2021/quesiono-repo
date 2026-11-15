@@ -9,7 +9,7 @@
  */
 
 import {
-  getServicesByGroup,
+  getAllServicesByGroup,
   groupBlurbs,
   groupLabels,
   services,
@@ -104,7 +104,7 @@ export function buildNavTree(): NavTree {
       label: groupLabels[group],
       blurb: groupBlurbs[group],
       href: groupHrefs[group],
-      items: getServicesByGroup(group).map((service) => ({
+      items: getAllServicesByGroup(group).map((service) => ({
         label: service.navLabel ?? service.name,
         href: service.href,
         blurb: service.shortDescription,
