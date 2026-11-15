@@ -1,4 +1,5 @@
 import { journalContent } from "./blog-content";
+import { newsPosts } from "./blog-news";
 
 export type BlogCategory =
   "Web Design" | "Development" | "SEO" | "Ecommerce" | "Content" | "Business";
@@ -34,11 +35,8 @@ export interface BlogPost {
   posterSrc?: string;
 }
 
-/**
- * Newest first. The five source files group by subject; ordering is by date and
- * lives here so the index, the RSS feed, and the related rails all agree.
- */
-export const blogPosts: BlogPost[] = journalContent.sort((a, b) =>
+/** Newest first for the journal, route registry, sitemap and related rails. */
+export const blogPosts: BlogPost[] = [...newsPosts, ...journalContent].sort((a, b) =>
   a.date < b.date ? 1 : -1,
 );
 

@@ -129,7 +129,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/75">
               <CalendarDays className="h-3.5 w-3.5" aria-hidden />
               <time dateTime={post.updated ?? post.date}>
-                Updated {formatPostDate(post.updated ?? post.date)}
+                {post.updated ? "Updated" : "Published"} {formatPostDate(post.updated ?? post.date)}
               </time>
             </span>
             <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-vanilla/75">
