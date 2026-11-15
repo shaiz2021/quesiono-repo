@@ -34,7 +34,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       <PageHero
         eyebrow={
           p.evidence === "visual"
-            ? `${p.category} / Website presentation`
+            ? `${p.category} / ${p.presentationType === "social" ? "Social content presentation" : "Website presentation"}`
             : "Project archive"
         }
         title={p.name}
@@ -56,7 +56,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <span className="h-2 w-2 rounded-full bg-champagne" aria-hidden />
               <span className="h-2 w-2 rounded-full bg-vanilla/50" aria-hidden />
               <span className="h-2 w-2 rounded-full bg-vanilla/30" aria-hidden />
-              <span className="ml-3 text-xs font-medium">{p.name} / desktop & mobile</span>
+              <span className="ml-3 text-xs font-medium">
+                {p.name} / {p.presentationType === "social" ? "social feed views" : "desktop & mobile"}
+              </span>
             </div>
             <div className="relative aspect-[3/2] overflow-hidden rounded-sm bg-sand">
               <Image
@@ -80,7 +82,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <div>
               <p className="eyebrow text-text-muted">Reading the design</p>
               <p className="mt-5 text-sm text-text-muted">
-                Desktop & mobile presentation
+                {p.presentationType === "social" ? "Social feed presentation" : "Desktop & mobile presentation"}
               </p>
               <ul className="mt-5 space-y-3 text-sm">
                 {p.tags.map((t) => (
@@ -106,22 +108,24 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </div>
         </Section>
       )}
-      <Section width="wide">
-        <h2 className="text-step-3 font-semibold">
-          Explore the relevant expertise.
-        </h2>
-        <div className="mt-7 flex flex-wrap gap-3">
-          {related.map((s) => (
-            <Link
-              href={s.href}
-              key={s.slug}
-              className="premium-card inline-flex min-h-11 items-center rounded-full border border-sand bg-white px-5 py-3 text-sm font-semibold text-indigo hover:border-indigo hover:bg-indigo hover:text-vanilla focus-visible:bg-indigo focus-visible:text-vanilla"
-            >
-              {s.name} ↗
-            </Link>
-          ))}
-        </div>
-      </Section>
+      {related.length > 0 && (
+        <Section width="wide">
+          <h2 className="text-step-3 font-semibold">
+            Explore the relevant expertise.
+          </h2>
+          <div className="mt-7 flex flex-wrap gap-3">
+            {related.map((s) => (
+              <Link
+                href={s.href}
+                key={s.slug}
+                className="premium-card inline-flex min-h-11 items-center rounded-full border border-sand bg-white px-5 py-3 text-sm font-semibold text-indigo hover:border-indigo hover:bg-indigo hover:text-vanilla focus-visible:bg-indigo focus-visible:text-vanilla"
+              >
+                {s.name} ↗
+              </Link>
+            ))}
+          </div>
+        </Section>
+      )}
       <Section width="wide" tone="white">
         <h2 className="text-step-3 font-semibold">Another perspective.</h2>
         <div className="mt-8 grid gap-10 md:grid-cols-2">
@@ -135,9 +139,13 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       </Section>
       <CTABanner
         title="Have a similar problem to solve?"
-        subtitle="Tell us about your customers, the information they need, and the next step your website should help them take."
+        subtitle={
+          p.presentationType === "social"
+            ? "Tell us what your audience needs to understand and where your current content is falling short."
+            : "Tell us about your customers, the information they need, and the next step your website should help them take."
+        }
         primaryAction={{
-          label: "Discuss a similar project",
+          label: p.presentationType === "social" ? "Discuss your content" : "Discuss a similar project",
           href: enquiryHref(related[0]?.slug, source),
         }}
         secondaryAction={{ label: "Explore the portfolio", href: "/portfolio" }}

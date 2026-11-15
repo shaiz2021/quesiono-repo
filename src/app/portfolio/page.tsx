@@ -5,9 +5,9 @@ import { CTABanner } from "@/components/ui/CTABanner";
 import { projects } from "@/data/projects";
 import { buildMetadata } from "@/lib/metadata";
 export const metadata = buildMetadata({
-  title: "Website Design Portfolio",
+  title: "Website Design & Content Portfolio",
   description:
-    "Explore Quesiono’s supplied website presentations for landscaping, interiors, real estate, and building products. See desktop and mobile layouts.",
+    "Explore Quesiono's supplied website and social content presentations, including fitness, real estate, landscaping, interiors and building products.",
   path: "/portfolio",
 });
 export default function PortfolioPage() {
@@ -35,12 +35,12 @@ export default function PortfolioPage() {
         />
         <p className="mt-10 max-w-2xl text-sm text-text-muted">
           Portfolio descriptions refer to the supplied visuals. We do not
-          attribute measured business outcomes to these presentations.
+          attribute measured business outcomes to these presentations without supporting records.
         </p>
       </Section>
       <CTABanner
-        title="What should your website help people do?"
-        subtitle="Bring a similar challenge or something entirely different. Start with the decision you want to make easier for your customers."
+        title="What should people do after they find you?"
+        subtitle="Whether you need a website, a clearer content experience or something else, start with the next step you want to make easier for your audience."
         primaryAction={{
           label: "Discuss a similar project",
           href: "/contact?source=%2Fportfolio",

@@ -1,3 +1,5 @@
+import { newVisualProjects } from "./projects-new";
+
 export interface ProjectMetric {
   /** Numeric value for the animated counter. Omit and use `display` for ranges. */
   value?: number;
@@ -16,6 +18,8 @@ export interface ProjectSection {
 
 export interface Project {
   evidence: "visual" | "pending";
+  /** Social content uses a different visual frame and enquiry message. */
+  presentationType?: "website" | "social";
   slug: string;
   name: string;
   client: string;
@@ -78,6 +82,7 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  ...newVisualProjects,
   {
     slug: "local-restaurant-website",
     name: "Dream Floor",
